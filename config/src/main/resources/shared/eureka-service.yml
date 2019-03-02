@@ -1,0 +1,3 @@
+server:
+  context-path: /registry
+  port: 8761

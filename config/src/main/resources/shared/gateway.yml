@@ -1,0 +1,75 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
+
+zuul:
+  ignoredServices: '*'
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+
+  routes:
+    auth-service:
+        path: /auth/**
+        url: http://auth-service:5000
+        stripPrefix: false
+        sensitiveHeaders:
+        
+    eureka-service:
+        path: /registry/**
+        serviceId: registry
+        stripPrefix: false
+        sensitiveHeaders:
+
+    product-service:
+        path: /products/**
+        serviceId: product-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    account-service:
+        path: /accounts/**
+        serviceId: account-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    logging-service:
+        path: /logging/**
+        serviceId: logging-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    order-service:
+        path: /order/**
+        serviceId: order-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    database-service:
+        path: /database/**
+        serviceId: database-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    statistics-service:
+        path: /statistics/**
+        serviceId: statistics-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    notification-service:
+        path: /notifications/**
+        serviceId: notification-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+server:
+  port: 4000

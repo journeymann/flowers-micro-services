@@ -1,0 +1,30 @@
+
+spring:
+          
+  profiles:
+     active: native
+     
+  data:
+    mongodb:
+      database: flowersdb    
+      host: localhost
+      port: 27017
+      username: appuser
+      password: password$001      
+      repositories:
+        enabled: true
+      
+  datasource:
+      url: mongo:localhost:flowersdb
+      username: appuser
+      password: password$001
+      platform: mongo
+      continueOnError: true
+        
+server:
+  port: 8081
+  context-path: /compute
+
+security:
+  user:
+    password: ${CONFIG_SERVICE_PASSWORD}
