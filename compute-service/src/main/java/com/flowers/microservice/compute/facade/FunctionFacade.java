@@ -286,33 +286,4 @@ public class FunctionFacade {
 		
     	return list.stream().sorted(Comparator.comparing(function)).collect(Collectors.toList());
 	}    
-	
-	/**
-	 * 
-	 * Returns a boolean flag indicating that string input is valid
-	 * 
-	 * @param input data <code>String</code> to be validated
-	 * @return <code>Boolean</code> flag indicating valid string test
-	 */
-	Public final class Validator {
-
-		Predicate<String> isEmpty = String::isEmpty;
-		Predicate<String> isNullOrEmpty = Strings::isNullOrEmpty;
-		Predicate<String> isAlphanumeric = Strings::isAlphanumeric;
-		Predicate<String> isNumeric = Strings::isNumeric;	
-		Predicate<String> hasDigits = Strings::hasDigits;
-		Predicate<String> hasLetters = Strings::hasLetters;
-
-	    private final List<Predicate<String>> rules;
-
-	    public final Validator(List<Predicate<String>> rules) {
-		this.rules = rules;
-	    }
-
-	    public final validate(String object) {
-		return rules.stream()
-			    .map(Predicate::test)
-			    .findAny(Boolean.FALSE).isPresent();
-	    }
-	}
 }
