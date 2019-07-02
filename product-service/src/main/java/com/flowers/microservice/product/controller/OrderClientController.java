@@ -17,6 +17,7 @@ import com.flowers.microservice.product.domain.Order;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * @author cgordon
@@ -36,6 +37,7 @@ public class OrderClientController {
     @Value("${service.ordersearch.serviceId}")
     private String orderSearchServiceId;
     
+    @HystrixCommand(fallbackMethod = "fallback")
     @RequestMapping("/product/order/{orderId}")
     public Order find(@PathVariable Long productId) {
         Application application = eurekaClient.getApplication(orderSearchServiceId);
@@ -47,11 +49,12 @@ public class OrderClientController {
         return prod;
     }
     
+    @HystrixCommand(fallbackMethod = "fallbackAllOrders")
     @RequestMapping("/order/product/all")
-    public Collection <Order> findProducts() {
+    public Collection <Order> findOrders() {
         Application application = eurekaClient.getApplication(orderSearchServiceId);
         InstanceInfo instanceInfo = application.getInstances().get(0);
-        String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/" + "product/all";
+        String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/" + "order/all";
         System.out.printf("URL: %s\n", url);
         
 		Collection<Order> list =  restTemplate.getForObject(url, OrderCollection.class);
@@ -59,9 +62,16 @@ public class OrderClientController {
         return list;
     }
     
+    public Order fallback() {
+        return new Order();
+    }
+    
+    public Collection<Order> fallbackAllOrders() {
+        return new ArrayList<Order>();
+    }
+    
 	private final class OrderCollection extends ArrayList<Order>{
     	private static final long serialVersionUID = 7056106857753243257L;
 
     }
 }
-
