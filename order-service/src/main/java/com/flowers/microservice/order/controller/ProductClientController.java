@@ -8,6 +8,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import com.flowers.microservice.order.model.Product;
 import com.flowers.microservice.order.controller.AbstractClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -26,14 +28,14 @@ public class ProductClientController extends AbstractClient {
     private final String TYPE_KEY = "product";
     
     @HystrixCommand(fallbackMethod = "fallbackById")
-    @RequestMapping("/order/product/{Id}")
+	@RequestMapping(path = "/order/product/{Id}", method = RequestMethod.GET)
     public Product find(@PathVariable Long productId) {
 
         return (Product)super.find(productId);
     }
         
     @HystrixCommand(fallbackMethod = "fallbackAll")
-    @RequestMapping("/order/product/all")
+	@RequestMapping(path = "/order/product/all", method = RequestMethod.GET)
     public Collection <Product> findProducts() {
 
 		return convertModelList(super.findAll(), Product.class);
@@ -56,4 +58,3 @@ public class ProductClientController extends AbstractClient {
     };
     
 }
-
