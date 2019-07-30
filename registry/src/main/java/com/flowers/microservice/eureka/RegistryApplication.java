@@ -7,9 +7,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
+
 /**
- * @author cgordon
- * @created 12/11/2017
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  12/11/2017
  * @version 1.0
  *
  */
@@ -17,7 +18,7 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @SpringBootApplication
 public class RegistryApplication {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         SpringApplication.run(RegistryApplication.class, args);
     }
 }

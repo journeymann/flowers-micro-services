@@ -1,11 +1,11 @@
 ---
 applications:
-  - name: registry
+  - name: dashboard
     buildpack: java_buildpack_offline
-    path: build/libs/registry.jar
+    path: build/libs/dashboard.jar
 
 services:
-  - registry-services
+  - hystrix dashboard
 
 env:
   APP_LOG_LEVEL: INFO
