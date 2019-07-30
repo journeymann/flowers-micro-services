@@ -8,10 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author cgordon
- * @created 12/18/2017
- * @version 1.0
  * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
+ * @version 1.0
  *  <p>
  *  
  *  This Java class interface defines constants for available Time zones.

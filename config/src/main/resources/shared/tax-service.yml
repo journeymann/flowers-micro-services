@@ -1,0 +1,84 @@
+---
+server:
+  context-path: /tax
+  port: 5003
+
+flowers:
+  rabbitmq:
+    queue: flowers.queue
+    exchange: flowers.exchange
+    routingkey: flowers.routingkey
+    timeout: 10000
+    
+  product:
+    service:
+      url: http://localhost:8008/gateway/api/product
+      secret: product-secret      
+      
+  order:
+    service:
+      url: http://localhost:8006/gateway/api/order       
+      secret: order-secret
+            
+  tax:
+    service:
+      url: http://localhost:8003/gateway/api/tax
+      default:
+        override: false
+        rate: 1.13
+        county: Kings (Hystrix)
+        state: NY
+        id: 10000
+        zipcode: 11236       
+      secret: tax-secret
+        
+  client:
+    clientId: tax
+    clientSecret: tax-secret
+    accessTokenUri: http://localhost:5000/uaa/oauth/access_token
+    userAuthorizationUri: http://localhost:5000/uaa/dialog/oauth
+    tokenName: oauth_token
+  resource:
+    userInfoUri: https://localhost:5003/tax/**         
+
+eureka:         
+  instance:
+    hostname: localhost
+   
+  client:
+    registerWithEureka: false
+    initial-instance-info-replication-interval-seconds: 5
+    eureka-service-url-poll-interval-seconds: 5
+    should-unregister-on-shutdown: true
+    enabled: false
+    healthcheck:
+      enabled: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/registry/
+    heartbeat-executor-exponential-back-off-bound: 10
+    heartbeat-executor-thread-pool-size: 1
+         
+management: 
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        exclude: 
+      base-path: /      
+  info:
+    git:
+      mode: full
+  cloudfoundry:
+    enabled: true
+    skip-ssl-validation: true   
+        
+logging:
+    level:
+      ROOT: INFO
+      org.springframework.web: DEBUG 
+      com.flowers.microservice.tax.service: DEBUG      
+
+      

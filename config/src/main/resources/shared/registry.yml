@@ -1,0 +1,36 @@
+---
+server:
+  context-path: /registry
+  port: 8761
+       
+eureka:
+  instance:
+    prefer-ip-address: true
+   
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: true
+            
+management:
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        exclude: 
+      base-path: /      
+  info:
+    git:
+      mode: full
+  cloudfoundry:
+    enabled: true
+    skip-ssl-validation: true            
+       
+logging:
+    level:
+      ROOT: INFO
+      org.springframework.web: DEBUG 
+      com.flowers.microservice.eureka.service: DEBUG

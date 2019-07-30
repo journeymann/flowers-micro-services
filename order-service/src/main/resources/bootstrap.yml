@@ -1,9 +1,37 @@
+---
 spring:
+  profiles: default
   application:
     name: order-service
+    
   cloud:
     config:
-      uri: http://config:8888
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888}
       fail-fast: true
-      password: ${CONFIG_SERVICE_PASSWORD}
-      username: user
+      password: ${CONFIG_SERVICE_PASSWORD:configpwd$001}
+      username: ${CONFIG_SERVICE_USERNAME:config}  
+      retry:
+        initial-interval: 1000
+        max-interval: 2000
+        max-attempts: 100 
+
+  data: 
+    mongodb:
+          uri: mongodb://order:passw0rd001@cluster0-shard-00-00-rvlxk.mongodb.net:27017,cluster0-shard-00-01-rvlxk.mongodb.net:27017,cluster0-shard-00-02-rvlxk.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority
+       
+config: 
+  oauth2: 
+    accessTokenUri: http://auth-service:5000
+    userAuthorizationUri: http://auth-service:5000
+    clientID: auth
+    clientSecret: p@ssw0rd001  
+    
+           
+eureka:
+  client:
+    enabled: true
+    
+app:
+  domain:
+     name: http://localhost        
+ 

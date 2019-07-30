@@ -1,15 +1,47 @@
-security:
-  oauth2:
-    client:
-      clientId: notification-service
-      clientSecret: ${NOTIFICATION_SERVICE_PASSWORD}
-      accessTokenUri: http://auth-service:5000/auth/oauth/token
-      grant-type: client_credentials
-      scope: server
-
-server:
+---
+server: 
   context-path: /notifications
   port: 8000
+
+eureka:         
+  instance:
+    hostname: localhost
+   
+  client:
+    registerWithEureka: false
+    initial-instance-info-replication-interval-seconds: 5
+    eureka-service-url-poll-interval-seconds: 5
+    should-unregister-on-shutdown: true
+    enabled: false
+    healthcheck:
+      enabled: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/registry/
+    heartbeat-executor-exponential-back-off-bound: 10
+    heartbeat-executor-thread-pool-size: 1
+         
+management: 
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        exclude: 
+      base-path: /      
+  info:
+    git:
+      mode: full
+  cloudfoundry:
+    enabled: true
+    skip-ssl-validation: true   
+        
+logging:
+    level:
+      ROOT: INFO
+      org.springframework.web: DEBUG 
+      com.flowers.microservice.order.service: DEBUG      
 
 remind:
   cron: 0 0 0 * * *
@@ -25,13 +57,6 @@ backup:
     attachment: backup.json
 
 spring:
-  data:
-    mongodb:
-      host: notification-mongodb
-      username: user
-      password: ${MONGODB_PASSWORD}
-      database: flowersdb
-      port: 27017
   mail:
     host: smtp.gmail.com
     port: 465

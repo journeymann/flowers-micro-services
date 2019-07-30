@@ -1,3 +1,0 @@
-server:
-  context-path: /logging
-  port: 5004

@@ -3,50 +3,62 @@
  */
 package com.flowers.microservice.product.domain;
 
+import org.springframework.data.annotation.Id;
 /**
  * @author cgordon
  *
  */
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.flowers.microservice.product.constants.Constants;
-
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
+import java.util.Arrays;
 import java.util.List;
-
-@Data
+/**
+ * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
+ * @version 1.0
+ *
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "products")
-public class Product {
+public class Product extends Model{
+	
+	public Product() {};
 
+	public Product(String productId, String name, String shortDescription, String longDescription, List<Item> items) {
+		super();
+		this.productId = productId;
+		this.name = name;
+		this.shortDescription = shortDescription;
+		this.longDescription = longDescription;
+		this.items = items;
+	}
+	
 	@Id
 	@GeneratedValue
-	private Integer productId;
+	private String productId;
 	
 	@Valid	private String name;
 	private String shortDescription;
 	private String longDescription;
-	
-	@Pattern(regexp=Constants.REGEXP_VALID_BOOLFLAG, message ="Valid value for this field is either Y or N")
-	private boolean active=true;	
 	
 	@Valid private List<Item> items;
 	
 	/**
 	 * @return the productId
 	 */
-	public Integer getProductId() {
+	public String getProductId() {
 		return productId;
 	}
 	/**
 	 * @param productId the productId to set
 	 */
-	public void setProductId(Integer productId) {
+	public void setProductId(String productId) {
 		this.productId = productId;
 	}
 	/**
@@ -97,17 +109,25 @@ public class Product {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-	/**
-	 * @return the active
-	 */
-	public boolean isActive() {
-		return active;
-	}
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product obj = (Product) o;
+
+        return getProductId().equals(obj.getProductId());
+    }
+    
+    @Override
+    public int hashCode() {
+        return getProductId().hashCode();
+    }
+    @Override
+    public String toString() {
+        return 	String.format("Product{productId %s,name %s,shortDescription %s,longDescription %s,items %s}",productId,name,shortDescription,longDescription,Arrays.toString(items.toArray()));
+
+    }
 	
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.9.3.201803200843-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>java:com.flowers.microservice.tax.config.AppConfig</config>
+	</configs>
+	<autoconfigs>
+		<config>java:com.flowers.microservice.tax.TaxRateApplication</config>
+	</autoconfigs>
+	<configSets>
+		<configSet>
+			<name><![CDATA[configs]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>java:com.flowers.microservice.tax.TaxRateApplication</config>
+				<config>java:com.flowers.microservice.tax.config.AppConfig</config>
+			</configs>
+			<profiles>
+			</profiles>
+		</configSet>
+	</configSets>
+</beansProjectDescription>

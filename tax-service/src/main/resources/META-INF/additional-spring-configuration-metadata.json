@@ -1,0 +1,117 @@
+{"properties": [
+  {
+    "name": "flowers.rabbitmq.queue",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.rabbitmq.queue'"
+  },
+  {
+    "name": "flowers.rabbitmq.exchange",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.rabbitmq.exchange'"
+  },
+  {
+    "name": "flowers.rabbitmq.routingkey",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.rabbitmq.routingkey'"
+  },
+  {
+    "name": "flowers.rabbitmq.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.rabbitmq.timeout'"
+  },
+  {
+    "name": "flowers.order.service.url",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.order.service.url'"
+  },
+  {
+    "name": "flowers.product.service.url",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.product.service.url'"
+  },
+  {
+    "name": "flowers.tax.service.url",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.url'"
+  },
+  {
+    "name": "flowers.tax.service.default.override",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.default.override'"
+  },
+  {
+    "name": "flowers.tax.service.default.rate",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.default.rate'"
+  },
+  {
+    "name": "flowers.tax.service.default.county",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.default.county'"
+  },
+  {
+    "name": "flowers.tax.service.default.state",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.default.state'"
+  },
+  {
+    "name": "flowers.tax.service.default.id",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.default.id'"
+  },
+  {
+    "name": "flowers.tax.service.default.zipcode",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.default.zipcode'"
+  },
+  {
+    "name": "flowers.tax.service.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.tax.service.secret'"
+  },
+  {
+    "name": "flowers.client.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.client.client-id'"
+  },
+  {
+    "name": "flowers.client.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.client.client-secret'"
+  },
+  {
+    "name": "flowers.client.access-token-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.client.access-token-uri'"
+  },
+  {
+    "name": "flowers.client.user-authorization-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.client.user-authorization-uri'"
+  },
+  {
+    "name": "flowers.client.token-name",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.client.token-name'"
+  },
+  {
+    "name": "flowers.resource.user-info-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.resource.user-info-uri'"
+  },
+  {
+    "name": "flowers.client.resource.user-info-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.client.resource.user-info-uri'"
+  },
+  {
+    "name": "flowers.product.service.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.product.service.secret'"
+  },
+  {
+    "name": "flowers.order.service.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'flowers.order.service.secret'"
+  }
+]}

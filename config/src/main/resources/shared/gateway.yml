@@ -1,3 +1,8 @@
+---      
+server:
+  context-path: /gateway
+  port: 4000
+    
 hystrix:
   command:
     default:
@@ -23,7 +28,7 @@ zuul:
         stripPrefix: false
         sensitiveHeaders:
         
-    eureka-service:
+    registry:
         path: /registry/**
         serviceId: registry
         stripPrefix: false
@@ -36,14 +41,8 @@ zuul:
         sensitiveHeaders:
 
     account-service:
-        path: /accounts/**
-        serviceId: account-service
-        stripPrefix: false
-        sensitiveHeaders:
-
-    logging-service:
-        path: /logging/**
-        serviceId: logging-service
+        path: /shipping/**
+        serviceId: shipping-service
         stripPrefix: false
         sensitiveHeaders:
 
@@ -52,24 +51,54 @@ zuul:
         serviceId: order-service
         stripPrefix: false
         sensitiveHeaders:
-
-    database-service:
-        path: /database/**
-        serviceId: database-service
+        
+    tax-service:
+        path: /tax/**
+        serviceId: tax-service
         stripPrefix: false
-        sensitiveHeaders:
-
-    statistics-service:
-        path: /statistics/**
-        serviceId: statistics-service
-        stripPrefix: false
-        sensitiveHeaders:
+        sensitiveHeaders:        
 
     notification-service:
         path: /notifications/**
         serviceId: notification-service
         stripPrefix: false
         sensitiveHeaders:
+eureka:         
+  instance:
+    hostname: localhost
+   
+  client:
+    registerWithEureka: false
+    initial-instance-info-replication-interval-seconds: 5
+    eureka-service-url-poll-interval-seconds: 5
+    should-unregister-on-shutdown: true
+    enabled: false
+    healthcheck:
+      enabled: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    heartbeat-executor-exponential-back-off-bound: 10
+    heartbeat-executor-thread-pool-size: 1
+         
+management: 
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        exclude: 
+      base-path: /      
+  info:
+    git:
+      mode: full
+  cloudfoundry:
+    enabled: true
+    skip-ssl-validation: true   
+        
+logging:
+    level:
+      ROOT: INFO
+      org.springframework.web: DEBUG 
 
-server:
-  port: 4000

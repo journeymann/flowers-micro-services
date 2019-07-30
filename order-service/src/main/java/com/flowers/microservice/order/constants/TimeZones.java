@@ -8,10 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author cgordon
- * @created 12/18/2017
- * @version 1.0
  * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
+ * @version 1.0
+ *
  *  <p>
  *  
  *  This Java class interface defines constants for available Time zones.
@@ -22,7 +23,7 @@ public @interface TimeZones {
 	  String ISO8601 = "ISO 8601";
 
 	  public static final Set<String> validMethodTypes = new HashSet<String>(Arrays.asList(TimeZones.UTC,TimeZones.ISO8601));
-	  public static final String DEFAULT_TIMEZONE = TimeZones.UTC;
+	  public static final String DEFAULT = TimeZones.UTC;
 	  
 	  String value();
 }

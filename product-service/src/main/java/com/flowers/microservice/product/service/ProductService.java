@@ -8,23 +8,30 @@ import java.util.List;
 import com.flowers.microservice.product.domain.Product;
 
 /**
- * @author cgordon
- * @created 12/11/2017
+ * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
  * @version 1.0
  *
  */
 
 public interface ProductService {
 
-	public Product findProductByName(String name);
+	Product createProduct(Product product);
+	
+	Product findProductById(String productid);
 
-	public Product findProductById(String id);
+	List<Product> findAllProductList();
 	
-	public List<Product> findAllProducts();	
+	Product updateProduct(String productid, Product product);
 	
-	public Product create(Product Product);
+	void deleteProduct(String productid);
 
-	public Product update(String id, Product Product);
-	
-	public void delete(String id);	
+	List<Product> findAllProductListPaginated(int pageNumber, int pageSize);
+
+	Product findOneById(String id);
+
+	List<Product> findById(String id);
+
+	Product updateOne(Product product);
 }

@@ -7,14 +7,14 @@
 	<artifactId>auth-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
 	<name>auth-service</name>
+	<description>Spring Boot Authentication and Authorization Service Implementation</description>
 	<url>http://maven.apache.org</url>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.8.RELEASE</version>
+		<version>2.1.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -22,86 +22,72 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Dalston.RELEASE</spring-cloud.version>
+        <java.bind.version>2.3.0</java.bind.version>
+		<json.sanitizer.version>1.2.0</json.sanitizer.version>
+        <start-class>com.flowers.microservice.auth.AuthApplication</start-class>	
+        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>	
     </properties>
-	
+
     <dependencies>
+	
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter</artifactId>
-		    <exclusions>
-		        <!-- 
-		        <exclusion>
-		            <artifactId>logback-classic</artifactId>
-		            <groupId>ch.qos.logback</groupId>
-		        </exclusion>
-		         -->
-		        <exclusion>
-		            <artifactId>log4j-over-slf4j</artifactId>
-		            <groupId>org.slf4j</groupId>
-		        </exclusion>
-		    </exclusions>
-		</dependency>	
-    
-    	<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.3.5.RELEASE</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.9.0</version>
 		</dependency>		
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-feign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zuul</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
-        </dependency>
 		<dependency>
-		    <groupId>javax.persistence</groupId>
-		    <artifactId>javax.persistence-api</artifactId>
-		    <version>2.2</version>
-		</dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<scope>test</scope>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-jwt</artifactId>
+		    <version>1.0.10.RELEASE</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-jpa</artifactId>
+		    <groupId>javax.xml.bind</groupId>
+	  		<artifactId>jaxb-api</artifactId>
+	  		<version>${java.bind.version}</version>
+		</dependency> 	
+		<dependency>
+	    	<groupId>com.sun.xml.bind</groupId>
+	    	<artifactId>jaxb-core</artifactId>
+	    	<version>${java.bind.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+		    <groupId>com.sun.xml.bind</groupId>
+		    <artifactId>jaxb-impl</artifactId>
+		    <version>${java.bind.version}</version>
+		</dependency>	
+		<dependency>
+    		<groupId>javax.activation</groupId>
+    		<artifactId>activation</artifactId>
+    		<version>1.1.1</version>
+		</dependency>	
     </dependencies>
-
-    <dependencyManagement>
+    
+     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -111,14 +97,46 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
-
+    </dependencyManagement>   
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+    		<plugin>
+      			<groupId>org.springframework.boot</groupId>
+      			<artifactId>spring-boot-maven-plugin</artifactId>
+      			<configuration>
+        			<mainClass>${start-class}</mainClass>
+        			<layout>ZIP</layout>
+      			</configuration>
+      			<executions>
+        			<execution>
+          				<goals>
+           					 <goal>repackage</goal>
+          				</goals>
+        			</execution>
+      			</executions>
+    		</plugin>
+        		<plugin>
+    			<groupId>org.apache.tomcat.maven</groupId>
+    			<artifactId>tomcat7-maven-plugin</artifactId>
+    			<version>2.0</version>
+    			<executions>
+        			<execution>
+            			<id>tomcat-run</id>
+            			<goals>
+             			   <goal>deploy</goal>
+            			</goals>
+           			 	<phase>package</phase>
+           			 	<configuration>
+          			    	<path>/tmp/src/</path>
+         			    	<enableNaming>false</enableNaming>
+                			<finalName>serviceapp.jar</finalName>
+                			<charset>utf-8</charset>
+                			<mainClass>${start-class}</mainClass>
+        					<layout>ZIP</layout>	
+            			</configuration>
+        			</execution>
+    			</executions>
+			</plugin>			
         </plugins>
     </build>
 </project>

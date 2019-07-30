@@ -24,8 +24,13 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@SuppressWarnings("restriction")
+/**
+ * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
+ * @version 1.0
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ProductApplication.class)
 @WebAppConfiguration
@@ -53,7 +58,7 @@ public class ProductControllerTest {
 		final Product product = new Product();
 		product.setName("test");
 
-		when(productService.findProductByName(product.getName())).thenReturn(product);
+		when(productService.findProductById(product.getProductId())).thenReturn(product);
 
 		mockMvc.perform(get("/" + product.getName()))
 				.andExpect(jsonPath("$.name").value(product.getName()))
@@ -66,7 +71,7 @@ public class ProductControllerTest {
 		final Product product = new Product();
 		product.setName("test");
 
-		when(productService.findProductByName(product.getName())).thenReturn(product);
+		when(productService.findProductById(product.getProductId())).thenReturn(product);
 
 		mockMvc.perform(get("/current").principal(new UserPrincipal(product.getName())))
 				.andExpect(jsonPath("$.name").value(product.getName()))
@@ -82,7 +87,7 @@ public class ProductControllerTest {
 		item1.setSku("1001-P-GFDT1325");
 		item1.setDescription("My Funny Valentines");
 		item1.setName("Valentines Roses");
-		item1.setPrice(12.00);
+		item1.setUnitPrice(12.00);
 		item1.setAvailableDate("01-03-2018");
 		item1.setHeight(2);
 		item1.setLength(3);
@@ -92,7 +97,7 @@ public class ProductControllerTest {
 		item2.setSku("1001-P-GFDT1325");
 		item2.setDescription("My Funny Valentines");
 		item2.setName("Valentines Roses");
-		item2.setPrice(12.00);
+		item2.setUnitPrice(12.00);
 		item2.setAvailableDate("01-03-2018");
 		item2.setHeight(2);
 		item2.setLength(3);
@@ -105,7 +110,7 @@ public class ProductControllerTest {
 		create.setName("Funny Valentine Roses, its so cute <3");
 		create.setItems(Arrays.asList(item1, item2));
 		
-		update = productService.create(create);
+		update = productService.createProduct(create);
 		update.setName("test");
 		update.setItems(ImmutableList.of(item1, item2));
 

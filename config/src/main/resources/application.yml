@@ -1,3 +1,5 @@
+server:
+  port: 8888
 
 spring:
   cloud:
@@ -5,12 +7,12 @@ spring:
       server:
         native:
           search-locations: classpath:/shared
+          
+  security:
+    user:
+      name: config
+      password: configpwd$001          
+          
   profiles:
-     active: native
+     active: native, default, cloud
 
-server:
-  port: 8888
-
-security:
-  user:
-    password: ${CONFIG_SERVICE_PASSWORD}

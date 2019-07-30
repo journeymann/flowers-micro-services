@@ -15,8 +15,9 @@ import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 
 /**
- * @author cgordon
- * @created 12/11/2017
+ * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
  * @version 1.0
  *
  */

@@ -6,8 +6,9 @@ package com.flowers.microservice.product.constants;
 import java.util.regex.Pattern;
 
 /**
- * @author cgordon
- * @created 12/18/2017
+ * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
  * @version 1.0
  *
  * constants are maintained here. general policy to not have or minimize rogue string literals throughout the application

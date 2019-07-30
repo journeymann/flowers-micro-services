@@ -1,18 +1,14 @@
+---
 spring:
+  profiles: default
   application:
-    name: registry
+    name: eureka-service
   cloud:
     config:
       uri: http://config:8888
       fail-fast: true
-      password: ${CONFIG_SERVICE_PASSWORD}
-      username: user
+      password: ${CONFIG_SERVICE_PASSWORD:passw0rd}
+      username: ${CONFIG_SERVICE_USERNAME:user}  
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
-    server:
-      waitTimeInMsWhenSyncEmpty: 0
+               
+

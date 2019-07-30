@@ -3,11 +3,15 @@
  */
 package com.flowers.microservice.order.constants;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * @author cgordon
- * @created 12/18/2017
+ * 
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ * {@literal @}created  02/11/2019
  * @version 1.0
  *
  * constants are maintained here. general policy to not have or minimize rogue string literals throughout the application
@@ -47,6 +51,8 @@ public final class Constants {
 	public static final String REGEXP_TRUE = "^[Y|YES|T|TRUE|1]{1}$";
 	public static final String REGEXP_VALID_URL = "^(http://|https://)?(www.)?([a-zA-Z0-9@:%_\\+.~#?&//=-]+).[a-zA-Z0-9@:%_\\+.~#?&//=-]+]*.[a-z]{3}.?([a-zA-Z0-9@:%_\\+.~#?&//=-]+)?$";	
 		
+	public static final Set<String> validMethods = new HashSet<String>(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+	
 	/**
 	 *  Declare class final and constructor private to defeat instantiation and extension
 	 */
@@ -54,3 +60,4 @@ public final class Constants {
 		
 	}
 }	
+	

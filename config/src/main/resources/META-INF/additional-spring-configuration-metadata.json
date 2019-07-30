@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "hystrix.command.default.execution.isolation.thread.timeout-in-milliseconds",
+    "type": "java.lang.String",
+    "description": "A description for 'hystrix.command.default.execution.isolation.thread.timeout-in-milliseconds'"
+  },
+  {
+    "name": "eureka.instance.prefer-ip-address",
+    "type": "java.lang.String",
+    "description": "A description for 'eureka.instance.prefer-ip-address'"
+  },
+  {
+    "name": "eureka.client.service-url.default-zone",
+    "type": "java.lang.String",
+    "description": "A description for 'eureka.client.service-url.default-zone'"
+  }
+]}
