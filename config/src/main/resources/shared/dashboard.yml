@@ -1,16 +1,10 @@
 ---
-server:
+server: 
   context-path: /dashboard
   port: 5007
     
-info:
+info: 
   component: Hystrix Dashboard
-  
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true  
   
 eureka:         
   instance:
@@ -28,15 +22,7 @@ eureka:
       defaultZone: http://localhost:8761/registry/
     heartbeat-executor-exponential-back-off-bound: 10
     heartbeat-executor-thread-pool-size: 1
-    region: default
-    preferSameZone: false
-    us-east-1:
-      availabilityZones: default
-
-  instance:
-    #Virtual host name by which the clients identifies this service
-    virtualHostName: ${spring.application.name}        
-               
+         
 management: 
   endpoint:
     health:
@@ -58,6 +44,8 @@ logging:
     level:
       ROOT: INFO
       org.springframework.web: DEBUG 
-      com.flowers.microservice.monitoring.service: DEBUG      
+      com.flowers.microservice.auth.service: DEBUG      
+
+        
 
      

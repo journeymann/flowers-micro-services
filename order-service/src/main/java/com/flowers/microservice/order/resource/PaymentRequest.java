@@ -1,7 +1,7 @@
 package com.flowers.microservice.order.resource;
 
 import com.flowers.microservice.order.domain.Address;
-import com.flowers.microservice.order.domain.Card;
+import com.flowers.microservice.order.domain.billing.Card;
 import com.flowers.microservice.order.domain.Customer;
 /**
  * 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.flowers.microservice.tax.model;
+package com.flowers.microservice.order.domain;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -14,6 +14,7 @@ package com.flowers.microservice.tax.model;
  * with checking for nulls and reduces the possibility of NullPointerexceptions 
  *
  */
+
 public final class NullObject extends Model implements Comparable<NullObject>{
 	
 	public NullObject(){

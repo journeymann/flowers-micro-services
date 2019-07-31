@@ -1,10 +1,6 @@
 package com.flowers.microservice.order.domain;
 
-import javax.persistence.GeneratedValue;
-
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
  * 
@@ -15,34 +11,36 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "address")
-public class Address extends Model{
+public class Address extends Contact{
 
     private String number;
     private String street;
     private String city;
     private String postcode;
     private String country;
-
+    
     public Address() {
     }
 
-    public Address(String id, String number, String street, String city, String postcode, String country) {
-        this.id = id;
+    public Address(String id, String number, String street, String city, String postcode, String country, String type) {
+        this.entityId = id;
+    	this.number = number;
+        this.street = street;
+        this.city = city;
+        this.postcode = postcode;
+        this.country = country;
+        super.type="H";
+    }
+    
+    public Address(String number, String street, String city, String postcode, String country, String type) {
         this.number = number;
         this.street = street;
         this.city = city;
         this.postcode = postcode;
         this.country = country;
-    }
-
-    public Address(String number, String street, String city, String postcode, String country) {
-        this(null, number, street, city, postcode, country);
+        super.type=type;
     }
     
-	@Id
-	@GeneratedValue
-	protected String id;
-	
     public String getNumber() {
         return number;
     }
@@ -90,25 +88,18 @@ public class Address extends Model{
 
         Address obj = (Address) o;
 
-        return getId().equals(obj.getId());
+        return getEntityId().equals(obj.getEntityId());
 
     }
     
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return getEntityId().hashCode();
     }
     @Override
     public String toString() {
-        return 	String.format("Address{id: %s,number: %s,street: %s,city: %s,postcode: %s,country: %s}",id,number,street,city,postcode,country);
+        return 	String.format("Address{id: %s,number: %s,street: %s,city: %s,postcode: %s,country: %s}",entityId,number,street,city,postcode,country);
 
     }
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 }

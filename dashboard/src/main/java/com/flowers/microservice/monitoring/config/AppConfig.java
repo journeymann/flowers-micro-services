@@ -1,9 +1,7 @@
 package com.flowers.microservice.monitoring.config;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,14 +14,9 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @EnableCircuitBreaker
+@EnableEurekaClient
 @ComponentScan
 @Configuration
-@EnableAutoConfiguration
 public class AppConfig{
 
-	@Bean
-	@ConditionalOnMissingBean(AppConfigProperties.class)
-	public AppConfigProperties frameworkConfigProperties() {
-		return new AppConfigProperties();
-	}
 }

@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 /**
  * 
@@ -21,7 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @EnableCircuitBreaker
 @EnableDiscoveryClient
 @EnableZuulProxy
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @SpringBootApplication
 public class NotificationApplication {
 

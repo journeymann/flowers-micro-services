@@ -16,10 +16,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.flowers.microservice.order.domain.Address;
-import com.flowers.microservice.order.domain.Card;
+import com.flowers.microservice.order.domain.billing.Card;
 import com.flowers.microservice.order.domain.Customer;
+import com.flowers.microservice.order.domain.EmailAddress;
 import com.flowers.microservice.order.domain.Item;
 import com.flowers.microservice.order.domain.Order;
+import com.flowers.microservice.order.domain.Phone;
 import com.flowers.microservice.order.domain.Product;
 import com.flowers.microservice.order.domain.Shipment;
 
@@ -135,8 +137,12 @@ public class OrderServiceImpl implements OrderService {
 		items.add(ite1);items.add(ite3);items.add(ite5);
 		Address customeraddress = new Address("100", "100","Miller Street", "New Haven", "06721", "USA");
 		Address deliveryaddress = new Address("101", "21A","Tilden Ave", "Los Angelos", "99017", "USA");
+		Phone hphone = new Phone("247-859-7845", "H");
+		Phone wphone = new Phone("723-239-2197", "W");
+		EmailAddress email = new EmailAddress("100 Campus Drive, New York City, NY 10021","H");
+
 		Card card = new Card("4227-2145-1624-1927", "07/2020","982");
-		Customer customer = new Customer("10000", "Sanjay", "Gupta", "ssanjay",  Arrays.asList(customeraddress), Arrays.asList(card));
+		Customer customer = new Customer("10000", "Sanjay", "Gupta", Arrays.asList(customeraddress),  Arrays.asList(email),  Arrays.asList(hphone,wphone), Arrays.asList(card));
         Order ord3 = new Order("10023", "100000",customer, deliveryaddress, card, items, shipment, 15.00F, 14.00F);
 		
 		mongoTemplate.save(ite1);

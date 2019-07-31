@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.TypeReferences;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.flowers.microservice.order.config.AppConfigProperties;
 import com.flowers.microservice.order.domain.Address;
-import com.flowers.microservice.order.domain.Card;
+import com.flowers.microservice.order.domain.billing.Card;
 import com.flowers.microservice.order.domain.Customer;
 import com.flowers.microservice.order.domain.Item;
 import com.flowers.microservice.order.domain.Order;
@@ -49,7 +48,6 @@ import java.io.IOException;
  * @version 1.0
  *
  */
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @RestController
 public class OrderController{
 	private final Logger LOG = LoggerFactory.getLogger(getClass());

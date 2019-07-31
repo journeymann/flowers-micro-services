@@ -31,5 +31,7 @@ config:
     clientSecret: p@ssw0rd001  
     
 app:
-  domain:
-     name: http://localhost     
+  host:
+     name: localhost       
+  domain: 
+     name:     

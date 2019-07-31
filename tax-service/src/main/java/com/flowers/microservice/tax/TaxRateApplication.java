@@ -11,8 +11,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import com.flowers.microservice.tax.facade.FunctionFacade;
 import com.flowers.microservice.tax.model.TaxRate;
 import com.flowers.microservice.tax.repository.FlowersTaxRateMongoRepository;
@@ -25,7 +23,6 @@ import com.flowers.microservice.tax.service.TaxRateService;
  * @version 1.0
  *
  */
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @SpringBootApplication
 public class TaxRateApplication extends org.springframework.boot.web.servlet.support.SpringBootServletInitializer {
 

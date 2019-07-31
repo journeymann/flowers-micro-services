@@ -23,6 +23,8 @@ eureka:
     enabled: true
     
 app:
-  domain:
-     name: http://localhost   
+  host:
+     name: localhost       
+  domain: 
+     name:   
         

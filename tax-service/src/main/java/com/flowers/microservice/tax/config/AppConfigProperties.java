@@ -13,6 +13,9 @@ import java.net.URI;
 @ConfigurationProperties
 public class AppConfigProperties {
 	
+    @Value("${app.host.name}")
+    private String host = "";
+    
     @Value("${app.domain.name}")
     private String domain = "";
 
@@ -21,15 +24,15 @@ public class AppConfigProperties {
     }
 
     public URI getShippingUri() {
-        return new ServiceUri(new Hostname(domain), new Domain(domain), "/shipping").toUri();
+        return new ServiceUri(new Hostname(host), new Domain(domain), "/shipping").toUri();
     }
 
     public URI getOrderUri() {
-        return new ServiceUri(new Hostname(domain), new Domain(domain), "/order").toUri();
+        return new ServiceUri(new Hostname(host), new Domain(domain), "/order").toUri();
     }
     
     public URI getProductUri() {
-        return new ServiceUri(new Hostname(domain), new Domain(domain), "/product").toUri();
+        return new ServiceUri(new Hostname(host), new Domain(domain), "/product").toUri();
     }
     
     public void setDomain(String domain) {

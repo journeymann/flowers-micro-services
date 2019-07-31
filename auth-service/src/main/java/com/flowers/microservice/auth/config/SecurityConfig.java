@@ -3,12 +3,16 @@ package com.flowers.microservice.auth.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 
@@ -32,26 +36,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth
 		.inMemoryAuthentication()
 
-		.withUser("user").password("password")
-		.roles("USER")
+		.withUser("user").password("p@ssw0rd")
+		.roles("USER","TRUSTED_CLIENT")
 
 		.and()
 
-		.withUser("admin").password("password")
-		.roles("USER", "ADMIN")
+		.withUser("admin").password("p@ssw0rd")
+		.roles("USER", "ADMIN","TRUSTED_CLIENT")
 		;
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.formLogin()
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-		.and()
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+       http
+                .authorizeRequests()
+                .antMatchers("/tax/**").permitAll()
+                .antMatchers("/order/**").permitAll()
+                .antMatchers("/product/**").permitAll()
+                .antMatchers("/shipping/**").permitAll()
+                .antMatchers("/dashboard/**").permitAll()
+                .anyRequest().fullyAuthenticated();
+        http.httpBasic().disable();
+        http.anonymous().disable();
+        http.csrf().disable();
+    }
 
-		.httpBasic().disable()
-		.anonymous().disable()
-		.authorizeRequests().anyRequest().authenticated()
-		;
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

@@ -3,7 +3,7 @@ spring:
     name: dashboard
     
   profiles: 
-    active: native
+    active: default
         
   cloud: 
     config: 
