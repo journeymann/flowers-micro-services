@@ -1,5 +1,6 @@
 package com.flowers.microservice.product.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +17,13 @@ import com.mongodb.MongoClientOptions;
 @AutoConfigureBefore(MongoAutoConfiguration.class)
 public class MongoConfig {
 
+    @Value("${app.mongo.timeout}")
+    private Integer timeout = 10000;
+    
     @Bean
     public MongoClientOptions optionsProvider() {
         MongoClientOptions.Builder optionsBuilder = new MongoClientOptions.Builder();
-        optionsBuilder.serverSelectionTimeout(10000);
+        optionsBuilder.serverSelectionTimeout(timeout);
         MongoClientOptions options = optionsBuilder.build();
         return options;
     }

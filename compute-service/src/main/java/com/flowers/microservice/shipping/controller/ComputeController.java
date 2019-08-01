@@ -3,7 +3,15 @@
  */
 package com.flowers.microservice.shipping.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flowers.microservice.shipping.domain.Order;
 import com.flowers.microservice.shipping.facade.CalculateFacade;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * 
@@ -22,26 +31,41 @@ import com.flowers.microservice.shipping.facade.CalculateFacade;
 
 @RestController
 public class ComputeController {
-
-	@RequestMapping(value = "/compute/tax", method = RequestMethod.POST)
-	public Double computeOrderTax(@Valid @RequestBody final Order order) {
-		return CalculateFacade.calculateOrderTax(order);
-	}
 	
-	@RequestMapping(value = "/compute/shipping", method = RequestMethod.POST)
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @RequestMapping("/service-instances/{applicationName}")
+    public List<ServiceInstance> serviceInstancesByApplicationName(
+            @PathVariable String applicationName) {
+        return this.discoveryClient.getInstances(applicationName);
+    }
+    
+    @HystrixCommand(fallbackMethod = "fallback")
+	@RequestMapping(value = "/shipping", method = RequestMethod.POST)
 	public Double computeOrderShipping(@Valid @RequestBody final Order order) {
 		return CalculateFacade.calculateOrderShipping(order);
 	}
 	
-	@RequestMapping(value = "/compute/deliverydate", method = RequestMethod.POST)
+    @HystrixCommand(fallbackMethod = "fallbackdelivery")
+	@RequestMapping(value = "/deliverydate", method = RequestMethod.POST)
 	public String computeOrderDeliveryDate(@Valid @RequestBody final Order order) {
 		return CalculateFacade.calculateOrderDeliveryDate(order);
 	}
 	
-	@RequestMapping(value = "/compute/total", method = RequestMethod.POST)
+    @HystrixCommand(fallbackMethod = "fallback")
+	@RequestMapping(value = "/total", method = RequestMethod.POST)
 	public Double computeOrderTotal(@Valid @RequestBody final Order order) {
 		return CalculateFacade.calculateOrderTotal(order);
 	}
+    
+    public Double fallback() {
+        return Double.parseDouble("0.01");
+    }
+    
+    public String fallbackdelivery() {
+        return String.valueOf(LocalDateTime.now().plusDays(3));
+    }
 }
 
 

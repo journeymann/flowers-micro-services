@@ -15,7 +15,7 @@ eureka:
     initial-instance-info-replication-interval-seconds: 5
     eureka-service-url-poll-interval-seconds: 5
     should-unregister-on-shutdown: true
-    enabled: false
+    enabled: true
     healthcheck:
       enabled: false
     serviceUrl:

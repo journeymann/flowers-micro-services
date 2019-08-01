@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.TypeReferences;
@@ -63,9 +65,18 @@ public class OrderController{
     
     @Value(value = "${http.timeout:5}")
     private long timeout;
+    
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @RequestMapping("/service-instances/{applicationName}")
+    public List<ServiceInstance> serviceInstancesByApplicationName(
+            @PathVariable String applicationName) {
+        return this.discoveryClient.getInstances(applicationName);
+    }    
 
     @HystrixCommand(fallbackMethod = "fallback")
-	@RequestMapping(value = "/order/create}", method = RequestMethod.POST)
+	@RequestMapping(value = "/create}", method = RequestMethod.POST)
 	public Order createOrder(@Valid @RequestBody final NewOrderResource orderitem) {
     	try {
     		
@@ -142,24 +153,24 @@ public class OrderController{
 	}
 	
     @HystrixCommand(fallbackMethod = "fallback")
-	@RequestMapping(value = "/order/read/{orderid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/read/{orderid}", method = RequestMethod.GET)
 	public Order getOrder(@PathVariable final String orderid) {
 		return orderService.findOrderById(orderid);
 	}
 	
     @HystrixCommand(fallbackMethod = "fallbackAllOrders")
-	@RequestMapping(value = "/order/all}", method = RequestMethod.GET)
+	@RequestMapping(value = "/all}", method = RequestMethod.GET)
 	public List<Order> getAllOrders() {
 		return orderService.findAllOrderList();
 	}
 	
     @HystrixCommand(fallbackMethod = "fallback")
-	@RequestMapping(value = "/order/update/{orderid}", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/{orderid}", method = RequestMethod.POST)
 	public Order updateOrder(@PathVariable final String orderid, @Valid @RequestBody final Order order) {
 		return orderService.updateOrder(orderid, order);
 	}
 	
-	@RequestMapping(value = "/order/delete/{orderid}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/delete/{orderid}", method = RequestMethod.PUT)
 	public void deleteOrder(@PathVariable final String orderid) {
 		orderService.deleteOrder(orderid);
 	}

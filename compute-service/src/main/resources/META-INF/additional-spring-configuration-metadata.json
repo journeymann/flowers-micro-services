@@ -8,5 +8,10 @@
     "name": "app.domain.name",
     "type": "java.lang.String",
     "description": "A description for 'app.domain.name'"
+  },
+  {
+    "name": "app.mongo.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'app.mongo.timeout'"
   }
 ]}

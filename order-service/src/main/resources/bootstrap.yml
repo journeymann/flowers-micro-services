@@ -31,9 +31,10 @@ eureka:
   client:
     enabled: true
     
-app:
-  host:
+app: 
+  host: 
      name: localhost       
   domain: 
-     name:      
- 
+     name: 
+  mongo: 
+     timeout: 100000     

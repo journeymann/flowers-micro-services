@@ -2,7 +2,7 @@ spring:
   application:
     name: registry
     
-  profiles:
+  profiles: 
     active: native
         
   cloud:

@@ -113,5 +113,25 @@
     "name": "flowers.order.service.secret",
     "type": "java.lang.String",
     "description": "A description for 'flowers.order.service.secret'"
+  },
+  {
+    "name": "app.host.name",
+    "type": "java.lang.String",
+    "description": "A description for 'app.host.name'"
+  },
+  {
+    "name": "app.domain.name",
+    "type": "java.lang.String",
+    "description": "A description for 'app.domain.name'"
+  },
+  {
+    "name": "app.mongo.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'app.mongo.timeout'"
+  },
+  {
+    "name": "config.oauth2.access-token-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'config.oauth2.access-token-uri'"
   }
 ]}

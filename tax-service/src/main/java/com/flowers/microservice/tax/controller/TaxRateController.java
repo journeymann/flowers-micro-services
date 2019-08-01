@@ -6,7 +6,6 @@ package com.flowers.microservice.tax.controller;
 import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import com.flowers.microservice.tax.model.TaxRate;
 import com.flowers.microservice.tax.request.TaxRequest;
 import com.flowers.microservice.tax.service.HealthIndicatorService;
@@ -38,7 +35,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
  *
  */
 @RefreshScope
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @RestController
 public class TaxRateController {
 	private static transient final Logger logger = LoggerFactory.getLogger(TaxRateController.class);

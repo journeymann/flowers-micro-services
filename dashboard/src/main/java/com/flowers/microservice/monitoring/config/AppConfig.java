@@ -1,8 +1,7 @@
 package com.flowers.microservice.monitoring.config;
 
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -14,8 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @EnableCircuitBreaker
-@EnableEurekaClient
-@ComponentScan
+@EnableHystrixDashboard
 @Configuration
 public class AppConfig{
 

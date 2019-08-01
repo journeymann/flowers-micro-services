@@ -3,7 +3,7 @@ package com.flowers.microservice.monitoring;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -11,8 +11,8 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
  * @version 1.0
  *
  */
+@EnableEurekaClient
 @SpringBootApplication
-@EnableHystrixDashboard
 public class MonitoringApplication {
 
     public static void main(String[] args) {

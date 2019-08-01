@@ -34,4 +34,6 @@ app:
   host:
      name: localhost       
   domain: 
-     name:   
+     name: 
+  mongo: 
+     timeout: 100000     
