@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,19 +58,28 @@ public class TaxRateController {
 
 	@Autowired
 	private HealthIndicatorService healthIndicatorService;
-	
-    @Autowired
-    private DiscoveryClient discoveryClient;
-    
+
     @Autowired
     RestTemplate restTemplate;	
 	
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
     @RequestMapping("/service-instances/{applicationName}")
     public List<ServiceInstance> serviceInstancesByApplicationName(
             @PathVariable String applicationName) {
         return this.discoveryClient.getInstances(applicationName);
-    }	
-	
+    }    
+
+    @Value("${eureka.instance.instance-id}")
+    private String instanceId;
+
+    @GetMapping("/service-instances/instanceid")
+    public StringBuffer getEurekaStatus() {
+        
+        return new StringBuffer("instance id: " + instanceId);
+    }  
+    	
     @HystrixCommand(fallbackMethod = "fallbackTaxRate")
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public TaxRate getTaxRateTypeById(@RequestParam(value="id", required=false) final String taxdataid,

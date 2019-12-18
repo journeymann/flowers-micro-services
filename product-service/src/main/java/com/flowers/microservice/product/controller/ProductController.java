@@ -5,6 +5,8 @@ package com.flowers.microservice.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.flowers.microservice.product.domain.Product;
@@ -35,6 +37,24 @@ public class ProductController {
     @Value(value = "${http.timeout:5}")
     private long timeout;
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @RequestMapping("/service-instances/{applicationName}")
+    public List<ServiceInstance> serviceInstancesByApplicationName(
+            @PathVariable String applicationName) {
+        return this.discoveryClient.getInstances(applicationName);
+    }    
+
+    @Value("${eureka.instance.instance-id}")
+    private String instanceId;
+
+    @GetMapping("/service-instances/instanceid")
+    public StringBuffer getEurekaStatus() {
+        
+        return new StringBuffer("instance id: " + instanceId);
+    }  
+    
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/product/create}", method = RequestMethod.POST)
 	public Product createProduct(@PathVariable final String productid, @Valid @RequestBody final Product product) {

@@ -19,6 +19,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.TypeReferences;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,6 +76,15 @@ public class OrderController{
         return this.discoveryClient.getInstances(applicationName);
     }    
 
+    @Value("${eureka.instance.instance-id}")
+    private String instanceId;
+
+    @GetMapping("/service-instances/instanceid")
+    public StringBuffer getEurekaStatus() {
+        
+        return new StringBuffer("instance id: " + instanceId);
+    }  
+    
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/create}", method = RequestMethod.POST)
 	public Order createOrder(@Valid @RequestBody final NewOrderResource orderitem) {

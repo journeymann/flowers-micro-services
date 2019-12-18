@@ -7,10 +7,10 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:com.flowers.microservice.payment.ProductApplication</config>
-		<config>java:com.flowers.microservice.payment.config.MongoConfig</config>
+		<config>java:com.flowers.microservice.inventory.ProductApplication</config>
 	</configs>
 	<autoconfigs>
+		<config>java:com.flowers.microservice.product.config.AppConfig</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

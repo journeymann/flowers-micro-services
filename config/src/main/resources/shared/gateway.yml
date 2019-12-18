@@ -46,7 +46,13 @@ zuul:
         serviceId: product-service
         stripPrefix: false
         sensitiveHeaders:
-
+        
+    inventory-service:
+        path: /inventory/**
+        serviceId: inventory-service
+        stripPrefix: false
+        sensitiveHeaders:
+        
     account-service:
         path: /shipping/**
         serviceId: shipping-service
