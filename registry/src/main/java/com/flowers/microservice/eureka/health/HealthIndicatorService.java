@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.flowers.microservice.tax.service;
+package com.flowers.microservice.eureka.health;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.HealthAggregator;

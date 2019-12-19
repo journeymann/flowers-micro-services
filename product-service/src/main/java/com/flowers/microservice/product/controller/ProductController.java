@@ -5,12 +5,15 @@ package com.flowers.microservice.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.flowers.microservice.product.domain.Product;
 import com.flowers.microservice.product.service.ProductService;
+import com.flowers.microservice.product.health.HealthIndicatorService;
+import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,18 +30,35 @@ import javax.validation.Valid;
  */
 
 @RestController
+@ConfigurationProperties
 @PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @RequestMapping(path = "/product")
 public class ProductController {
 
     @Autowired
 	private ProductService productService;
+    
+	@Autowired
+	private HealthIndicatorService healthIndicatorService;    
         
-    @Value(value = "${http.timeout:5}")
+    @Value(value = "${app.http.timeout}")
     private long timeout;
-
+    
+    @Value("${app.info.description}")
+    private String serviceInfo;    
+    
     @Autowired
     private DiscoveryClient discoveryClient;
+   
+	@RequestMapping(value = "/health",  method = RequestMethod.GET)
+	public InstanceStatus health() {
+		return healthIndicatorService.health();
+	}
+	
+	@RequestMapping(value = "/info",  method = RequestMethod.GET)
+	public String information() {
+		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
+	}	    
 
     @RequestMapping("/service-instances/{applicationName}")
     public List<ServiceInstance> serviceInstancesByApplicationName(

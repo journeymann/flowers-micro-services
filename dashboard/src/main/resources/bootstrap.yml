@@ -16,3 +16,12 @@ spring:
         max-interval: 2000
         max-attempts: 100    
         
+eureka:
+  instance: 
+    lease-renewal-interval-in-seconds: 10  
+    instance-id: ${spring.application.name}:${random.int[10000,20000]}        
+    
+             
+app:        
+  info: 
+     description: Dashboard microservice implementation         

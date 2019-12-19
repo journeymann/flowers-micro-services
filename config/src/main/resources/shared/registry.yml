@@ -1,31 +1,15 @@
 ---
 server:
-  context-path: /registry
+  context-path: /eureka
   port: 8761
        
 eureka:
   instance:
     hostname: localhost
+    appname: registry    
   client:
-    registerWithEureka: false
-    fetchRegistry: false        
-            
-management:
-  endpoint:
-    health:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-        exclude: 
-      base-path: /      
-  info:
-    git:
-      mode: full
-  cloudfoundry:
-    enabled: true
-    skip-ssl-validation: true            
+    register-with-eureka: false
+    fetch-registry: false    
        
 logging:
     level:

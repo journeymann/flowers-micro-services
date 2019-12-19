@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import com.flowers.microservice.tax.facade.FunctionFacade;
 import com.flowers.microservice.tax.model.TaxRate;
@@ -24,6 +25,7 @@ import com.flowers.microservice.tax.service.TaxRateService;
  *
  */
 @SpringBootApplication
+@EnableEurekaClient
 public class TaxRateApplication extends org.springframework.boot.web.servlet.support.SpringBootServletInitializer {
 
 	@Autowired

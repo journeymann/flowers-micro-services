@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flowers.microservice.shipping.domain.Order;
 import com.flowers.microservice.shipping.facade.CalculateFacade;
+import com.flowers.microservice.shipping.health.HealthIndicatorService;
+import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
@@ -38,15 +40,21 @@ public class ShippingController {
 	
     @Autowired
     private DiscoveryClient discoveryClient;
-
+    
+	@Autowired
+	private HealthIndicatorService healthIndicatorService;
+   
     @RequestMapping("/service-instances/{applicationName}")
     public List<ServiceInstance> serviceInstancesByApplicationName(
             @PathVariable String applicationName) {
         return this.discoveryClient.getInstances(applicationName);
     }    
 
-    @Value(value="${eureka.instance.instance-id}")
+    @Value("${eureka.instance.instance-id}")
     private String instanceId;
+    
+    @Value("${app.info.description}")
+    private String serviceInfo;        
 
     @GetMapping("/service-instances/instanceid")
     public StringBuffer getEurekaStatus() {
@@ -54,6 +62,16 @@ public class ShippingController {
         return new StringBuffer("instance id: " + instanceId);
     }  
         
+	@RequestMapping(value = "/health",  method = RequestMethod.GET)
+	public InstanceStatus health() {
+		return healthIndicatorService.health();
+	}
+	
+	@RequestMapping(value = "/info",  method = RequestMethod.GET)
+	public String information() {
+		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
+	}	
+	
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/shipping", method = RequestMethod.POST)
 	public Double computeOrderShipping(@Valid @RequestBody final Order order) {

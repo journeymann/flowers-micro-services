@@ -1,9 +1,11 @@
 ---
 spring:
-  profiles: default
   application:
     name: tax-service
     
+  profiles: 
+    active: native
+        
   cloud:
     config:
       uri: ${CONFIG_SERVER_URL:http://localhost:8888}
@@ -19,21 +21,29 @@ spring:
     mongodb:
           uri: mongodb://tax:passw0rd001@cluster0-shard-00-00-rvlxk.mongodb.net:27017,cluster0-shard-00-01-rvlxk.mongodb.net:27017,cluster0-shard-00-02-rvlxk.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority
           
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10  
+    instance-id: ${spring.application.name}:${random.int[10000,20000]}
+             
 config: 
   oauth2: 
     accessTokenUri: http://auth-service:5000
     userAuthorizationUri: http://auth-service:5000
     clientID: auth
     clientSecret: p@ssw0rd001  
-              
-eureka:
-  client:
-    enabled: true
-
-app:
-  host:
+    
+app: 
+  host: 
      name: localhost       
   domain: 
      name: 
+  info: 
+     description: Tax processing microservice implementation          
   mongo: 
-     timeout: 100000     
+     timeout: 3000     
+  http: 
+     timeout: 1000        
+
+     
+     

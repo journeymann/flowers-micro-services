@@ -7,12 +7,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.flowers.microservice.inventory.domain.Inventory;
 import com.flowers.microservice.inventory.service.InventoryService;
+import com.flowers.microservice.notification.health.HealthIndicatorService;
+import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 
@@ -27,14 +30,22 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @RestController
 @PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @RequestMapping(path = "/inventory")
+@ConfigurationProperties
 public class InventoryController {
 
+    
+	@Autowired
+	private HealthIndicatorService healthIndicatorService;  
+	
     @Autowired
 	private InventoryService inventoryService;
         
-    @Value(value = "${http.timeout:5}")
+    @Value(value = "${app.http.timeout}")
     private long timeout;
-
+    
+    @Value("${app.info.description}")
+    private String serviceInfo;   
+    
     @Value("${eureka.instance.instance-id}")
     private String instanceId;
 
@@ -47,6 +58,16 @@ public class InventoryController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
+	@RequestMapping(value = "/health",  method = RequestMethod.GET)
+	public InstanceStatus health() {
+		return healthIndicatorService.health();
+	}
+	
+	@RequestMapping(value = "/info",  method = RequestMethod.GET)
+	public String information() {
+		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
+	}	
+    
     @RequestMapping("/service-instances/{applicationName}")
     public List<ServiceInstance> serviceInstancesByApplicationName(
             @PathVariable String applicationName) {

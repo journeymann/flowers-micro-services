@@ -8,22 +8,13 @@ spring:
 server:
   context-path: /products
   port: 5008
-
-eureka:         
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value(10)}}
-      
+    
   client:
-    enabled: true
-    registerWithEureka: true
-    fetchRegistry: false  
-    serviceUrl:
-      defaultZone: http://localhost:8761/registry/
-      
-discovery:
-    enabled: true
-    service-id: config-server
-
+    enabled: true  
+    serviceUrl: 
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true    
+    
 management: 
   endpoint:
     health:

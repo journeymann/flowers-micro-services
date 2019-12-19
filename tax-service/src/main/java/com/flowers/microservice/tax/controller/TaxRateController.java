@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -21,9 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import com.flowers.microservice.tax.health.HealthIndicatorService;
 import com.flowers.microservice.tax.model.TaxRate;
 import com.flowers.microservice.tax.request.TaxRequest;
-import com.flowers.microservice.tax.service.HealthIndicatorService;
 import com.flowers.microservice.tax.service.TaxRateService;
 import com.google.common.base.Optional;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
@@ -37,6 +39,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
  */
 @RefreshScope
 @RestController
+@ConfigurationProperties
 public class TaxRateController {
 	private static transient final Logger logger = LoggerFactory.getLogger(TaxRateController.class);
 
@@ -73,7 +76,10 @@ public class TaxRateController {
 
     @Value("${eureka.instance.instance-id}")
     private String instanceId;
-
+    
+    @Value("${app.info.description}")
+    private String serviceInfo;    
+    
     @GetMapping("/service-instances/instanceid")
     public StringBuffer getEurekaStatus() {
         
@@ -106,6 +112,11 @@ public class TaxRateController {
 	public InstanceStatus health() {
 		return healthIndicatorService.health();
 	}
+	
+	@RequestMapping(value = "/info",  method = RequestMethod.GET)
+	public String information() {
+		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
+	}	
     
     @HystrixCommand(fallbackMethod = "fallbackTaxRate")
 	@RequestMapping(value = "/rate", method = RequestMethod.POST)

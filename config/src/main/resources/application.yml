@@ -10,7 +10,7 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false  
     serviceUrl:
-      defaultZone: http://localhost:8761/registry/
+      defaultZone: http://localhost:8761/eureka
     
 spring:
   cloud:

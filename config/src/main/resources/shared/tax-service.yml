@@ -2,7 +2,18 @@
 server:
   context-path: /tax
   port: 5003
-
+  
+spring:
+  profiles: default
+  application:
+    name: tax-service  
+    
+  client:
+    enabled: true  
+    serviceUrl: 
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true    
+      
 flowers:
   rabbitmq:
     queue: flowers.queue
@@ -41,24 +52,6 @@ flowers:
   resource:
     userInfoUri: https://localhost:5003/tax/**         
 
-eureka:         
-  instance:
-    hostname: localhost
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-       
-  client:
-    registerWithEureka: false
-    initial-instance-info-replication-interval-seconds: 5
-    eureka-service-url-poll-interval-seconds: 5
-    should-unregister-on-shutdown: true
-    enabled: false
-    healthcheck:
-      enabled: false
-    serviceUrl:
-      defaultZone: http://localhost:8761/registry/
-    heartbeat-executor-exponential-back-off-bound: 10
-    heartbeat-executor-thread-pool-size: 1
-         
 management: 
   endpoint:
     health:
@@ -75,7 +68,7 @@ management:
   cloudfoundry:
     enabled: true
     skip-ssl-validation: true   
-        
+             
 logging:
     level:
       ROOT: INFO

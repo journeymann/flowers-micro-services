@@ -3,25 +3,17 @@ server:
   context-path: /order
   port: 5006
 
-eureka:         
-  instance:
-    hostname: localhost
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    
+spring:
+  profiles: default
+  application:
+    name: order-service
    
   client:
-    registerWithEureka: false
-    initial-instance-info-replication-interval-seconds: 5
-    eureka-service-url-poll-interval-seconds: 5
-    should-unregister-on-shutdown: true
-    enabled: false
-    healthcheck:
-      enabled: false
-    serviceUrl:
-      defaultZone: http://localhost:8761/registry/
-    heartbeat-executor-exponential-back-off-bound: 10
-    heartbeat-executor-thread-pool-size: 1
-         
+    enabled: true  
+    serviceUrl: 
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true    
+    
 management: 
   endpoint:
     health:

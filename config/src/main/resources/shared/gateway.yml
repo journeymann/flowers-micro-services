@@ -3,6 +3,17 @@ server:
   context-path: /gateway
   port: 4000
     
+spring:
+  profiles: default
+  application:
+    name: gateway
+       
+  client:
+    enabled: true  
+    serviceUrl: 
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true    
+            
 hystrix:
   command:
     default:
@@ -76,23 +87,7 @@ zuul:
         serviceId: notification-service
         stripPrefix: false
         sensitiveHeaders:
-eureka:         
-  instance:
-    hostname: localhost
-   
-  client:
-    registerWithEureka: false
-    initial-instance-info-replication-interval-seconds: 5
-    eureka-service-url-poll-interval-seconds: 5
-    should-unregister-on-shutdown: true
-    enabled: false
-    healthcheck:
-      enabled: false
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-    heartbeat-executor-exponential-back-off-bound: 10
-    heartbeat-executor-thread-pool-size: 1
-         
+    
 management: 
   endpoint:
     health:
@@ -114,4 +109,6 @@ logging:
     level:
       ROOT: INFO
       org.springframework.web: DEBUG 
+      com.flowers.microservice.gateway.controller: DEBUG     
+        
 

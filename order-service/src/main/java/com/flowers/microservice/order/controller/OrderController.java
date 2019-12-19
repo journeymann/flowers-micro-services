@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.ParameterizedTypeReference;
@@ -40,6 +41,8 @@ import com.flowers.microservice.order.resource.NewOrderResource;
 import com.flowers.microservice.order.resource.PaymentRequest;
 import com.flowers.microservice.order.resource.PaymentResponse;
 import com.flowers.microservice.order.service.OrderService;
+import com.flowers.microservice.order.health.HealthIndicatorService;
+import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.util.concurrent.ExecutionException;
 import java.io.IOException;
@@ -52,6 +55,7 @@ import java.io.IOException;
  *
  */
 @RestController
+@ConfigurationProperties
 public class OrderController{
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 	
@@ -64,11 +68,27 @@ public class OrderController{
     @Autowired
     private AsyncGetService asyncGetService;
     
-    @Value(value = "${http.timeout:5}")
+	@Autowired
+	private HealthIndicatorService healthIndicatorService;   
+    
+    @Value(value = "${app.http.timeout}")
     private long timeout;
+    
+    @Value("${app.info.description}")
+    private String serviceInfo;        
     
     @Autowired
     private DiscoveryClient discoveryClient;
+  
+	@RequestMapping(value = "/health",  method = RequestMethod.GET)
+	public InstanceStatus health() {
+		return healthIndicatorService.health();
+	}
+	
+	@RequestMapping(value = "/info",  method = RequestMethod.GET)
+	public String information() {
+		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
+	}	
 
     @RequestMapping("/service-instances/{applicationName}")
     public List<ServiceInstance> serviceInstancesByApplicationName(
@@ -109,14 +129,14 @@ public class OrderController{
             });
             LOG.debug("End of calls.");
 
-            float taxes = OrderFacade.calculateTax(itemsFuture.get(timeout, TimeUnit.SECONDS));
-            float amount = OrderFacade.calculateTotal(itemsFuture.get(timeout, TimeUnit.SECONDS));
+            float taxes = OrderFacade.calculateTax(itemsFuture.get(timeout, TimeUnit.MILLISECONDS));
+            float amount = OrderFacade.calculateTotal(itemsFuture.get(timeout, TimeUnit.MILLISECONDS));
 
             // Call payment service to make sure they've paid
             PaymentRequest paymentRequest = new PaymentRequest(
-                    addressFuture.get(timeout, TimeUnit.SECONDS).getContent(),
-                    cardFuture.get(timeout, TimeUnit.SECONDS).getContent(),
-                    customerFuture.get(timeout, TimeUnit.SECONDS).getContent(),
+                    addressFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
+                    cardFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
+                    customerFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
                     amount);
             LOG.info("Sending payment request: " + paymentRequest);
             Future<PaymentResponse> paymentFuture = asyncGetService.postResource(
@@ -124,7 +144,7 @@ public class OrderController{
                     paymentRequest,
                     new ParameterizedTypeReference<PaymentResponse>() {
                     });
-            PaymentResponse paymentResponse = paymentFuture.get(timeout, TimeUnit.SECONDS);
+            PaymentResponse paymentResponse = paymentFuture.get(timeout, TimeUnit.MILLISECONDS);
             LOG.info("Received payment response: " + paymentResponse);
             if (paymentResponse == null) {
                 throw new PaymentDeclinedException("Unable to parse authorisation packet");
@@ -134,7 +154,7 @@ public class OrderController{
             }
 
             // Ship
-            String customerId = OrderFacade.parseId(customerFuture.get(timeout, TimeUnit.SECONDS).getId().getHref());
+            String customerId = OrderFacade.parseId(customerFuture.get(timeout, TimeUnit.MILLISECONDS).getId().getHref());
             Future<Shipment> shipmentFuture = asyncGetService.postResource(config.getShippingUri(), new Shipment
                     (customerId), new ParameterizedTypeReference<Shipment>() {
             });
@@ -142,11 +162,11 @@ public class OrderController{
             Order order = new Order(
                     null,
                     customerId,
-                    customerFuture.get(timeout, TimeUnit.SECONDS).getContent(),
-                    addressFuture.get(timeout, TimeUnit.SECONDS).getContent(),
-                    cardFuture.get(timeout, TimeUnit.SECONDS).getContent(),
-                    itemsFuture.get(timeout, TimeUnit.SECONDS),
-                    shipmentFuture.get(timeout, TimeUnit.SECONDS),
+                    customerFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
+                    addressFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
+                    cardFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
+                    itemsFuture.get(timeout, TimeUnit.MILLISECONDS),
+                    shipmentFuture.get(timeout, TimeUnit.MILLISECONDS),
                     amount,taxes);
             LOG.debug("Received data: " + order.toString());
 
