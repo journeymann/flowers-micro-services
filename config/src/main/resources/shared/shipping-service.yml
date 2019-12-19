@@ -6,9 +6,8 @@ server:
 eureka:         
   instance:
     hostname: localhost
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    
-   
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value(10)}}
+      
   client:
     registerWithEureka: false
     initial-instance-info-replication-interval-seconds: 5

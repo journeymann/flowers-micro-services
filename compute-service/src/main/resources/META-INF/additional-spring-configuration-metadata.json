@@ -10,6 +10,31 @@
     "description": "A description for 'app.domain.name'"
   },
   {
+    "name": "config.oauth2.access-token-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'config.oauth2.access-token-uri'"
+  },
+  {
+    "name": "config.oauth2.user-authorization-uri",
+    "type": "java.lang.String",
+    "description": "A description for 'config.oauth2.user-authorization-uri'"
+  },
+  {
+    "name": "config.oauth2.client-iD",
+    "type": "java.lang.String",
+    "description": "A description for 'config.oauth2.client-iD'"
+  },
+  {
+    "name": "config.oauth2.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'config.oauth2.client-secret'"
+  },
+  {
+    "name": "mongo.connection.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'mongo.connection.timeout'"
+  },
+  {
     "name": "app.mongo.timeout",
     "type": "java.lang.String",
     "description": "A description for 'app.mongo.timeout'"

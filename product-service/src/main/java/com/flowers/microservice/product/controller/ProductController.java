@@ -46,7 +46,7 @@ public class ProductController {
         return this.discoveryClient.getInstances(applicationName);
     }    
 
-    @Value("${eureka.instance.instance-id}")
+    @Value(value = "${eureka.instance.instance-id}")
     private String instanceId;
 
     @GetMapping("/service-instances/instanceid")

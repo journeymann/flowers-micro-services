@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
  */
 
 @RestController
+@ConfigurationProperties
 public class ShippingController {
 	
     @Autowired
@@ -43,7 +45,7 @@ public class ShippingController {
         return this.discoveryClient.getInstances(applicationName);
     }    
 
-    @Value("${eureka.instance.instance-id}")
+    @Value(value="${eureka.instance.instance-id}")
     private String instanceId;
 
     @GetMapping("/service-instances/instanceid")

@@ -2,11 +2,10 @@ package com.flowers.microservice.shipping.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+
 import com.mongodb.MongoClientOptions;
 /**
  * 
@@ -16,12 +15,10 @@ import com.mongodb.MongoClientOptions;
  *
  */
 @Configuration
-@EnableAutoConfiguration
-@ComponentScan
 @AutoConfigureBefore(MongoAutoConfiguration.class)
 public class MongoConfig {
 
-    @Value("${app.mongo.timeout}")
+    @Value(value="${app.mongo.timeout:}")
     private Integer timeout = 10000;
     
     @Bean

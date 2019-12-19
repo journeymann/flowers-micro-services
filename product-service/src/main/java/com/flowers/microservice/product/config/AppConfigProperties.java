@@ -13,10 +13,10 @@ import java.net.URI;
 @ConfigurationProperties
 public class AppConfigProperties {
 	
-    @Value("${app.host.name}")
+    @Value(value="${app.host.name}")
     private String host = "";
     
-    @Value("${app.domain.name}")
+    @Value(value="${app.domain.name}")
     private String domain = "";
 
     public URI getPaymentUri() {

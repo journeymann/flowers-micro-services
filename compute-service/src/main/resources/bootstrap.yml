@@ -1,6 +1,6 @@
 ---
 spring:
-  profiles: default
+  profiles: native
   application:
     name: shipping-service
     
@@ -26,11 +26,15 @@ config:
     clientID: auth
     clientSecret: p@ssw0rd001  
               
-eureka:
-  client:
+eureka: 
+  client: 
     enabled: true
+     
+  instance: 
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value(10)}}
     
-app:
+app: 
   host:
      name: localhost       
   domain: 

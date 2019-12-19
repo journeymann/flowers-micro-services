@@ -1,6 +1,6 @@
 ---
 spring:
-  profiles: default
+  profiles: native
   application:
     name: inventory-service
     
@@ -25,10 +25,6 @@ config:
     userAuthorizationUri: http://auth-service:5000
     clientID: auth
     clientSecret: p@ssw0rd001  
-              
-eureka:
-  client:
-    enabled: true
     
 app: 
   host: 
@@ -36,4 +32,4 @@ app:
   domain: 
      name: 
   mongo: 
-     timeout: 100000     
+     timeout: 100000       
