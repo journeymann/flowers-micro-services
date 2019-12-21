@@ -6,8 +6,11 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -25,6 +28,8 @@ public class User implements UserDetails {
 	@Id
 	private String username;
 	private String password;
+	@Valid	private LocalDate startDate = LocalDate.now();
+	@Valid	private LocalDate endeDate;
 	
 	public User(String username, String password){
 		this.username = username;
@@ -77,4 +82,34 @@ public class User implements UserDetails {
 	public Date getLastPasswordReset() {
 		return null;
 	}
+
+	/**
+	 * @return the startDate
+	 */
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	/**
+	 * @return the endeDate
+	 */
+	public LocalDate getEndeDate() {
+		return endeDate;
+	}
+
+	/**
+	 * @param endeDate the endeDate to set
+	 */
+	public void setEndeDate(LocalDate endeDate) {
+		this.endeDate = endeDate;
+	}
+	
+	
 }

@@ -14,9 +14,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import com.flowers.microservice.inventory.domain.Item;
-import com.flowers.microservice.inventory.domain.Product;
-import com.flowers.microservice.inventory.domain.Inventory;
+import com.flowers.microservice.beans.Inventory;
+import com.flowers.microservice.beans.Item;
+import com.flowers.microservice.beans.Product;
 import com.flowers.microservice.inventory.service.InventoryService;
 
 /**

@@ -6,7 +6,7 @@ package com.flowers.microservice.shipping.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.flowers.microservice.shipping.domain.ShippingRate;
+import com.flowers.microservice.beans.ShippingRate;
 
 /**
  * 

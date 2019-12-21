@@ -26,13 +26,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.order.config.AppConfigProperties;
-import com.flowers.microservice.order.domain.Address;
-import com.flowers.microservice.order.domain.billing.Card;
-import com.flowers.microservice.order.domain.Customer;
-import com.flowers.microservice.order.domain.Item;
-import com.flowers.microservice.order.domain.Order;
-import com.flowers.microservice.order.domain.Shipment;
+import com.flowers.microservice.beans.Address;
+import com.flowers.microservice.beans.billing.CreditCard;
+import com.flowers.microservice.beans.Customer;
+import com.flowers.microservice.beans.Item;
+import com.flowers.microservice.beans.Shipment;
 import com.flowers.microservice.order.exception.InvalidOrderException;
 import com.flowers.microservice.order.exception.PaymentDeclinedException;
 import com.flowers.microservice.order.facade.OrderFacade;
@@ -107,11 +108,11 @@ public class OrderController{
     
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/create}", method = RequestMethod.POST)
-	public Order createOrder(@Valid @RequestBody final NewOrderResource orderitem) {
+	public OrderItem createOrder(@Valid @RequestBody final NewOrderResource orderitem) {
     	try {
     		
             if (orderitem.address == null || orderitem.customer == null || orderitem.card == null || orderitem.items == null) {
-                throw new InvalidOrderException("Invalid order request. Order requires customer, address, card and items.");
+                throw new InvalidOrderException("Invalid order request. OrderItem requires customer, address, card and items.");
             }
 
             LOG.debug("Starting calls");
@@ -121,8 +122,8 @@ public class OrderController{
             Future<Resource<Customer>> customerFuture = asyncGetService.getResource(orderitem.customer, new TypeReferences
                     .ResourceType<Customer>() {
             });
-            Future<Resource<Card>> cardFuture = asyncGetService.getResource(orderitem.card, new TypeReferences
-                    .ResourceType<Card>() {
+            Future<Resource<CreditCard>> cardFuture = asyncGetService.getResource(orderitem.card, new TypeReferences
+                    .ResourceType<CreditCard>() {
             });
             Future<List<Item>> itemsFuture = asyncGetService.getDataList(orderitem.items, new
                     ParameterizedTypeReference<List<Item>>() {
@@ -159,7 +160,7 @@ public class OrderController{
                     (customerId), new ParameterizedTypeReference<Shipment>() {
             });
             
-            Order order = new Order(
+            OrderItem orderItem = new OrderItem(
                     null,
                     customerId,
                     customerFuture.get(timeout, TimeUnit.MILLISECONDS).getContent(),
@@ -168,12 +169,12 @@ public class OrderController{
                     itemsFuture.get(timeout, TimeUnit.MILLISECONDS),
                     shipmentFuture.get(timeout, TimeUnit.MILLISECONDS),
                     amount,taxes);
-            LOG.debug("Received data: " + order.toString());
+            LOG.debug("Received data: " + orderItem.toString());
 
-            orderService.createOrder(order);;
-            LOG.debug("Saved order: " + order);
+            orderService.createOrder(orderItem);;
+            LOG.debug("Saved order: " + orderItem);
 
-            return orderService.createOrder(order);
+            return orderService.createOrder(orderItem);
         } catch (TimeoutException e) {
             throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);
         } catch (InterruptedException | IOException | ExecutionException e) {
@@ -184,20 +185,20 @@ public class OrderController{
 	
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/read/{orderid}", method = RequestMethod.GET)
-	public Order getOrder(@PathVariable final String orderid) {
+	public OrderItem getOrder(@PathVariable final String orderid) {
 		return orderService.findOrderById(orderid);
 	}
 	
     @HystrixCommand(fallbackMethod = "fallbackAllOrders")
 	@RequestMapping(value = "/all}", method = RequestMethod.GET)
-	public List<Order> getAllOrders() {
+	public List<OrderItem> getAllOrders() {
 		return orderService.findAllOrderList();
 	}
 	
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/update/{orderid}", method = RequestMethod.POST)
-	public Order updateOrder(@PathVariable final String orderid, @Valid @RequestBody final Order order) {
-		return orderService.updateOrder(orderid, order);
+	public OrderItem updateOrder(@PathVariable final String orderid, @Valid @RequestBody final OrderItem orderItem) {
+		return orderService.updateOrder(orderid, orderItem);
 	}
 	
 	@RequestMapping(value = "/delete/{orderid}", method = RequestMethod.PUT)
@@ -205,12 +206,12 @@ public class OrderController{
 		orderService.deleteOrder(orderid);
 	}
 	
-    public Order fallback() {
-        return new Order();
+    public OrderItem fallback() {
+        return new OrderItem();
     }
     
-    public Collection<Order> fallbackAllOrders() {
-        return new ArrayList<Order>();
+    public Collection<OrderItem> fallbackAllOrders() {
+        return new ArrayList<OrderItem>();
     }
  
 }

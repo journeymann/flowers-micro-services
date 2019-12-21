@@ -1,8 +1,8 @@
 package com.flowers.microservice.order.resource;
 
-import com.flowers.microservice.order.domain.Address;
-import com.flowers.microservice.order.domain.billing.Card;
-import com.flowers.microservice.order.domain.Customer;
+import com.flowers.microservice.beans.Address;
+import com.flowers.microservice.beans.billing.CreditCard;
+import com.flowers.microservice.beans.Customer;
 /**
  * 
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -12,14 +12,14 @@ import com.flowers.microservice.order.domain.Customer;
  */
 public class PaymentRequest {
     private Address address;
-    private Card card;
+    private CreditCard card;
     private Customer customer;
     private float amount;
 
     public PaymentRequest() {
     }
 
-    public PaymentRequest(Address address, Card card, Customer customer, float amount) {
+    public PaymentRequest(Address address, CreditCard card, Customer customer, float amount) {
         this.address = address;
         this.customer = customer;
         this.card = card;
@@ -39,11 +39,11 @@ public class PaymentRequest {
         this.address = address;
     }
 
-    public Card getCard() {
+    public CreditCard getCard() {
         return card;
     }
 
-    public void setCard(Card card) {
+    public void setCard(CreditCard card) {
         this.card = card;
     }
 

@@ -22,10 +22,10 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.TypeReferences;
 import org.springframework.stereotype.Service;
 
+import com.flowers.microservice.beans.Order;
+import com.flowers.microservice.beans.Product;
+import com.flowers.microservice.beans.TaxRate;
 import com.flowers.microservice.tax.config.AppConfigProperties;
-import com.flowers.microservice.tax.model.Order;
-import com.flowers.microservice.tax.model.Product;
-import com.flowers.microservice.tax.model.TaxRate;
 import com.flowers.microservice.tax.proxy.AsyncGetService;
 import com.flowers.microservice.tax.request.TaxRequest;
 

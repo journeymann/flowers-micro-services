@@ -3,7 +3,7 @@
  */
 package com.flowers.microservice.inventory.service;
 
-import com.flowers.microservice.inventory.domain.Inventory;
+import com.flowers.microservice.beans.Inventory;
 
 /**
  * 

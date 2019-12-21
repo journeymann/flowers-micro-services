@@ -23,9 +23,9 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flowers.microservice.shipping.constants.Constants;
-import com.flowers.microservice.shipping.constants.TimeZones;
-import com.flowers.microservice.shipping.domain.Model;
-import com.flowers.microservice.shipping.domain.NullObject;
+import com.flowers.microservice.constants.TimeZones;
+import com.flowers.microservice.beans.Model;
+import com.flowers.microservice.beans.NullObject;
 import com.flowers.microservice.shipping.exception.Handler;
 import com.google.json.JsonSanitizer;
 

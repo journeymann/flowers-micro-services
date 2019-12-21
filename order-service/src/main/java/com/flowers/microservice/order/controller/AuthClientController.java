@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flowers.microservice.order.domain.User;
+import com.flowers.microservice.beans.User;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**

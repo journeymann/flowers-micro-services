@@ -13,8 +13,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-import com.flowers.microservice.product.domain.Item;
-import com.flowers.microservice.product.domain.Product;
+
+import com.flowers.microservice.beans.Product;
+import com.flowers.microservice.beans.Item;
 import com.flowers.microservice.product.service.ProductService;
 
 /**
@@ -79,8 +80,9 @@ public class ProductServiceImpl implements ProductService {
     }
     
     
-    private void init() {
+    private void init() { 
     	
+   	
 		Item ite1 = new Item("10000", "Green Garden Gnomes", "FLW-003-12", "Green Garden Gnomes", "11-01-2019", 5.00,
 				5, 3, 7, 1,1,110001);
 		Item ite2 = new Item("10001", "Yellow Garden Gnomes", "FLW-003-13", "Green Garden Gnomes", "11-01-2019", 5.00,
@@ -91,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
 				5, 3, 17, 1, 4, 110001);
 		Item ite5 = new Item("10004", "Green Tall Garden Gnomes", "FLW-003-16", "Green Garden Gnomes", "11-01-2019", 5.00,
 				5, 3, 17, 1, 2, 110001);
-		
+
 		mongoTemplate.save(ite1);
 		mongoTemplate.save(ite2);
 		mongoTemplate.save(ite3);

@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.flowers.microservice.shipping.constants.ShippingMethod;
-import com.flowers.microservice.shipping.constants.State;
-import com.flowers.microservice.shipping.domain.ShippingRate;
-import com.flowers.microservice.shipping.domain.TaxRate;
+import com.flowers.microservice.beans.ShippingRate;
+import com.flowers.microservice.beans.State;
+import com.flowers.microservice.beans.TaxRate;
+import com.flowers.microservice.constants.ShippingMethod;
 
 /**
  * 
@@ -52,7 +52,7 @@ public class ComputeServiceImpl implements ComputeService {
 
 	private void init() {
 
-		State.states.stream().map(r -> {
+		State.States.stream().map(r -> {
 			ShippingRate rate1 = new ShippingRate( r.getCode(), "NJ", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), ShippingMethod.UPS);
 
 			return rate1;

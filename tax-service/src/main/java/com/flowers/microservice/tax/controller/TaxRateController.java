@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.flowers.microservice.beans.TaxRate;
+//import com.flowers.microservice.beans.TaxRate;
 import com.flowers.microservice.tax.health.HealthIndicatorService;
-import com.flowers.microservice.tax.model.TaxRate;
 import com.flowers.microservice.tax.request.TaxRequest;
 import com.flowers.microservice.tax.service.TaxRateService;
 import com.google.common.base.Optional;

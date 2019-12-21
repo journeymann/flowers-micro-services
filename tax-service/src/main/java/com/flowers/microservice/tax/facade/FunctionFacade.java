@@ -22,11 +22,11 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flowers.microservice.beans.Model;
+import com.flowers.microservice.beans.NullObject;
+import com.flowers.microservice.constants.TimeZones;
 import com.flowers.microservice.tax.constants.Constants;
-import com.flowers.microservice.tax.constants.TimeZones;
 import com.flowers.microservice.tax.exception.Handler;
-import com.flowers.microservice.tax.model.Model;
-import com.flowers.microservice.tax.model.NullObject;
 import com.google.json.JsonSanitizer;
 
 /**

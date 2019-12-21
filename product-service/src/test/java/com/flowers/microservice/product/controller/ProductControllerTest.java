@@ -2,8 +2,10 @@ package com.flowers.microservice.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import com.flowers.microservice.beans.Product;
+import com.flowers.microservice.beans.Item;
+import com.flowers.microservice.beans.User;
 import com.flowers.microservice.product.ProductApplication;
-import com.flowers.microservice.product.domain.*;
 import com.flowers.microservice.product.service.ProductService;
 import com.sun.security.auth.UserPrincipal;
 import org.junit.Before;
@@ -87,7 +89,7 @@ public class ProductControllerTest {
 		item1.setSku("1001-P-GFDT1325");
 		item1.setDescription("My Funny Valentines");
 		item1.setName("Valentines Roses");
-		item1.setUnitPrice(12.00);
+		item1.setPrice(12.00);
 		item1.setAvailableDate("01-03-2018");
 		item1.setHeight(2);
 		item1.setLength(3);
@@ -97,7 +99,7 @@ public class ProductControllerTest {
 		item2.setSku("1001-P-GFDT1325");
 		item2.setDescription("My Funny Valentines");
 		item2.setName("Valentines Roses");
-		item2.setUnitPrice(12.00);
+		item2.setPrice(12.00);
 		item2.setAvailableDate("01-03-2018");
 		item2.setHeight(2);
 		item2.setLength(3);

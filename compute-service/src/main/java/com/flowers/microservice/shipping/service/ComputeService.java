@@ -3,8 +3,8 @@
  */
 package com.flowers.microservice.shipping.service;
 
-import com.flowers.microservice.shipping.domain.ShippingRate;
-import com.flowers.microservice.shipping.domain.TaxRate;
+import com.flowers.microservice.beans.ShippingRate;
+import com.flowers.microservice.beans.TaxRate;
 
 /**
  * 

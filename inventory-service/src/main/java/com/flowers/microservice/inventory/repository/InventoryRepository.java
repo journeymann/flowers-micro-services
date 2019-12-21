@@ -5,7 +5,7 @@ package com.flowers.microservice.inventory.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.flowers.microservice.inventory.domain.Product;
+import com.flowers.microservice.beans.Product;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 /**

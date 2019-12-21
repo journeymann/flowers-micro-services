@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
-import com.flowers.microservice.tax.model.TaxRate;
+import com.flowers.microservice.beans.TaxRate;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>

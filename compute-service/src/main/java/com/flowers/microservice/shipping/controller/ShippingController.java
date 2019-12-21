@@ -3,6 +3,7 @@
  */
 package com.flowers.microservice.shipping.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flowers.microservice.shipping.domain.Order;
+import com.flowers.microservice.beans.Order;
 import com.flowers.microservice.shipping.facade.CalculateFacade;
 import com.flowers.microservice.shipping.health.HealthIndicatorService;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
@@ -80,7 +81,7 @@ public class ShippingController {
 	
     @HystrixCommand(fallbackMethod = "fallbackdelivery")
 	@RequestMapping(value = "/deliverydate", method = RequestMethod.POST)
-	public String computeOrderDeliveryDate(@Valid @RequestBody final Order order) {
+	public LocalDate computeOrderDeliveryDate(@Valid @RequestBody final Order order) {
 		return CalculateFacade.calculateOrderDeliveryDate(order);
 	}
 	

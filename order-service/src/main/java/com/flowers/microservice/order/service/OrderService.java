@@ -5,7 +5,7 @@ package com.flowers.microservice.order.service;
 
 import java.util.List;
 
-import com.flowers.microservice.order.domain.Order;
+import com.flowers.microservice.beans.OrderItem;
 
 /**
  * 
@@ -17,21 +17,21 @@ import com.flowers.microservice.order.domain.Order;
 
 public interface OrderService {
 	
-	Order createOrder(Order order);
+	OrderItem createOrder(OrderItem orderItem);
 	
-	Order findOrderById(String orderid);
+	OrderItem findOrderById(String orderid);
 
-	List<Order> findAllOrderList();
+	List<OrderItem> findAllOrderList();
 	
-	Order updateOrder(String orderid, Order order);
+	OrderItem updateOrder(String orderid, OrderItem orderItem);
 	
 	void deleteOrder(String orderid);
 
-	List<Order> findAllOrderListPaginated(int pageNumber, int pageSize);
+	List<OrderItem> findAllOrderListPaginated(int pageNumber, int pageSize);
 
-	Order findOneById(String id);
+	OrderItem findOneById(String id);
 
-	List<Order> findById(String id);
+	List<OrderItem> findById(String id);
 
-	Order updateOne(Order order);
+	OrderItem updateOne(OrderItem orderItem);
 }

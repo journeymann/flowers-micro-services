@@ -4,7 +4,7 @@
 package com.flowers.microservice.order.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import com.flowers.microservice.order.domain.Model;
+import com.flowers.microservice.beans.Model;
 
 /**
  * 

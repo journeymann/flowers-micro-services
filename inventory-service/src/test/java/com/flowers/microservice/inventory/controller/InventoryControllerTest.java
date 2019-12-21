@@ -1,9 +1,10 @@
 package com.flowers.microservice.inventory.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flowers.microservice.beans.Inventory;
 import com.flowers.microservice.inventory.InventoryApplication;
 import com.flowers.microservice.inventory.controller.InventoryController;
-import com.flowers.microservice.inventory.domain.*;
+import com.flowers.microservice.beans.*;
 import com.flowers.microservice.inventory.service.InventoryService;
 import com.sun.security.auth.UserPrincipal;
 import org.junit.Before;

@@ -10,8 +10,9 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.flowers.microservice.product.domain.Product;
+
 import com.flowers.microservice.product.service.ProductService;
+import com.flowers.microservice.beans.Product;
 import com.flowers.microservice.product.health.HealthIndicatorService;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;

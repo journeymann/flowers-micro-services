@@ -15,15 +15,15 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
-import com.flowers.microservice.order.domain.Address;
-import com.flowers.microservice.order.domain.billing.Card;
-import com.flowers.microservice.order.domain.Customer;
-import com.flowers.microservice.order.domain.EmailAddress;
-import com.flowers.microservice.order.domain.Item;
-import com.flowers.microservice.order.domain.Order;
-import com.flowers.microservice.order.domain.Phone;
-import com.flowers.microservice.order.domain.Product;
-import com.flowers.microservice.order.domain.Shipment;
+import com.flowers.microservice.beans.OrderItem;
+import com.flowers.microservice.beans.Address;
+import com.flowers.microservice.beans.billing.CreditCard;
+import com.flowers.microservice.beans.Customer;
+import com.flowers.microservice.beans.EmailAddress;
+import com.flowers.microservice.beans.Item;
+import com.flowers.microservice.beans.Phone;
+import com.flowers.microservice.beans.Product;
+import com.flowers.microservice.beans.Shipment;
 
 /**
  * 
@@ -44,46 +44,46 @@ public class OrderServiceImpl implements OrderService {
         this.init();
     }
     
-	public Order createOrder(Order order) {
-		return mongoTemplate.save(order);
+	public OrderItem createOrder(OrderItem orderItem) {
+		return mongoTemplate.save(orderItem);
 	};
 	
 	@Override
-	public Order findOneById(String id) {
+	public OrderItem findOneById(String id) {
 	   Query query = new Query();
 	   query.addCriteria(Criteria.where("name").is(id));
-	   return mongoTemplate.findOne(query, Order.class);
+	   return mongoTemplate.findOne(query, OrderItem.class);
 	}
 	
 	@Override
-	public List<Order> findById(String id) {
+	public List<OrderItem> findById(String id) {
 	   Query query = new Query();
 	   query.addCriteria(Criteria.where("name").is(id));
-	   return mongoTemplate.find(query, Order.class);
+	   return mongoTemplate.find(query, OrderItem.class);
 	}
 
-	public List<Order> findAllOrderList(){
+	public List<OrderItem> findAllOrderList(){
 		
-		return mongoTemplate.findAll(Order.class);
+		return mongoTemplate.findAll(OrderItem.class);
 	}
 	
 	@Override
-	public List<Order> findAllOrderListPaginated(int pageNumber, int pageSize) {
+	public List<OrderItem> findAllOrderListPaginated(int pageNumber, int pageSize) {
 	   Query query = new Query();
 	   query.skip(pageNumber * pageSize);
 	   query.limit(pageSize);
-	   return mongoTemplate.find(query, Order.class);
+	   return mongoTemplate.find(query, OrderItem.class);
 	}
 	
 	@Override
-	public Order updateOne(Order order) {
-	   mongoTemplate.save(order);
-	   return order;
+	public OrderItem updateOne(OrderItem orderItem) {
+	   mongoTemplate.save(orderItem);
+	   return orderItem;
 	}
 	
-	public void deleteOrder(Order order){
+	public void deleteOrder(OrderItem orderItem){
 		
-		mongoTemplate.remove(order);
+		mongoTemplate.remove(orderItem);
 	};
 	
     public static <T> void copyListElements(final List<T> list, Supplier<Collection<T>> targetCollection) {
@@ -125,13 +125,13 @@ public class OrderServiceImpl implements OrderService {
 		items.add(ite1);items.add(ite2);items.add(ite3);items.add(ite4);items.add(ite5);
 		Product prd1 = new Product("110001", "Garden Gnomes", "Garden Gnomes", "European collection of Garden Gnomes", items);
 		Shipment shipment = new Shipment("10110", "", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(),null);
-		Order ord1 = new Order("10023", items, shipment, 15.00F, 14.00F);
+		OrderItem ord1 = new OrderItem("10023", items, shipment, 15.00F, 14.00F);
 
 		items = new ArrayList<Item>();
 		items.add(ite1);items.add(ite2);items.add(ite3);
 		Product prd2 = new Product("110023", "Roses", "Dozen Rose Stems", "Beatuiful collection of Assorterd Red Roses", items);
 		shipment = new Shipment("101010", "", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(),null);
-		Order ord2 = new Order("10023", items, shipment, 15.00F, 14.00F);
+		OrderItem ord2 = new OrderItem("10023", items, shipment, 15.00F, 14.00F);
 		
 		items = new ArrayList<Item>();
 		items.add(ite1);items.add(ite3);items.add(ite5);
@@ -139,11 +139,11 @@ public class OrderServiceImpl implements OrderService {
 		Address deliveryaddress = new Address("101", "21A","Tilden Ave", "Los Angelos", "99017", "USA");
 		Phone hphone = new Phone("247-859-7845", "H");
 		Phone wphone = new Phone("723-239-2197", "W");
-		EmailAddress email = new EmailAddress("100 Campus Drive, New York City, NY 10021","H");
+		EmailAddress email = new EmailAddress("test@mail.com","H");
 
-		Card card = new Card("4227-2145-1624-1927", "07/2020","982");
+		CreditCard card = new CreditCard("4227-2145-1624-1927", "07/2020","982");
 		Customer customer = new Customer("10000", "Sanjay", "Gupta", Arrays.asList(customeraddress),  Arrays.asList(email),  Arrays.asList(hphone,wphone), Arrays.asList(card));
-        Order ord3 = new Order("10023", "100000",customer, deliveryaddress, card, items, shipment, 15.00F, 14.00F);
+        OrderItem ord3 = new OrderItem("10023", "100000",customer, deliveryaddress, card, items, shipment, 15.00F, 14.00F);
 		
 		mongoTemplate.save(ite1);
 		mongoTemplate.save(ite2);
@@ -165,13 +165,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
 	@Override
-	public Order findOrderById(String orderid) {
+	public OrderItem findOrderById(String orderid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Order updateOrder(String orderid, Order order) {
+	public OrderItem updateOrder(String orderid, OrderItem orderItem) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -12,7 +12,8 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.flowers.microservice.inventory.domain.Inventory;
+
+import com.flowers.microservice.beans.Inventory;
 import com.flowers.microservice.inventory.service.InventoryService;
 import com.flowers.microservice.notification.health.HealthIndicatorService;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;

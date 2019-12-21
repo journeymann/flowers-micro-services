@@ -5,9 +5,9 @@ package com.flowers.microservice.tax.service;
 
 import java.util.List;
 
-import com.flowers.microservice.tax.model.Order;
-import com.flowers.microservice.tax.model.Product;
-import com.flowers.microservice.tax.model.TaxRate;
+import com.flowers.microservice.beans.Order;
+import com.flowers.microservice.beans.Product;
+import com.flowers.microservice.beans.TaxRate;
 import com.flowers.microservice.tax.request.TaxRequest;
 
 /**

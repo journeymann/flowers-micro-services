@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.flowers.microservice.order.domain.Item;
+import com.flowers.microservice.beans.Item;
 /**
  * 
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -44,7 +44,7 @@ public class OrderFacade {
     public static float calculateTotal(List<Item> items) {
         float amount = 0F;
         float shipping = 4.99F;
-        amount += items.stream().mapToDouble(i -> i.getQuantity() * i.getUnitPrice()).sum();
+        amount += items.stream().mapToDouble(i -> i.getQuantity() * i.getPrice()).sum();
         amount += shipping;
         return amount;
     }
@@ -52,7 +52,7 @@ public class OrderFacade {
     public static float calculateTax(List<Item> items) {
         float amount = 0F;
         float shipping = 4.99F;
-        amount += items.stream().mapToDouble(i -> i.getQuantity() * i.getUnitPrice()).sum();
+        amount += items.stream().mapToDouble(i -> i.getQuantity() * i.getPrice()).sum();
         amount += shipping;
         return amount * 0.075F;
     }

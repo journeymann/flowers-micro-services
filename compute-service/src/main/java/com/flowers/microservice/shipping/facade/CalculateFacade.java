@@ -3,12 +3,14 @@
  */
 package com.flowers.microservice.shipping.facade;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.flowers.microservice.shipping.domain.Order;
-import com.flowers.microservice.shipping.domain.ShippingRate;
-import com.flowers.microservice.shipping.domain.TaxRate;
+import com.flowers.microservice.beans.ShippingRate;
+import com.flowers.microservice.beans.Order;
+import com.flowers.microservice.beans.TaxRate;
 import com.flowers.microservice.shipping.service.ComputeService;
 
 /**
@@ -27,7 +29,7 @@ public class CalculateFacade {
 	public static Double calculateOrderTax(Order order){
 		
 		double taxrate = effectiveTax(order);
-		double total  = order.getItemIdList().stream().map(s -> {
+		double total  = order.getItemList().stream().map(s -> {
 			return s.getUnitPrice() * s.getQuantity() * taxrate;
 		}).reduce(0.0, Double::sum);
 		
@@ -36,7 +38,7 @@ public class CalculateFacade {
 	
 	public static Double calculateOrderTotal(Order order){
 
-		double total  = order.getItemIdList().stream().map(s -> {
+		double total  = order.getItemList().stream().map(s -> {
 			return s.getUnitPrice() * s.getQuantity();
 		}).reduce(0.0, Double::sum);
 		
@@ -44,26 +46,26 @@ public class CalculateFacade {
 	}
 	
 	public static Double calculateOrderShipping(Order order){
-		double total  = order.getItemIdList().stream().map(s -> {
+		double total  = order.getItemList().stream().map(s -> {
 			return s.getUnitPrice() * s.getQuantity();
 		}).reduce(0.0, Double::sum);
 		
 		return total;
 	}
 	
-	public static String calculateOrderDeliveryDate(Order order){
+	public static LocalDate calculateOrderDeliveryDate(Order order){
 		
 		return order.getDeliveryDate();
 	}
 	
 	public static double effectiveTax(Order order) {
 		
-		TaxRate taxrate = service.findOneTaxRate(order.getAddress().getPostcode());
-		return taxrate.getStaterate();
+		TaxRate taxrate = service.findOneTaxRate(order.getAddress().getPostCode());
+		return taxrate.getRate();
 	}
 	public static double effectiveShipping(Order order) {
 		
-		ShippingRate shiprate = service.findOneShippingRate(order.getAddress().getPostcode());
+		ShippingRate shiprate = service.findOneShippingRate(order.getAddress().getPostCode());
 		return shiprate.getRate();
 	}
 }

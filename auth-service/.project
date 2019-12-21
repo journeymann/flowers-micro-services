@@ -3,6 +3,7 @@
 	<name>auth-service</name>
 	<comment></comment>
 	<projects>
+		<project>standard-beans</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

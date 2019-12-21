@@ -5,7 +5,7 @@ package com.flowers.microservice.product.service;
 
 import java.util.List;
 
-import com.flowers.microservice.product.domain.Product;
+import com.flowers.microservice.beans.Product;
 
 /**
  * 
