@@ -3,6 +3,7 @@
  */
 package com.flowers.microservice.beans;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +11,7 @@ import com.flowers.microservice.beans.Model;
 import java.time.LocalDate;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * 
@@ -30,7 +32,7 @@ public class User extends Model{
 		this.password = password;
 	}
 
-	private String username;
+	@NotNull @Length(min = 1, max = 120) private String username;
 	private String password;
 	@Valid	private LocalDate startDate = LocalDate.now();
 	@Valid	private LocalDate endeDate;

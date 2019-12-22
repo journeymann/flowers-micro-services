@@ -5,7 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,6 +32,8 @@ import com.flowers.microservice.beans.billing.Billing;
 @RestResource(exported = false)
 public class Order extends Model implements Comparable<Order>{
 
+	@Valid	
+	@Length(min = 1, max = 120)
 	private String orderNum;
 	private String status;	
 	private Double orderTotal;
@@ -40,8 +45,8 @@ public class Order extends Model implements Comparable<Order>{
 	@Valid	private LocalDate orderDate = LocalDate.now();
 	@Valid	private LocalDate deliveryDate;
 	@Valid	private LocalDate shippingDate;
-	private Double unitPrice;
-	private Long quantity;
+	@NotNull @Range(min=0L, max=100L) private Double unitPrice;
+	@NotNull @Range(min=0L, max=100000L) private Long quantity;
 
 	public Order(){};
 	

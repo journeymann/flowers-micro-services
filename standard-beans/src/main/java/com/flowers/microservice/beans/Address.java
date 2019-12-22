@@ -6,6 +6,10 @@ package com.flowers.microservice.beans;
  *
  */
 import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -27,7 +31,11 @@ public class Address extends Model{
 	private String description;
 
     private String number;
+	@NotNull
+	@Length(min = 1, max = 30)
 	private String street;
+	@NotNull
+	@Length(min = 1, max = 50)
 	private String city;
 	private String state = State.DEFAULT_STATE;
 	private String postCode;

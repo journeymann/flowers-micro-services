@@ -7,7 +7,10 @@ import java.time.LocalDate;
 
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -23,11 +26,11 @@ import com.flowers.microservice.constants.State;
 @RestResource(exported = false)
 public class TaxRate extends Model implements Comparable<TaxRate>{
 
-	private String itemId;
+	@NotNull @Length(min = 1, max = 120) private String itemId;
 	private String state = State.DEFAULT_STATE;
 	private String county;
 	private String zipcode;
-	private Double rate;
+	@NotNull @Range(min = 0L, max = 100L) private Double rate;
 	private Boolean override;
 	@Valid	private LocalDate startDate = LocalDate.now();
 	@Valid	private LocalDate endeDate;

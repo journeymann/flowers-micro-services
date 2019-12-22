@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.flowers.microservice.beans.Product;
 import com.flowers.microservice.beans.Item;
@@ -26,7 +26,7 @@ import com.flowers.microservice.product.service.ProductService;
  *
  */
 
-@Component
+@Service
 public class ProductServiceImpl implements ProductService {
 
     private final MongoTemplate mongoTemplate;

@@ -1,6 +1,10 @@
 package com.flowers.microservice.beans;
 
 import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -14,8 +18,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 @Document(collection = "phone")
 @RestResource(exported = false)
 public class Phone extends Contact {
-	
-	private String phone;
+	@NotNull @Length(min = 1, max = 20) private String phone;
 	
 	public Phone(){
 		super();

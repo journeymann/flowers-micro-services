@@ -17,7 +17,7 @@ import com.flowers.microservice.constants.Status;
  * email address class entity type definition.
  */
 
-@Document(collection = "email")
+@Document(collection = "emails")
 @RestResource(exported = false)
 public final class EmailAddress extends Contact{
 	

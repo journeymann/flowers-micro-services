@@ -37,7 +37,6 @@
 			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
     </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

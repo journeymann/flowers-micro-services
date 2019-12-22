@@ -1,7 +1,13 @@
 package com.flowers.microservice.beans;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 import javax.persistence.GeneratedValue;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,13 +23,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ShippingRate extends Model{
 	
     private String srcstate;
-    private String deststate;
-	private Date deliveryDate;
-	private Date shippingDate;
+    @NotNull @Length(min = 1, max = 120) private String deststate;
+	@Valid private LocalDate deliveryDate;
+	private LocalDate shippingDate;
 	private String method;
-	private float rate;
+	@NotNull @Range(min = 0L, max = 1000L) private float rate;
    
-    public ShippingRate(String srcstate, String deststate, Date shippingdate, Date deliverydate, String method) {
+    public ShippingRate(String srcstate, String deststate, LocalDate shippingdate, LocalDate deliverydate, String method) {
         this.srcstate = srcstate;
         this.deststate = deststate;
         this.shippingDate=shippingdate;
@@ -70,19 +76,19 @@ public class ShippingRate extends Model{
         return 	String.format("Shipment{id: %s,srcstate: %s,deststate: %s, shippingdate: %s, deliverydate: %s, method: %s, rate: %s}",id,srcstate,deststate, shippingDate, deliveryDate, method,rate);
     }
 
-	public Date getDeliveryDate() {
+	public LocalDate getDeliveryDate() {
 		return deliveryDate;
 	}
 
-	public void setDeliveryDate(Date deliveryDate) {
+	public void setDeliveryDate(LocalDate deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public Date getShippingDate() {
+	public LocalDate getShippingDate() {
 		return shippingDate;
 	}
 
-	public void setShippingDate(Date shippingDate) {
+	public void setShippingDate(LocalDate shippingDate) {
 		this.shippingDate = shippingDate;
 	}
 

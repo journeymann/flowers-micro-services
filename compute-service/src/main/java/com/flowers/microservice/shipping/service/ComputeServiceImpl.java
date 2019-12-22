@@ -3,7 +3,7 @@
  */
 package com.flowers.microservice.shipping.service;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class ComputeServiceImpl implements ComputeService {
 	private void init() {
 
 		State.States.stream().map(r -> {
-			ShippingRate rate1 = new ShippingRate( r.getCode(), "NJ", Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), ShippingMethod.UPS);
+			ShippingRate rate1 = new ShippingRate( r.getCode(), "NJ", LocalDate.now(), LocalDate.now(), ShippingMethod.UPS);
 
 			return rate1;
 		}).collect(Collectors.toList());

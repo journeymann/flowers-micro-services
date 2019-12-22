@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.GeneratedValue;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,7 +23,7 @@ import com.flowers.microservice.constants.ShippingMethod;
 @Document(collection = "shipments")
 public class Shipment extends Model{
 	
-    private String orderid;
+	@NotNull @Length(min = 1, max = 120) private String orderid;
     private String name;
 	private Date deliveryDate;
 	private Date shippingDate;

@@ -14,8 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.flowers.microservice.beans.Inventory;
+import com.flowers.microservice.inventory.health.HealthIndicatorService;
 import com.flowers.microservice.inventory.service.InventoryService;
-import com.flowers.microservice.notification.health.HealthIndicatorService;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 

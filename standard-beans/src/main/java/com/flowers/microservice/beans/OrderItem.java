@@ -8,7 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.LuhnCheck;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -34,7 +38,7 @@ import com.flowers.microservice.beans.billing.CreditCard;
 //curl http://localhost:8082/orders/search/customerId\?custId\=1
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Document(collection = "orders")
+@Document(collection = "orderitems")
 public class OrderItem extends Model{
 
 	public OrderItem() {};
@@ -48,7 +52,7 @@ public class OrderItem extends Model{
 		this.orderTotal = orderTotal;
 		this.taxAmount = taxAmount;
 	}
-	//OrderItem("10023", "100000",customer, deliveryaddress, card, items, shipment, 15.00F, 14.00F);
+
 	public OrderItem(String orderNum, String customerId, Customer customer, Address address,CreditCard card, List<Item> itemIdList,
 			Shipment shipment, float orderTotal,float taxAmount, Double unitPrice, Long quantity) {
 		super();
@@ -80,16 +84,16 @@ public class OrderItem extends Model{
 
 	}
 	
-	private String orderNum;
+	@NotNull @Length(min = 1, max = 120) private String orderNum;
 	private List<Item> itemIdList;
 	private float orderTotal;
 	private float taxAmount;
-    private String customerId;
+	@NotNull @Length(min = 1, max = 120) private String customerId;
     private Customer customer;
     private Address address;
-    private CreditCard card;
-    private Double unitPrice;
-    private Long quantity;
+    @NotNull @LuhnCheck private CreditCard card;
+    @NotNull @Range(min=0L, max=100L) private Double unitPrice;
+    @NotNull @Range(min=0L, max=10000L) private Long quantity;
     private Shipment shipment;
 	@Valid	private LocalDate deliveryDate;
 	@Valid	private LocalDate shippingDate;

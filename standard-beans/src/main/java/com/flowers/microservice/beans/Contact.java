@@ -1,6 +1,10 @@
 package com.flowers.microservice.beans;
 
 import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.flowers.microservice.constants.Status;
@@ -19,6 +23,8 @@ public abstract class Contact extends Model{
 	protected String status;
 	protected String type;
 	protected String contact;
+	@NotNull
+	@Length(min = 1, max = 120)
 	protected String description;
 	protected LocalDateTime createdDate;
 	protected LocalDateTime modifiedDate;

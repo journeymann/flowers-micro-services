@@ -3,6 +3,7 @@
  */
 package com.flowers.microservice.beans;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 /**
  * @author cgordon
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -44,7 +46,7 @@ public class Product extends Model{
 	@GeneratedValue
 	private String productId;
 	
-	@Valid	private String name;
+	@Valid @NotNull @Length(min = 1, max = 120) private String name;
 	private String shortDescription;
 	private String longDescription;
 	@Valid	private LocalDate startDate = LocalDate.now();

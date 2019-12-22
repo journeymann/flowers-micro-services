@@ -25,10 +25,11 @@ import com.flowers.microservice.beans.Model;
 public class Item extends Model implements Comparable<Item>{
 
 	@Id
-	private Integer id;
+	@GeneratedValue
+	private String id;
 	
 	@NotNull
-	@Length(min = 1, max = 20)
+	@Length(min = 1, max = 120)
 	private String name;
 	private String sku;
 	private String description;
@@ -100,15 +101,14 @@ public class Item extends Model implements Comparable<Item>{
 	/**
 	 * @return the id
 	 */
-	@GeneratedValue
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
