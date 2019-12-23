@@ -39,7 +39,7 @@ import com.flowers.microservice.tax.request.TaxRequest;
 @Service
 public class TaxRateServiceImpl implements TaxRateService {
 
-    @Value(value = "${http.timeout:5}")
+    @Value(value = "${http.timeout}")
     private long timeout;
     
     @Autowired
@@ -55,7 +55,7 @@ public class TaxRateServiceImpl implements TaxRateService {
     @Autowired
     private AsyncGetService asyncGetService;
 	
-	private Predicate<TaxRate> presetRateVerify  = (d)-> d.getAmount() >= 0.0;
+	private Predicate<TaxRate> presetRateVerify  = (d)-> d.getRate() >= 0.0;
 	private Function2<List<TaxRate>, String, List<TaxRate>> filterCounty = (x,y) ->  x.stream().filter(s->s.getCounty().contains((CharSequence) y)).collect(Collectors.toList());
 	
 
@@ -144,7 +144,7 @@ public class TaxRateServiceImpl implements TaxRateService {
 		        
 			TaxRate rate = this.findTaxRateByZip(orderFuture.get(timeout, TimeUnit.SECONDS).getContent().getAddress().getZip());
 
-			return orderFuture.get(timeout, TimeUnit.SECONDS).getContent().getOrderTotal() * (presetRateVerify.test(rate)? rate.getAmount() : 2.00);
+			return orderFuture.get(timeout, TimeUnit.SECONDS).getContent().getOrderTotal() * (presetRateVerify.test(rate)? rate.getRate() : 2.00);
 
 	    } catch (TimeoutException e) {
 	        throw new IllegalStateException("Unable to create order due to timeout from one of the services.", e);
@@ -157,7 +157,7 @@ public class TaxRateServiceImpl implements TaxRateService {
 	public Double calculateOrderTax(Order order) {
 		TaxRate rate = this.findTaxRateByZip(order.getAddress().getZip());
 
-		return order.getOrderTotal() * (presetRateVerify.test(rate)? rate.getAmount() : 2.00);
+		return order.getOrderTotal() * (presetRateVerify.test(rate)? rate.getRate() : 2.00);
 	}	
 	
 	public Double calculateItemTax(String itemid) {
@@ -182,7 +182,7 @@ public class TaxRateServiceImpl implements TaxRateService {
 	    query.addCriteria(Criteria.where("zipcode").is(zipcode));
 		TaxRate taxrate = mongoTemplate.findOne(query, TaxRate.class);
 
-		return item.getPrice() * (presetRateVerify.test(taxrate)? taxrate.getAmount() : 2.00);
+		return item.getPrice() * (presetRateVerify.test(taxrate)? taxrate.getRate() : 2.00);
 	}	
 	
 	public Double calculateOrderShippingTax(String orderid) {

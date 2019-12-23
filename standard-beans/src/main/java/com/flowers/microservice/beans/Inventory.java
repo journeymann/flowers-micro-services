@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.flowers.microservice.constants.Location;
 
 import java.time.LocalDate;
 import javax.persistence.GeneratedValue;
@@ -44,115 +45,33 @@ public class Inventory extends Model{
 	
 	@Id
 	@GeneratedValue
-	private String inventory;
-	
+	private String inventoryId;
 	private String productId;
 	@Valid	private LocalDate availableDate = LocalDate.now();
 	@Valid	private LocalDate startDate = LocalDate.now();
 	@Valid	private LocalDate endDate;
+	private Location locationCode;
+
 
 	private Long count;
 	
-	/**
-	 * @return the productId
-	 */
-	public String getProductId() {
-		return productId;
-	}
-	/**
-	 * @param productId the productId to set
-	 */
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
-	/**
-	 * @return the inventory
-	 */
-	public String getInventory() {
-		return inventory;
-	}
-
-	/**
-	 * @param inventory the inventory to set
-	 */
-	public void setInventory(String inventory) {
-		this.inventory = inventory;
-	}
-
-	/**
-	 * @return the count
-	 */
-	public Long getCount() {
-		return count;
-	}
-
-	/**
-	 * @param count the count to set
-	 */
-	public void setCount(Long count) {
-		this.count = count;
-	}
-
-	/**
-	 * @return the availableDate
-	 */
-	public LocalDate getAvailableDate() {
-		return availableDate;
-	}
-
-	/**
-	 * @param availableDate the availableDate to set
-	 */
-	public void setAvailableDate(LocalDate availableDate) {
-		this.availableDate = availableDate;
-	}
-
-	/**
-	 * @return the startDate
-	 */
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the endDate
-	 */
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	/**
-	 * @param endDate the endDate to set
-	 */
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Inventory obj = (Inventory) o;
+        Inventory that = (Inventory) o;
 
-        return getProductId().equals(obj.getProductId());
+        return this.inventoryId.equals(that.inventoryId);
     }
     
     @Override
     public int hashCode() {
-        return getProductId().hashCode();
+        return inventoryId.hashCode();
     }
     @Override
     public String toString() {
-        return 	String.format("Inventory{productId %s,count %s}",productId,count);
+        return 	String.format("Inventory{inventoryId: %s, productId %s,count %s,locationCode: %s, availableDate %s, startdate: %s, enddate: %s}",inventoryId,productId,count,locationCode,availableDate, startDate, endDate);
 
     }
 	

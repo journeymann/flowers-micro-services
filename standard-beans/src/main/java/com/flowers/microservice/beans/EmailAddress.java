@@ -3,6 +3,8 @@ package com.flowers.microservice.beans;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
+import javax.persistence.GeneratedValue;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -24,11 +26,11 @@ public final class EmailAddress extends Contact{
     private static final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" + 
             "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"; 
 	private String email;
+	private LocalDateTime effectiveDate;
+	@Id @GeneratedValue String emailId;
 	
-	protected EmailAddress(){
-		super();
-	}
-	
+	public EmailAddress() {};
+
 	public EmailAddress (String pemail, String ptype) {
 		this.status = Status.DEFAULT_STATUS;		
 		this.type = ptype;
@@ -57,7 +59,7 @@ public final class EmailAddress extends Contact{
 		this.entityId = pentityId;
 		this.status = pstatus;		
 		this.type = ptype;
-		this.contact = pemail;
+		this.email = pemail;
 		this.description = pdesc;
 		this.createdDate = LocalDateTime.now();
 		this.modifiedDate = LocalDateTime.now();
@@ -75,6 +77,27 @@ public final class EmailAddress extends Contact{
         return pat.matcher(email).matches(); 
     }
 
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EmailAddress that = (EmailAddress) o;
+
+        return this.email.equals(that.email);
+    }
+    
+    @Override
+    public int hashCode() {
+        return email.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return 	String.format("EmailAddress{ emailId: %s, status: %s, type: %s, email: %s, desc: %s, effectivedate: %s}",emailId, status, type, email, description, effectiveDate);
+
+    }
+
 	/**
 	 * @return the email
 	 */
@@ -87,6 +110,42 @@ public final class EmailAddress extends Contact{
 	 */
 	public void setEmail(String email) {
 		this.email = email;
-	} 
+	}
 
+	/**
+	 * @return the effectiveDate
+	 */
+	public LocalDateTime getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	/**
+	 * @param effectiveDate the effectiveDate to set
+	 */
+	public void setEffectiveDate(LocalDateTime effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	/**
+	 * @return the emailId
+	 */
+	public String getEmailId() {
+		return emailId;
+	}
+
+	/**
+	 * @param emailId the emailId to set
+	 */
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+
+	/**
+	 * @return the emailregex
+	 */
+	public static String getEmailregex() {
+		return emailRegex;
+	}
+    
+    
 }

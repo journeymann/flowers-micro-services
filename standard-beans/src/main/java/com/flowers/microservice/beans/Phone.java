@@ -2,9 +2,11 @@ package com.flowers.microservice.beans;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -18,11 +20,12 @@ import org.springframework.data.rest.core.annotation.RestResource;
 @Document(collection = "phone")
 @RestResource(exported = false)
 public class Phone extends Contact {
-	@NotNull @Length(min = 1, max = 20) private String phone;
 	
-	public Phone(){
-		super();
-	}
+	@NotNull @Length(min = 1, max = 20) private String phone;
+	@Id @GeneratedValue String phoneId;
+	private LocalDateTime effectiveDate;
+	
+	public Phone(){}
 
 	public Phone(String pnumber, String ptype){
 
@@ -35,8 +38,8 @@ public class Phone extends Contact {
 		this.effectiveDate = LocalDateTime.now();
 	}
 	
-	public Phone(String pentityId, String pnumber, String ptype){
-		this.entityId = pentityId;
+	public Phone(String phoneId, String pnumber, String ptype){
+		this.phoneId = phoneId;
 		this.status = "ACT";		
 		this.type = ptype;
 		this.phone = pnumber;
@@ -46,9 +49,8 @@ public class Phone extends Contact {
 		this.effectiveDate = LocalDateTime.now();
 	}
 	
-	public Phone (String pentityId, String pstatus, String ptype, String pnumber, String pdesc, LocalDateTime effective) {
-		this.entityId = pentityId;
-		
+	public Phone (String phoneId, String pstatus, String ptype, String pnumber, String pdesc, LocalDateTime effective) {
+		this.phoneId = phoneId;
 		this.status = pstatus;		
 		this.type = ptype;
 		this.phone = pnumber;
@@ -57,6 +59,28 @@ public class Phone extends Contact {
 		this.modifiedDate = LocalDateTime.now();
 		this.effectiveDate = effective;	
 	}
+	
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Phone that = (Phone) o;
+
+        return this.phone.equals(that.phone);
+    }
+    
+    @Override
+    public int hashCode() {
+        return phone.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return 	String.format("Phone{ phoneId: %s, status: %s, type: %s, email: %s, desc: %s, effectivedate: %s}",phoneId, status, type, phone, description, effectiveDate);
+
+    }
 
 	/**
 	 * @return the phone
@@ -71,6 +95,33 @@ public class Phone extends Contact {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	
+
+	/**
+	 * @return the phoneId
+	 */
+	public String getPhoneId() {
+		return phoneId;
+	}
+
+	/**
+	 * @param phoneId the phoneId to set
+	 */
+	public void setPhoneId(String phoneId) {
+		this.phoneId = phoneId;
+	}
+
+	/**
+	 * @return the effectiveDate
+	 */
+	public LocalDateTime getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	/**
+	 * @param effectiveDate the effectiveDate to set
+	 */
+	public void setEffectiveDate(LocalDateTime effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+    
 }

@@ -1,12 +1,9 @@
 package com.flowers.microservice.beans;
 
-/**
- * address class entity type definition.
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- *
- */
+
 import java.time.LocalDateTime;
 
+import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -15,43 +12,36 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.flowers.microservice.constants.Country;
 import com.flowers.microservice.constants.State;
+
+/**
+ * address class entity type definition.
+ * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
+ *
+ */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "address")
 @RestResource(exported = false)
-public class Address extends Model{
+public class Address extends Contact{
 	
-	@Id
-	private String entityId;
-	private String status;
-	private String type;
-	private String description;
-
+	@Id @GeneratedValue String addressId;
     private String number;
-	@NotNull
-	@Length(min = 1, max = 30)
-	private String street;
-	@NotNull
-	@Length(min = 1, max = 50)
-	private String city;
+	@NotNull @Length(min = 1, max = 30)	private String street;
+	@NotNull @Length(min = 1, max = 50)	private String city;
 	private String state = State.DEFAULT_STATE;
 	private String postCode;
 	private String zip;
 	private String country = Country.DEFAULT_COUNTRY;
-
-	private LocalDateTime createdDate;
-	private LocalDateTime modifiedDate;
 	private LocalDateTime effectiveDate;
 
 	protected Address(){
 		super();
 	}
 	
-    public Address(String id, String number, String street, String city, String postcode, String country) {
-        this.entityId = id;
+    public Address(String addressId, String number, String street, String city, String postcode, String country) {
+        this.addressId = addressId;
     	this.number = number;
         this.street = street;
         this.city = city;
@@ -60,8 +50,8 @@ public class Address extends Model{
         this.type="H";
     }
     
-    public Address(String id, String number, String street, String city, String postcode, String country, String type) {
-        this.entityId = id;
+    public Address(String addressId, String number, String street, String city, String postcode, String country, String type) {
+        this.addressId =addressId;
     	this.number = number;
         this.street = street;
         this.city = city;
@@ -70,9 +60,9 @@ public class Address extends Model{
         this.type=type;
     }	
 
-	public Address populate(String pentityId, String pstatus, String ptype, String pdesc, String pnumber, String pstreet,  String pcity,  String pstate,
+	public Address populate(String addressId, String pstatus, String ptype, String pdesc, String pnumber, String pstreet,  String pcity,  String pstate,
 			String pzip, String postCode, String pcountry, LocalDateTime peffective) {
-		this.entityId = pentityId;
+		this.addressId = addressId;
 
 		this.status = pstatus;		
 		this.type = ptype;
@@ -98,108 +88,47 @@ public class Address extends Model{
 		populate(null, pstatus, ptype, pdesc, pnumber, pstreet,  pcity,  pstate, pzip, postCode, pcountry, peffective);
 	}
 	
-	public Address (String pentityId,String pstatus, String ptype, String pdesc, String pnumber,  String pstreet,  String pcity,  String pstate,
+	public Address (String addressId,String pstatus, String ptype, String pdesc, String pnumber,  String pstreet,  String pcity,  String pstate,
 			String pzip, String postCode, String pcountry, LocalDateTime peffective){
-		populate(pentityId, pstatus, ptype, pdesc, pnumber, pstreet,  pcity,  pstate, pzip, postCode, pcountry, peffective);
+		populate(addressId, pstatus, ptype, pdesc, pnumber, pstreet,  pcity,  pstate, pzip, postCode, pcountry, peffective);
+	}
+
+	@Override
+	public String toString(){
+	
+		return String.format("addressId: %s, status: %s, type: %s, number: %s,"
+				+ "description: %s, street: %s, city: %s, postcode: %s, state: %s, zip: %s "
+				+ "country : %s, createdDate : %s, modifiedDate : %s, effectiveDate : %s \n", 
+				addressId, status, type, number, description, street, city, state, zip, postCode, country, createdDate,
+				modifiedDate, effectiveDate);
 	}
 
 	/**
-	 * @return the entityId
+	 * @return the addressId
 	 */
-	public String getEntityId() {
-		return entityId;
+	public String getAddressId() {
+		return addressId;
 	}
 
 	/**
-	 * @param entityId the entityId to set
+	 * @param addressId the addressId to set
 	 */
-	@JsonSetter("id")
-	public void setEntityId(String entityId) {
-		this.entityId = entityId;
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
 	}
 
 	/**
-	 * @return the status
+	 * @return the number
 	 */
-	public String getStatus() {
-		return status;
+	public String getNumber() {
+		return number;
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param number the number to set
 	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the createdDate
-	 */
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	/**
-	 * @param createdDate the createdDate to set
-	 */
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * @return the modifiedDate
-	 */
-	public LocalDateTime getModifiedDate() {
-		return modifiedDate;
-	}
-
-	/**
-	 * @param modifiedDate the modifiedDate to set
-	 */
-	public void setModifiedDate(LocalDateTime modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-
-	/**
-	 * @return the effectiveDate
-	 */
-	public LocalDateTime getEffectiveDate() {
-		return effectiveDate;
-	}
-
-	/**
-	 * @param effectiveDate the effectiveDate to set
-	 */
-	public void setEffectiveDate(LocalDateTime effectiveDate) {
-		this.effectiveDate = effectiveDate;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	/**
@@ -245,6 +174,20 @@ public class Address extends Model{
 	}
 
 	/**
+	 * @return the postCode
+	 */
+	public String getPostCode() {
+		return postCode;
+	}
+
+	/**
+	 * @param postCode the postCode to set
+	 */
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	/**
 	 * @return the zip
 	 */
 	public String getZip() {
@@ -271,42 +214,21 @@ public class Address extends Model{
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
+	/**
+	 * @return the effectiveDate
+	 */
+	public LocalDateTime getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	/**
+	 * @param effectiveDate the effectiveDate to set
+	 */
+	public void setEffectiveDate(LocalDateTime effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
 	
-	/**
-	 * @return the number
-	 */
-	public String getNumber() {
-		return number;
-	}
-
-	/**
-	 * @param number the number to set
-	 */
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	/**
-	 * @return the postCode
-	 */
-	public String getPostCode() {
-		return postCode;
-	}
-
-	/**
-	 * @param postCode the postCode to set
-	 */
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
-	}
-
-	@Override
-	public String toString(){
 	
-		return String.format("entityId: %s, status: %s, type: %s, "
-				+ "description: %s, street: %s, city: %s, state: %s, zip: %s "
-				+ "country : %s, createdDate : %s, modifiedDate : %s, effectiveDate : %s \n", 
-				entityId, status, type, description, street, city, state, zip, country, createdDate,
-				modifiedDate, effectiveDate);
-	}
+	
 }

@@ -5,12 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
-
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -32,21 +29,20 @@ import com.flowers.microservice.beans.billing.Billing;
 @RestResource(exported = false)
 public class Order extends Model implements Comparable<Order>{
 
-	@Valid	
-	@Length(min = 1, max = 120)
-	private String orderNum;
+	@Id	@GeneratedValue
+	@Valid	@Length(min = 1, max = 120)	private String orderNum;
 	private String status;	
 	private Double orderTotal;
 	private Double taxAmount;
 	private Address address;
 	private Customer customer;
 	private Billing billing;
-	private List<OrderItem> itemList;
+	@DBRef(lazy = true) private List<OrderItem> itemList;
 	@Valid	private LocalDate orderDate = LocalDate.now();
 	@Valid	private LocalDate deliveryDate;
 	@Valid	private LocalDate shippingDate;
-	@NotNull @Range(min=0L, max=100L) private Double unitPrice;
-	@NotNull @Range(min=0L, max=100000L) private Long quantity;
+	private Double unitPrice;
+	private Long quantity;
 
 	public Order(){};
 	
@@ -100,11 +96,21 @@ public class Order extends Model implements Comparable<Order>{
 		
 	};
 
+	@Override
+	public String toString(){
+	
+		return String.format("orderNum: %s, itemIdList: %s, deliveryDate: %s, "
+				+ "shippingDate: %s, orderTotal: %s, taxAmount: %s, orderdate: %s, address: %s, status: %s, billing: %s, customer: %s, unitprice: %s, quantity: %s \n", 
+					orderNum, Arrays.toString(itemList.toArray()), deliveryDate, shippingDate, orderTotal, taxAmount, orderDate, address, status, billing, customer, unitPrice, quantity);
+	}
+	
+	public int compareTo(Order that) {
+		return this.orderNum.compareTo(that.orderNum);
+	}
+
 	/**
 	 * @return the orderNum
 	 */
-	@Id
-	@GeneratedValue
 	public String getOrderNum() {
 		return orderNum;
 	}
@@ -117,45 +123,17 @@ public class Order extends Model implements Comparable<Order>{
 	}
 
 	/**
-	 * @return the orderNum
+	 * @return the status
 	 */
-	public String getOrderId() {
-		return orderNum;
+	public String getStatus() {
+		return status;
 	}
 
 	/**
-	 * @param orderNum the orderNum to set
+	 * @param status the status to set
 	 */
-	public void setOrderId(String orderNum) {
-		this.orderNum = orderNum;
-	}
-
-	/**
-	 * @return the itemList
-	 */
-	public List<OrderItem> getItemList() {
-		return itemList;
-	}
-
-	/**
-	 * @param itemList the itemIdList to set
-	 */
-	public void setItemIdList(List<OrderItem> itemList) {
-		this.itemList = itemList;
-	}
-
-	/**
-	 * @return the deliveryDate
-	 */
-	public LocalDate getDeliveryDate() {
-		return deliveryDate;
-	}
-
-	/**
-	 * @return the shippingDate
-	 */
-	public LocalDate getShippingDate() {
-		return shippingDate;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	/**
@@ -199,7 +177,7 @@ public class Order extends Model implements Comparable<Order>{
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
 	/**
 	 * @return the customer
 	 */
@@ -213,7 +191,7 @@ public class Order extends Model implements Comparable<Order>{
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
+
 	/**
 	 * @return the billing
 	 */
@@ -229,17 +207,24 @@ public class Order extends Model implements Comparable<Order>{
 	}
 
 	/**
-	 * @return the status
+	 * @return the itemList
 	 */
-	public String getStatus() {
-		return status;
+	public List<OrderItem> getItemList() {
+		return itemList;
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param itemList the itemList to set
 	 */
-	public void setStatus(String status) {
-		this.status = status;
+	public void setItemList(List<OrderItem> itemList) {
+		this.itemList = itemList;
+	}
+
+	/**
+	 * @return the orderDate
+	 */
+	public LocalDate getOrderDate() {
+		return orderDate;
 	}
 
 	/**
@@ -250,10 +235,24 @@ public class Order extends Model implements Comparable<Order>{
 	}
 
 	/**
+	 * @return the deliveryDate
+	 */
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	/**
 	 * @param deliveryDate the deliveryDate to set
 	 */
 	public void setDeliveryDate(LocalDate deliveryDate) {
 		this.deliveryDate = deliveryDate;
+	}
+
+	/**
+	 * @return the shippingDate
+	 */
+	public LocalDate getShippingDate() {
+		return shippingDate;
 	}
 
 	/**
@@ -289,33 +288,6 @@ public class Order extends Model implements Comparable<Order>{
 	 */
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
-	}
-
-	/**
-	 * @return the orderDate
-	 */
-	public LocalDate getOrderDate() {
-		return orderDate;
-	}
-
-	/**
-	 * @param itemList the itemList to set
-	 */
-	public void setItemList(List<OrderItem> itemList) {
-		this.itemList = itemList;
-	}
-
-	@Override
-	public String toString(){
-	
-		return String.format("orderNum: %s, itemIdList: %s, deliveryDate: %s, "
-				+ "shippingDate: %s, orderTotal: %s, taxAmount: %s, orderdate: %s, address: %s \n", 
-					orderNum, Arrays.toString(itemList.toArray()), deliveryDate, shippingDate, 
-					orderTotal, taxAmount, orderDate, address);
-	}
-	
-	public int compareTo(Order that) {
-		return this.getOrderNum().compareTo(that.getOrderNum());
 	}
 	
 }

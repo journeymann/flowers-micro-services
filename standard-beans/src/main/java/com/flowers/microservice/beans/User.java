@@ -36,57 +36,58 @@ public class User extends Model{
 	private String password;
 	@Valid	private LocalDate startDate = LocalDate.now();
 	@Valid	private LocalDate endeDate;
+	@Id @GeneratedValue String userId;
 
-	public String getPassword() {
-		return password;
-	}
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        User that = (User) o;
+
+        return this.username.equals(that.username);
+    }
+    
+    @Override
+    public int hashCode() {
+        return this.username.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return 	String.format("User{userid: %s, username: %s, password: %s}",userId,username, password);
+
+    }
+
+	/**
+	 * @return the username
+	 */
 	public String getUsername() {
 		return username;
 	}
 
+	/**
+	 * @param username the username to set
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	public boolean isEnabled() {
-		return true;
-	}
-	@Id
-	@GeneratedValue
-	private String id;
-	
 	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-	
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-    /**
 	 * @return the startDate
 	 */
 	public LocalDate getStartDate() {
@@ -114,24 +115,18 @@ public class User extends Model{
 		this.endeDate = endeDate;
 	}
 
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
 
-        User obj = (User) o;
-
-        return getId().equals(obj.getId());
-
-    }
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
     
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
-    @Override
-    public String toString() {
-        return 	String.format("User{id: %s, username: %s, password: %s}",id,username, password);
-
-    }
  }

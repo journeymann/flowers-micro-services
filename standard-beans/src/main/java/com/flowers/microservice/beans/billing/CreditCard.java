@@ -3,6 +3,8 @@ package com.flowers.microservice.beans.billing;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import com.flowers.microservice.beans.Model;
+
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
  * {@literal @}created  01/15/2018
@@ -13,7 +15,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 @Document(collection = "creditcard")
 @RestResource(exported = false)
-public class CreditCard  implements java.io.Serializable {
+public class CreditCard extends Model implements java.io.Serializable {
 
 	private static final long serialVersionUID = -850054659252440226L;
 	private String cardExpiryDate;
@@ -32,64 +34,6 @@ public class CreditCard  implements java.io.Serializable {
 		this.cardType = cardType;
 	}
 
-	/**
-	 * Gets the cardExpiryDate value for this CreditCard.
-	 * 
-	 * @return cardExpiryDate
-	 */
-	public String getCardExpiryDate() {
-		return cardExpiryDate;
-	}
-
-
-	/**
-	 * Sets the cardExpiryDate value for this CreditCard.
-	 * 
-	 * @param cardExpiryDate
-	 */
-	public void setCardExpiryDate(String cardExpiryDate) {
-		this.cardExpiryDate = cardExpiryDate;
-	}
-
-
-	/**
-	 * Gets the cardNumber value for this CreditCard.
-	 * 
-	 * @return cardNumber
-	 */
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-
-	/**
-	 * Sets the cardNumber value for this CreditCard.
-	 * 
-	 * @param cardNumber
-	 */
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-
-	/**
-	 * Gets the cardType value for this CreditCard.
-	 * 
-	 * @return cardType
-	 */
-	public String getCardType() {
-		return cardType;
-	}
-
-
-	/**
-	 * Sets the cardType value for this CreditCard.
-	 * 
-	 * @param cardType
-	 */
-	public void setCardType(String cardType) {
-		this.cardType = cardType;
-	}
 
 	private Object __equalsCalc = null;
 	public synchronized boolean equals(Object obj) {
@@ -102,15 +46,15 @@ public class CreditCard  implements java.io.Serializable {
 		__equalsCalc = obj;
 		boolean _equals;
 		_equals = true && 
-				((this.cardExpiryDate==null && other.getCardExpiryDate()==null) || 
+				((this.cardExpiryDate==null && other.cardExpiryDate==null) || 
 						(this.cardExpiryDate!=null &&
-						this.cardExpiryDate.equals(other.getCardExpiryDate()))) &&
-				((this.cardNumber==null && other.getCardNumber()==null) || 
+						this.cardExpiryDate.equals(other.cardExpiryDate))) &&
+				((this.cardNumber==null && other.cardExpiryDate==null) || 
 						(this.cardNumber!=null &&
-						this.cardNumber.equals(other.getCardNumber()))) &&
-				((this.cardType==null && other.getCardType()==null) || 
+						this.cardNumber.equals(other.cardExpiryDate))) &&
+				((this.cardType==null && other.cardExpiryDate==null) || 
 						(this.cardType!=null &&
-						this.cardType.equals(other.getCardType())));
+						this.cardType.equals(other.cardExpiryDate)));
 		__equalsCalc = null;
 		return _equals;
 	}
@@ -122,14 +66,14 @@ public class CreditCard  implements java.io.Serializable {
 		}
 		__hashCodeCalc = true;
 		int _hashCode = 1;
-		if (getCardExpiryDate() != null) {
-			_hashCode += getCardExpiryDate().hashCode();
+		if (cardExpiryDate != null) {
+			_hashCode += cardExpiryDate.hashCode();
 		}
-		if (getCardNumber() != null) {
-			_hashCode += getCardNumber().hashCode();
+		if (cardExpiryDate != null) {
+			_hashCode += cardExpiryDate.hashCode();
 		}
-		if (getCardType() != null) {
-			_hashCode += getCardType().hashCode();
+		if (cardExpiryDate != null) {
+			_hashCode += cardExpiryDate.hashCode();
 		}
 		__hashCodeCalc = false;
 		return _hashCode;

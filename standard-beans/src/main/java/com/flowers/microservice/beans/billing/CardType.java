@@ -53,5 +53,20 @@ public enum CardType {
             alternate = !alternate;
         }
         return (sum % 10 == 0);
-    }    
+    }
+
+	/**
+	 * @return the pattern
+	 */
+	public Pattern getPattern() {
+		return pattern;
+	}
+
+	/**
+	 * @param pattern the pattern to set
+	 */
+	public void setPattern(Pattern pattern) {
+		this.pattern = pattern;
+	}    
+    
 }

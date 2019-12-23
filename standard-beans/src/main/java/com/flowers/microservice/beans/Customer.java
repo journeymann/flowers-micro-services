@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.Valid;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -24,27 +26,19 @@ import com.flowers.microservice.beans.billing.CreditCard;
  */
 @Document(collection = "customers")
 @RestResource(exported = false)
-public class Customer {
+public class Customer extends Contact{
 	
-	protected String customerId;
+	@Id @GeneratedValue protected String customerId;
 	protected String firstname;
 	protected String lastname;
-	protected String status;
-	
-    @DBRef(lazy = true)
-    protected List<Address> addresses = new ArrayList<Address>();
-
-    @DBRef(lazy = true)
-    protected List<CreditCard> cards = new ArrayList<CreditCard>();
-
-	protected List<EmailAddress> email;
-	protected List<Phone> phone;
+    @DBRef(lazy = true) protected List<Address> addresses = new ArrayList<Address>();
+    @DBRef(lazy = true) protected List<CreditCard> cards = new ArrayList<CreditCard>();
+    @DBRef(lazy = true) protected List<EmailAddress> email;
+    @DBRef(lazy = true) protected List<Phone> phone;
 	@Valid	private LocalDate startDate = LocalDate.now();
-	@Valid	private LocalDate endeDate;
+	@Valid	private LocalDate endDate;
 	
-	public Customer(){
-		
-	}
+	public Customer(){}
 	
 	public Customer(String customerId, String firstname, String lastname, List<Address> address, List<EmailAddress> email, List<Phone> phone, List<CreditCard> cards){
 		
@@ -77,55 +71,103 @@ public class Customer {
 		this.lastname=lastname;
 		this.status=Status.DEFAULT_STATUS;
 	}	
+		
+	@Override
+	public String toString(){
 	
+		return String.format("customerId: %s, firstname: %s, lastname: %s, "
+				+ "address: %s, cards: %s, email: %s, phone: %s, status: %s, startDate: %s, endDate: %s \n", 
+				customerId, firstname, lastname, Arrays.toString(addresses.toArray()), Arrays.toString(cards.toArray()), Arrays.toString(email.toArray()), 
+				Arrays.toString(phone.toArray()), status, startDate, endDate);
+	}	
 	
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer that = (Customer) o;
+
+        return this.customerId.equals(that.customerId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return customerId.hashCode();
+    }
+    
+	public int compareTo(Customer that) {
+		return this.customerId.compareTo(that.customerId);
+	}
+
 	/**
 	 * @return the customerId
 	 */
 	public String getCustomerId() {
 		return customerId;
 	}
+
 	/**
 	 * @param customerId the customerId to set
 	 */
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
+
 	/**
 	 * @return the firstname
 	 */
 	public String getFirstname() {
 		return firstname;
 	}
+
 	/**
 	 * @param firstname the firstname to set
 	 */
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
+
 	/**
 	 * @return the lastname
 	 */
 	public String getLastname() {
 		return lastname;
 	}
+
 	/**
 	 * @param lastname the lastname to set
 	 */
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+
 	/**
-	 * @return the address
+	 * @return the addresses
 	 */
-	public List<Address> getAddress() {
+	public List<Address> getAddresses() {
 		return addresses;
 	}
+
 	/**
-	 * @param address the address to set
+	 * @param addresses the addresses to set
 	 */
-	public void setAddress(List<Address> address) {
-		this.addresses = address;
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	/**
+	 * @return the cards
+	 */
+	public List<CreditCard> getCards() {
+		return cards;
+	}
+
+	/**
+	 * @param cards the cards to set
+	 */
+	public void setCards(List<CreditCard> cards) {
+		this.cards = cards;
 	}
 
 	/**
@@ -155,21 +197,7 @@ public class Customer {
 	public void setPhone(List<Phone> phone) {
 		this.phone = phone;
 	}
-	
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
 
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
 	/**
 	 * @return the startDate
 	 */
@@ -185,25 +213,18 @@ public class Customer {
 	}
 
 	/**
-	 * @return the endeDate
+	 * @return the endDate
 	 */
-	public LocalDate getEndeDate() {
-		return endeDate;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
 
 	/**
-	 * @param endeDate the endeDate to set
+	 * @param endDate the endDate to set
 	 */
-	public void setEndeDate(LocalDate endeDate) {
-		this.endeDate = endeDate;
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
-
-	@Override
-	public String toString(){
-	
-		return String.format("customerId: %s, firstname: %s, lastname: %s, "
-				+ "address: %s, email: %s, phone: %s \n", 
-				customerId, firstname, lastname, Arrays.toString(addresses.toArray()), email, phone);
-	}	
+		
 	
 }

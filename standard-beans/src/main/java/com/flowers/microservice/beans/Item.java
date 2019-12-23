@@ -24,16 +24,10 @@ import com.flowers.microservice.beans.Model;
 @RestResource(exported = false)
 public class Item extends Model implements Comparable<Item>{
 
-	@Id
-	@GeneratedValue
-	private String id;
-	
-	@NotNull
-	@Length(min = 1, max = 120)
-	private String name;
+	@Id	@GeneratedValue	private String itemId;
+	@NotNull @Length(min = 1, max = 120) private String name;
 	private String sku;
-	private String description;
-	@Valid private LocalDate availableDate;
+	@NotNull @Length(min = 1, max = 120) private String description;
 	private Double price;
 	private Integer length;	
 	private Integer width;
@@ -41,18 +35,17 @@ public class Item extends Model implements Comparable<Item>{
 	private Long quantity;
 	private Double weight;
 	private String productid;
-	@Valid	private LocalDate startDate = LocalDate.now();
-	@Valid	private LocalDate endeDate;
-	
+	@Valid private LocalDate availableDate;
+	@Valid private LocalDate startDate = LocalDate.now();
+	@Valid private LocalDate endeDate;
 	SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
 	
-	public Item() {
-		
-	}
+	public Item() {}
 	
 	public Item(String id, String name, String sku, String description, String availableDate, Double price,
 			Integer length, Integer width, Integer height, Integer weight, Integer quantity, Integer productid) {
 		super();
+		this.itemId=id;
 		this.name = name;
 		this.sku = sku;
 		this.description = description;
@@ -97,19 +90,54 @@ public class Item extends Model implements Comparable<Item>{
 		this.height=height;		
 		this.weight=weight;
 	}
+	
+	// TODO remove adapter code here added for existing functionality 
+	public void setWeight(Integer weight) {
+		this.weight = Double.valueOf(weight);
+	}
+	public void setAvailableDate(String date) {
+		this.availableDate = parseDate(date);
+	}
+	public void setStartDate(String date) {
+		this.startDate = parseDate(date);
+	}
+	public void setEndeDate(String date) {
+		this.endeDate = parseDate(date);
+	}
+	public LocalDate parseDate(String date) {
+
+		try {
+			return sdf.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); //TODO refactor here
+		} catch (Exception pe) {
+			// suppress
+		}
+		return null;
+	}
+
+	@Override
+	public String toString(){
 		
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
+		return String.format("DATA: itemId: %s, name: %s, sku: %s, description: %s, availableDate: %s, "
+				+ "price: %s, length: %s, width: %s, height: %s, weight: %s, productid: %s, quantity: %s\n ",
+				itemId, name, sku, description, availableDate, price, length, width, height, weight, productid, quantity );
+	}
+	
+	public int compareTo(Item that) {
+		return this.itemId.compareTo(that.itemId);
 	}
 
 	/**
-	 * @param id the id to set
+	 * @return the itemId
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public String getItemId() {
+		return itemId;
+	}
+
+	/**
+	 * @param itemId the itemId to set
+	 */
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
 	}
 
 	/**
@@ -152,20 +180,6 @@ public class Item extends Model implements Comparable<Item>{
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	/**
-	 * @return the availableDate
-	 */
-	public LocalDate getAvailableDate() {
-		return availableDate;
-	}
-
-	/**
-	 * @param availableDate the availableDate to set
-	 */
-	public void setAvailableDate(LocalDate availableDate) {
-		this.availableDate = availableDate;
 	}
 
 	/**
@@ -225,6 +239,20 @@ public class Item extends Model implements Comparable<Item>{
 	}
 
 	/**
+	 * @return the quantity
+	 */
+	public Long getQuantity() {
+		return quantity;
+	}
+
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+
+	/**
 	 * @return the weight
 	 */
 	public Double getWeight() {
@@ -250,6 +278,20 @@ public class Item extends Model implements Comparable<Item>{
 	 */
 	public void setProductid(String productid) {
 		this.productid = productid;
+	}
+
+	/**
+	 * @return the availableDate
+	 */
+	public LocalDate getAvailableDate() {
+		return availableDate;
+	}
+
+	/**
+	 * @param availableDate the availableDate to set
+	 */
+	public void setAvailableDate(LocalDate availableDate) {
+		this.availableDate = availableDate;
 	}
 
 	/**
@@ -279,57 +321,19 @@ public class Item extends Model implements Comparable<Item>{
 	public void setEndeDate(LocalDate endeDate) {
 		this.endeDate = endeDate;
 	}
-	
-	/**
-	 * @return the quantity
-	 */
-	public Long getQuantity() {
-		return quantity;
-	}
 
 	/**
-	 * @param quantity the quantity to set
+	 * @return the sdf
 	 */
-	public void setQuantity(Long quantity) {
-		this.quantity = quantity;
-	}
-	
-	
-	// TODO remove adapter code here added for existing functionality 
-	public void setWeight(Integer weight) {
-		
-		this.weight = Double.valueOf(weight);
-	}
-	
-	public void setAvailableDate(String date) {
-		this.availableDate = parseDate(date);
-	}
-	public void setStartDate(String date) {
-		this.startDate = parseDate(date);
-	}
-	public void setEndeDate(String date) {
-		this.endeDate = parseDate(date);
-	}
-	public LocalDate parseDate(String date) {
-
-		try {
-			return sdf.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); //TODO refactor here
-		} catch (Exception pe) {
-			// suppress
-		}
-		return null;
+	public SimpleDateFormat getSdf() {
+		return sdf;
 	}
 
-	@Override
-	public String toString(){
-		
-		return String.format("DATA: id: %s, name: %s, sku: %s, description: %s, availableDate: %s, "
-				+ "price: %s, length: %s, width: %s, height: %s, weight: %s, productid: %s\n ",
-				id, name, sku, description, availableDate, price, length, width, height, weight, productid );
-	}
-	
-	public int compareTo(Item that) {
-		return this.getProductid().compareTo(that.getProductid());
+	/**
+	 * @param sdf the sdf to set
+	 */
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
 	}
 	
 }

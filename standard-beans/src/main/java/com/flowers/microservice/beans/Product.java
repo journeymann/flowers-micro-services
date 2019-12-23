@@ -5,6 +5,7 @@ package com.flowers.microservice.beans;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 /**
  * @author cgordon
  *
@@ -17,8 +18,9 @@ import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 /**
  * 
@@ -43,119 +45,134 @@ public class Product extends Model{
 	}
 	
 	@Id
-	@GeneratedValue
-	private String productId;
+	@GeneratedValue private String productId;
 	
 	@Valid @NotNull @Length(min = 1, max = 120) private String name;
 	private String shortDescription;
 	private String longDescription;
-	@Valid	private LocalDate startDate = LocalDate.now();
-	@Valid	private LocalDate availableDate = LocalDate.now();
-	@Valid	private LocalDate endeDate;
+	@Valid	private Date startDate = Calendar.getInstance().getTime();
+	@Valid	private Date availableDate = Calendar.getInstance().getTime();
+	@Valid	private Date endeDate;
 	private Double price;
-	@Valid private List<Item> items;
+	@DBRef(lazy = true) @Valid private List<Item> items;
 	
+
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product that = (Product) o;
+
+        return this.productId.equals(that.productId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return productId.hashCode();
+    }
+    @Override
+    public String toString() {
+        return 	String.format("Product{productId %s,name %s,shortDescription %s,longDescription %s,items %s, price %s}",productId,name,shortDescription,longDescription,Arrays.toString(items.toArray()), price);
+
+    }
+
 	/**
 	 * @return the productId
 	 */
 	public String getProductId() {
 		return productId;
 	}
+
 	/**
 	 * @param productId the productId to set
 	 */
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
+
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	/**
 	 * @return the shortDescription
 	 */
 	public String getShortDescription() {
 		return shortDescription;
 	}
+
 	/**
 	 * @param shortDescription the shortDescription to set
 	 */
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;
 	}
+
 	/**
 	 * @return the longDescription
 	 */
 	public String getLongDescription() {
 		return longDescription;
 	}
+
 	/**
 	 * @param longDescription the longDescription to set
 	 */
 	public void setLongDescription(String longDescription) {
 		this.longDescription = longDescription;
 	}
-	/**
-	 * @return the items
-	 */
-	public List<Item> getItems() {
-		return items;
-	}
-	/**
-	 * @param items the items to set
-	 */
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
 
-    /**
+	/**
 	 * @return the startDate
 	 */
-	public LocalDate getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
 	/**
 	 * @param startDate the startDate to set
 	 */
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
-	}
-
-	/**
-	 * @return the endeDate
-	 */
-	public LocalDate getEndeDate() {
-		return endeDate;
-	}
-
-	/**
-	 * @param endeDate the endeDate to set
-	 */
-	public void setEndeDate(LocalDate endeDate) {
-		this.endeDate = endeDate;
 	}
 
 	/**
 	 * @return the availableDate
 	 */
-	public LocalDate getAvailableDate() {
+	public Date getAvailableDate() {
 		return availableDate;
 	}
 
 	/**
 	 * @param availableDate the availableDate to set
 	 */
-	public void setAvailableDate(LocalDate availableDate) {
+	public void setAvailableDate(Date availableDate) {
 		this.availableDate = availableDate;
+	}
+
+	/**
+	 * @return the endeDate
+	 */
+	public Date getEndeDate() {
+		return endeDate;
+	}
+
+	/**
+	 * @param endeDate the endeDate to set
+	 */
+	public void setEndeDate(Date endeDate) {
+		this.endeDate = endeDate;
 	}
 
 	/**
@@ -172,24 +189,18 @@ public class Product extends Model{
 		this.price = price;
 	}
 
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	/**
+	 * @return the items
+	 */
+	public List<Item> getItems() {
+		return items;
+	}
 
-        Product obj = (Product) o;
-
-        return getProductId().equals(obj.getProductId());
-    }
-    
-    @Override
-    public int hashCode() {
-        return getProductId().hashCode();
-    }
-    @Override
-    public String toString() {
-        return 	String.format("Product{productId %s,name %s,shortDescription %s,longDescription %s,items %s}",productId,name,shortDescription,longDescription,Arrays.toString(items.toArray()));
-
-    }
+	/**
+	 * @param items the items to set
+	 */
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
 	
 }

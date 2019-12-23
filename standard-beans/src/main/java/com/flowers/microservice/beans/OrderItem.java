@@ -9,11 +9,10 @@ import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.LuhnCheck;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -84,48 +83,57 @@ public class OrderItem extends Model{
 
 	}
 	
-	@NotNull @Length(min = 1, max = 120) private String orderNum;
-	private List<Item> itemIdList;
+	@Id
+	@GeneratedValue
+	@NotNull @Length(min = 1, max = 120) private String orderItemId;
+	@DBRef(lazy = true) private List<Item> itemIdList;
 	private float orderTotal;
 	private float taxAmount;
 	@NotNull @Length(min = 1, max = 120) private String customerId;
+	@NotNull @Length(min = 1, max = 120) private String orderNum;
     private Customer customer;
     private Address address;
     @NotNull @LuhnCheck private CreditCard card;
-    @NotNull @Range(min=0L, max=100L) private Double unitPrice;
-    @NotNull @Range(min=0L, max=10000L) private Long quantity;
+    @NotNull private Double unitPrice;
+    @NotNull private Long quantity;
     private Shipment shipment;
 	@Valid	private LocalDate deliveryDate;
 	@Valid	private LocalDate shippingDate;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderItem obj = (OrderItem) o;
+
+        return orderItemId.equals(obj.orderItemId);
+
+    }
+    
+    @Override
+    public int hashCode() {
+        return orderItemId.hashCode();
+    }
+    @Override
+    public String toString() {
+        return 	String.format("OrderItem{orderItemId: %s,orderNum: %s,itemIdList: %s,deliveryDate: %s,shippingDate: %s,orderTotal: %s,taxAmount: %s, customer: %s, addesss: %s, shipment: %s}",
+        		orderItemId,orderNum,Arrays.toString(itemIdList.toArray()),deliveryDate,shippingDate,orderTotal,taxAmount, customer, address, shipment);
+    }
+
 	/**
-	 * @return the orderNum
+	 * @return the orderItemId
 	 */
-	
-	@GeneratedValue
-	public String getorderNum() {
-		return orderNum;
-	}
-	
-	/**
-	 * @param orderNum the orderNum to set
-	 */
-	public void setorderNum(String orderNum) {
-		this.orderNum = orderNum;
+	public String getOrderItemId() {
+		return orderItemId;
 	}
 
 	/**
-	 * @return the orderNum
+	 * @param orderItemId the orderItemId to set
 	 */
-	public String getOrderId() {
-		return orderNum;
-	}
-
-	/**
-	 * @param orderNum the orderNum to set
-	 */
-	public void setOrderId(String orderNum) {
-		this.orderNum = orderNum;
+	public void setOrderItemId(String orderItemId) {
+		this.orderItemId = orderItemId;
 	}
 
 	/**
@@ -140,34 +148,6 @@ public class OrderItem extends Model{
 	 */
 	public void setItemIdList(List<Item> itemIdList) {
 		this.itemIdList = itemIdList;
-	}
-
-	/**
-	 * @return the deliveryDate
-	 */
-	public LocalDate getDeliveryDate() {
-		return deliveryDate;
-	}
-
-	/**
-	 * @param deliveryDate the deliveryDate to set
-	 */
-	public void setDeliveryDate(LocalDate deliveryDate) {
-		this.deliveryDate = deliveryDate;
-	}
-
-	/**
-	 * @return the shippingDate
-	 */
-	public LocalDate getShippingDate() {
-		return shippingDate;
-	}
-
-	/**
-	 * @param shippingDate the shippingDate to set
-	 */
-	public void setShippingDate(LocalDate shippingDate) {
-		this.shippingDate = shippingDate;
 	}
 
 	/**
@@ -197,90 +177,75 @@ public class OrderItem extends Model{
 	public void setTaxAmount(float taxAmount) {
 		this.taxAmount = taxAmount;
 	}
-	@Id
-	@GeneratedValue
-	private String id;
-	
+
 	/**
-	 * @return the id
+	 * @return the customerId
 	 */
-	public String getId() {
-		return id;
-	}
-	
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderItem obj = (OrderItem) o;
-
-        return getId().equals(obj.getId());
-
-    }
-    
-    @Override
-    public int hashCode() {
-        return getId().hashCode();
-    }
-    @Override
-    public String toString() {
-        return 	String.format("OrderItem{id: %s,orderNum: %s,itemIdList: %s,deliveryDate: %s,shippingDate: %s,orderTotal: %s,taxAmount: %s}",id,orderNum,Arrays.toString(itemIdList.toArray()),deliveryDate,shippingDate,orderTotal,taxAmount);
-    }
-
-	public String getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(String orderNum) {
-		this.orderNum = orderNum;
-	}
-
 	public String getCustomerId() {
 		return customerId;
 	}
 
+	/**
+	 * @param customerId the customerId to set
+	 */
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
 
+	/**
+	 * @return the orderNum
+	 */
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	/**
+	 * @param orderNum the orderNum to set
+	 */
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	/**
+	 * @return the customer
+	 */
 	public Customer getCustomer() {
 		return customer;
 	}
 
+	/**
+	 * @param customer the customer to set
+	 */
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
+	/**
+	 * @return the address
+	 */
 	public Address getAddress() {
 		return address;
 	}
 
+	/**
+	 * @param address the address to set
+	 */
 	public void setAddress(Address address) {
 		this.address = address;
 	}
 
+	/**
+	 * @return the card
+	 */
 	public CreditCard getCard() {
 		return card;
 	}
 
+	/**
+	 * @param card the card to set
+	 */
 	public void setCard(CreditCard card) {
 		this.card = card;
-	}
-
-	public Shipment getShipment() {
-		return shipment;
-	}
-
-	public void setShipment(Shipment shipment) {
-		this.shipment = shipment;
 	}
 
 	/**
@@ -310,5 +275,47 @@ public class OrderItem extends Model{
 	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
-	
+
+	/**
+	 * @return the shipment
+	 */
+	public Shipment getShipment() {
+		return shipment;
+	}
+
+	/**
+	 * @param shipment the shipment to set
+	 */
+	public void setShipment(Shipment shipment) {
+		this.shipment = shipment;
+	}
+
+	/**
+	 * @return the deliveryDate
+	 */
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	/**
+	 * @param deliveryDate the deliveryDate to set
+	 */
+	public void setDeliveryDate(LocalDate deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	/**
+	 * @return the shippingDate
+	 */
+	public LocalDate getShippingDate() {
+		return shippingDate;
+	}
+
+	/**
+	 * @param shippingDate the shippingDate to set
+	 */
+	public void setShippingDate(LocalDate shippingDate) {
+		this.shippingDate = shippingDate;
+	}
+    
 }

@@ -4,13 +4,10 @@
 package com.flowers.microservice.beans;
 
 import java.time.LocalDate;
-
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -30,14 +27,13 @@ public class TaxRate extends Model implements Comparable<TaxRate>{
 	private String state = State.DEFAULT_STATE;
 	private String county;
 	private String zipcode;
-	@NotNull @Range(min = 0L, max = 100L) private Double rate;
+	private Double rate;
 	private Boolean override;
 	@Valid	private LocalDate startDate = LocalDate.now();
 	@Valid	private LocalDate endeDate;
+	@Id @GeneratedValue private String taxRateId;
 	
-	public TaxRate(){
-		
-	};
+	public TaxRate(){};
 	
 	public TaxRate(String itemId, String state, String county, String zipcode, Double rate, Boolean override){
 		
@@ -47,14 +43,37 @@ public class TaxRate extends Model implements Comparable<TaxRate>{
 		this.zipcode=zipcode;
 		this.override=override;		
 		this.rate=rate;
-
 	};
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TaxRate that = (TaxRate) o;
+
+        return this.taxRateId.equals(that.taxRateId);
+
+    }
+    
+    @Override
+    public int hashCode() {
+        return taxRateId.hashCode();
+    }
+	@Override
+	public String toString(){
+		
+		return String.format("TaxRate: {taxRateId: %s, itemId: %s, state: %s, county: %s, zipcode: %s, override: %s, rate: %s }\n", taxRateId, itemId, 
+				state, county, zipcode, override, rate);
+	}
+	
+	public int compareTo(TaxRate that) {
+		return this.itemId.compareTo(that.itemId);
+	}
 
 	/**
 	 * @return the itemId
 	 */
-	@Id
-	@GeneratedValue
 	public String getItemId() {
 		return itemId;
 	}
@@ -111,14 +130,14 @@ public class TaxRate extends Model implements Comparable<TaxRate>{
 	/**
 	 * @return the rate
 	 */
-	public Double getAmount() {
+	public Double getRate() {
 		return rate;
 	}
 
 	/**
 	 * @param rate the rate to set
 	 */
-	public void setAmount(Double rate) {
+	public void setRate(Double rate) {
 		this.rate = rate;
 	}
 
@@ -134,20 +153,6 @@ public class TaxRate extends Model implements Comparable<TaxRate>{
 	 */
 	public void setOverride(Boolean override) {
 		this.override = override;
-	}
-	
-	/**
-	 * @return the rate
-	 */
-	public Double getRate() {
-		return rate;
-	}
-
-	/**
-	 * @param rate the rate to set
-	 */
-	public void setRate(Double rate) {
-		this.rate = rate;
 	}
 
 	/**
@@ -178,15 +183,18 @@ public class TaxRate extends Model implements Comparable<TaxRate>{
 		this.endeDate = endeDate;
 	}
 
-	@Override
-	public String toString(){
-		
-		return String.format("DATA: itemId: %s, state: %s, county: %s, zipcode: %s, override: %s, rate: %s \n", itemId, 
-				state, county, zipcode, override, rate);
+	/**
+	 * @return the taxRateId
+	 */
+	public String getTaxRateId() {
+		return taxRateId;
 	}
-	
-	public int compareTo(TaxRate that) {
-		return this.itemId.compareTo(that.itemId);
+
+	/**
+	 * @param taxRateId the taxRateId to set
+	 */
+	public void setTaxRateId(String taxRateId) {
+		this.taxRateId = taxRateId;
 	}
 	
 }

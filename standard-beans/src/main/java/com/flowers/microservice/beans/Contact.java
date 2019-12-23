@@ -1,13 +1,7 @@
 package com.flowers.microservice.beans;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.flowers.microservice.constants.Status;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -18,61 +12,20 @@ import com.flowers.microservice.constants.Status;
  */
 public abstract class Contact extends Model{
 	
-	@Id
-	protected String entityId;
 	protected String status;
 	protected String type;
-	protected String contact;
-	@NotNull
-	@Length(min = 1, max = 120)
-	protected String description;
-	protected LocalDateTime createdDate;
-	protected LocalDateTime modifiedDate;
-	protected LocalDateTime effectiveDate;
-	
+	@NotNull @Length(min = 1, max = 120) protected String description;
+
 	protected Contact(){
 		super();
 	}
+		
+	@Override
+	public String toString(){
 	
-	public Contact (String pentityId, String ptype, String pcontact) {
-		this.entityId = pentityId;
-		
-		this.status = Status.DEFAULT_STATUS;		
-		this.type = ptype;
-		this.contact = pcontact;
-		this.description = "";
-		this.createdDate = LocalDateTime.now();
-		this.modifiedDate = LocalDateTime.now();
-		this.effectiveDate = LocalDateTime.now();
-
-	}
-
-	public Contact (String pentityId, String pstatus, String ptype, String pcontact, String pdesc, LocalDateTime effective) {
-		this.entityId = pentityId;
-		
-		this.status = pstatus;		
-		this.type = ptype;
-		this.contact = pcontact;
-		this.description = pdesc;
-		this.createdDate = LocalDateTime.now();
-		this.modifiedDate = LocalDateTime.now();
-		this.effectiveDate = effective;
-
-	}
-
-	/**
-	 * @return the entityId
-	 */
-	public String getEntityId() {
-		return entityId;
-	}
-
-	/**
-	 * @param entityId the entityId to set
-	 */
-	@JsonSetter("id")	
-	public void setEntityId(String entityId) {
-		this.entityId = entityId;
+		return String.format("entityId: %s, status: %s, type: %s, "
+				+ "description: %s, createdDate: %s, modifiedDate: %s, \n", 
+				entityId, status, type, description,createdDate,modifiedDate);
 	}
 
 	/**
@@ -115,70 +68,6 @@ public abstract class Contact extends Model{
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	/**
-	 * @return the createdDate
-	 */
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
-	}
-
-	/**
-	 * @param createdDate the createdDate to set
-	 */
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * @return the modifiedDate
-	 */
-	public LocalDateTime getModifiedDate() {
-		return modifiedDate;
-	}
-
-	/**
-	 * @param modifiedDate the modifiedDate to set
-	 */
-	public void setModifiedDate(LocalDateTime modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-
-	/**
-	 * @return the effectiveDate
-	 */
-	public LocalDateTime getEffectiveDate() {
-		return effectiveDate;
-	}
-
-	/**
-	 * @param effectiveDate the effectiveDate to set
-	 */
-	public void setEffectiveDate(LocalDateTime effectiveDate) {
-		this.effectiveDate = effectiveDate;
-	}
-	
-	/**
-	 * @return the contact
-	 */
-	public String getEmail() {
-		return contact;
-	}
-
-	/**
-	 * @param contact the contact to set
-	 */
-	public void setEmail(String contact) {
-		this.contact = contact;
-	}
-	
-	@Override
-	public String toString(){
-	
-		return String.format("entityId: %s, status: %s, type: %s, "
-				+ "contact: %s, description: %s, createdDate: %s, modifiedDate: %s, effectiveDate: %s \n", 
-				entityId, status, type, contact, description,createdDate,modifiedDate,effectiveDate);
 	}	
 	
 	

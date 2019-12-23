@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     public ProductServiceImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
-        this.init();
+        //this.init();
     }
     
 	public Product createProduct(Product product) {
