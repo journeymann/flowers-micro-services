@@ -130,8 +130,8 @@ public class OrderController{
             });
             LOG.debug("End of calls.");
 
-            float taxes = OrderFacade.calculateTax(itemsFuture.get(timeout, TimeUnit.MILLISECONDS));
-            float amount = OrderFacade.calculateTotal(itemsFuture.get(timeout, TimeUnit.MILLISECONDS));
+            Float taxes = OrderFacade.calculateTax(itemsFuture.get(timeout, TimeUnit.MILLISECONDS));
+            Float amount = OrderFacade.calculateTotal(itemsFuture.get(timeout, TimeUnit.MILLISECONDS));
 
             // Call payment service to make sure they've paid
             PaymentRequest paymentRequest = new PaymentRequest(

@@ -42,8 +42,8 @@ public class OrderItem extends Model{
 
 	public OrderItem() {};
 	
-	public OrderItem(String orderNum, List<Item> itemIdList, Shipment shipment, float orderTotal,
-			float taxAmount) {
+	public OrderItem(String orderNum, List<Item> itemIdList, Shipment shipment, Float orderTotal,
+			Float taxAmount) {
 		super();
 		this.orderNum = orderNum;
 		this.itemIdList = itemIdList;
@@ -53,7 +53,7 @@ public class OrderItem extends Model{
 	}
 
 	public OrderItem(String orderNum, String customerId, Customer customer, Address address,CreditCard card, List<Item> itemIdList,
-			Shipment shipment, float orderTotal,float taxAmount, Double unitPrice, Long quantity) {
+			Shipment shipment, Float orderTotal,Float taxAmount, Float unitPrice, Long quantity) {
 		super();
 		this.orderNum = orderNum;
 		this.itemIdList = itemIdList;
@@ -69,7 +69,7 @@ public class OrderItem extends Model{
 	}
 	
 	public OrderItem(String orderNum, String customerId, Customer customer, Address address,CreditCard card, List<Item> itemIdList,
-			Shipment shipment, float orderTotal,float taxAmount) {
+			Shipment shipment, Float orderTotal,Float taxAmount) {
 		super();
 		this.orderNum = orderNum;
 		this.itemIdList = itemIdList;
@@ -87,14 +87,14 @@ public class OrderItem extends Model{
 	@GeneratedValue
 	@NotNull @Length(min = 1, max = 120) private String orderItemId;
 	@DBRef(lazy = true) private List<Item> itemIdList;
-	private float orderTotal;
-	private float taxAmount;
+	private Float orderTotal;
+	private Float taxAmount;
 	@NotNull @Length(min = 1, max = 120) private String customerId;
 	@NotNull @Length(min = 1, max = 120) private String orderNum;
     private Customer customer;
     private Address address;
     @NotNull @LuhnCheck private CreditCard card;
-    @NotNull private Double unitPrice;
+    @NotNull private Float unitPrice;
     @NotNull private Long quantity;
     private Shipment shipment;
 	@Valid	private LocalDate deliveryDate;
@@ -153,28 +153,28 @@ public class OrderItem extends Model{
 	/**
 	 * @return the orderTotal
 	 */
-	public float getOrderTotal() {
+	public Float getOrderTotal() {
 		return orderTotal;
 	}
 
 	/**
 	 * @param orderTotal the orderTotal to set
 	 */
-	public void setOrderTotal(float orderTotal) {
+	public void setOrderTotal(Float orderTotal) {
 		this.orderTotal = orderTotal;
 	}
 
 	/**
 	 * @return the taxAmount
 	 */
-	public float getTaxAmount() {
+	public Float getTaxAmount() {
 		return taxAmount;
 	}
 
 	/**
 	 * @param taxAmount the taxAmount to set
 	 */
-	public void setTaxAmount(float taxAmount) {
+	public void setTaxAmount(Float taxAmount) {
 		this.taxAmount = taxAmount;
 	}
 
@@ -251,14 +251,14 @@ public class OrderItem extends Model{
 	/**
 	 * @return the unitPrice
 	 */
-	public Double getUnitPrice() {
+	public Float getUnitPrice() {
 		return unitPrice;
 	}
 
 	/**
 	 * @param unitPrice the unitPrice to set
 	 */
-	public void setUnitPrice(Double unitPrice) {
+	public void setUnitPrice(Float unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 

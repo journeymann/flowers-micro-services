@@ -1,0 +1,13 @@
+---
+applications:
+  - name: shipping-service
+    buildpack: java_buildpack_offline
+    path: build/libs/shipping-service.jar
+
+services:
+  - shipping-services
+
+env:
+  APP_LOG_LEVEL: INFO
+  TRUST_CERTS: OUR_COMPANY_PCF_UAA_ENDPOINT:443
+  EUREKA_ENABLED: true

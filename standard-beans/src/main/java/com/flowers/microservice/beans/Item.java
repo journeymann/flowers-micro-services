@@ -38,6 +38,7 @@ public class Item extends Model implements Comparable<Item>{
 	@Valid private LocalDate availableDate;
 	@Valid private LocalDate startDate = LocalDate.now();
 	@Valid private LocalDate endeDate;
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
 	
 	public Item() {}

@@ -36,7 +36,7 @@ public class Address extends Contact{
 	private String country = Country.DEFAULT_COUNTRY;
 	private LocalDateTime effectiveDate;
 
-	protected Address(){
+	public Address(){
 		super();
 	}
 	

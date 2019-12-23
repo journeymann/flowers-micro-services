@@ -39,7 +39,7 @@ import com.flowers.microservice.tax.request.TaxRequest;
 @Service
 public class TaxRateServiceImpl implements TaxRateService {
 
-    @Value(value = "${http.timeout}")
+    @Value(value = "${http.timeout:5}")
     private long timeout;
     
     @Autowired

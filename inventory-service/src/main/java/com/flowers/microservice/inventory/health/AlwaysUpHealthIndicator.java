@@ -1,4 +1,4 @@
-package com.flowers.microservice.tax.config;
+package com.flowers.microservice.inventory.health;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;

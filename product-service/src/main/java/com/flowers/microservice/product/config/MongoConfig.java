@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import com.mongodb.MongoClientOptions;
 /**
@@ -15,6 +16,7 @@ import com.mongodb.MongoClientOptions;
  */
 @Configuration
 @AutoConfigureBefore(MongoAutoConfiguration.class)
+@EnableMongoRepositories(basePackages = "com.flowers.microservice.product.repository")
 public class MongoConfig {
 
     @Value("${app.mongo.timeout}")
