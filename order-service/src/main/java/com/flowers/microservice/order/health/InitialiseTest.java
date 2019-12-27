@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-import com.flowers.microservice.beans.Address;
-import com.flowers.microservice.beans.Customer;
+
 import com.flowers.microservice.beans.Item;
 import com.flowers.microservice.beans.Order;
 import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.beans.Shipment;
 import com.flowers.microservice.beans.billing.Billing;
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
 
 /**
  * 

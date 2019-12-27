@@ -11,11 +11,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import com.flowers.microservice.beans.Address;
-import com.flowers.microservice.beans.Customer;
 import com.flowers.microservice.constants.OrderStatus;
 import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.beans.billing.Billing;
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>

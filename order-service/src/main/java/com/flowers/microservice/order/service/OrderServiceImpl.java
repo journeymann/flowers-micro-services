@@ -16,12 +16,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.flowers.microservice.beans.OrderItem;
-import com.flowers.microservice.beans.Address;
 import com.flowers.microservice.beans.billing.CreditCard;
-import com.flowers.microservice.beans.Customer;
-import com.flowers.microservice.beans.EmailAddress;
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
+import com.flowers.microservice.beans.contact.EmailAddress;
+import com.flowers.microservice.beans.contact.Phone;
 import com.flowers.microservice.beans.Item;
-import com.flowers.microservice.beans.Phone;
 import com.flowers.microservice.beans.Product;
 import com.flowers.microservice.beans.Shipment;
 

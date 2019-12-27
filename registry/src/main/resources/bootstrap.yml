@@ -20,15 +20,11 @@ management:
   endpoint:
     health:
       enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-        exclude: 
-      base-path: /            
+          
   info:
     git:
       mode: full
+
   cloudfoundry:
     enabled: true
     skip-ssl-validation: true  

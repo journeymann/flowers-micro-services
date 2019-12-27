@@ -1,8 +1,8 @@
 package com.flowers.microservice.order.resource;
 
-import com.flowers.microservice.beans.Address;
 import com.flowers.microservice.beans.billing.CreditCard;
-import com.flowers.microservice.beans.Customer;
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
 /**
  * 
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>

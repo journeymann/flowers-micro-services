@@ -1,4 +1,4 @@
-package com.flowers.microservice.beans;
+package com.flowers.microservice.beans.contact;
 
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;

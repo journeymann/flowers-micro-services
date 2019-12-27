@@ -1,8 +1,17 @@
 server:
-  port: 8761
+  port: ${PORT:8761}
+  servlet: 
+    context-path: /eureka
+      
+info:
+  component: registry.server
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
+
 eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
-
-       

@@ -1,8 +1,5 @@
 ---
-server:
-  context-path: /eureka
-  port: 8761
-       
+      
 eureka:
   instance:
     hostname: localhost

@@ -1,4 +1,4 @@
-package com.flowers.microservice.beans;
+package com.flowers.microservice.beans.contact;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.flowers.microservice.constants.Status;
-import com.flowers.microservice.beans.Address;
 import com.flowers.microservice.beans.billing.CreditCard;
+import com.flowers.microservice.beans.contact.Address;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>

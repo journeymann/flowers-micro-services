@@ -1,7 +1,9 @@
-package com.flowers.microservice.beans;
+package com.flowers.microservice.beans.contact;
 
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+
+import com.flowers.microservice.beans.Model;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>

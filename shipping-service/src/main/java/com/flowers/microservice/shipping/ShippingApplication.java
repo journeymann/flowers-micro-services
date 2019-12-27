@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
-
 import com.flowers.microservice.shipping.health.InitialiseTest;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 
@@ -22,6 +22,7 @@ import com.flowers.microservice.shipping.health.InitialiseTest;
  */
 @SpringBootApplication
 @EnableEurekaClient
+@EnableSwagger2
 public class ShippingApplication{
 
 	public static void main(String[] args) {

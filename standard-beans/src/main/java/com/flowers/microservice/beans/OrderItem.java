@@ -16,12 +16,12 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.flowers.microservice.beans.Address;
-import com.flowers.microservice.beans.Customer;
 import com.flowers.microservice.beans.Item;
 import com.flowers.microservice.beans.Model;
 import com.flowers.microservice.beans.Shipment;
 import com.flowers.microservice.beans.billing.CreditCard;
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
 
 /**
  * 

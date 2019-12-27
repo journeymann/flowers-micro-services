@@ -8,10 +8,11 @@ import javax.persistence.Id;
 import javax.validation.Valid;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
-import com.flowers.microservice.beans.Address;
-import com.flowers.microservice.beans.Customer;
-import com.flowers.microservice.beans.EmailAddress;
-import com.flowers.microservice.beans.Phone;
+
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
+import com.flowers.microservice.beans.contact.EmailAddress;
+import com.flowers.microservice.beans.contact.Phone;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>

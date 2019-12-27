@@ -4,10 +4,24 @@
         <title>Service Information Page</title>
     </head>
     <body>
-	    <h3 th:text="Service: ${service-name} &nbsp;"/>
-		<h3 th:text="Host: ${hostname} &nbsp;"/>
-		<h3 th:text="Port: ${port} &nbsp;"/>
-		<h3 th:text="Status: ${status} &nbsp;"/> 
-		<h3 th:text="Description ${info} &nbsp;"/>        
+	    <label for="name">Name</label>
+	    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+	    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+	    
+	    <label for="host">Host</label>
+	    <input type="text" th:field="*{hostname}" id="hostname" placeholder="Hostname">
+	    <span th:if="${#fields.hasErrors('hostname')}" th:errors="*{hostname}"></span>
+	    
+	    <label for="Port">Port</label>	    
+	    <input type="text" th:field="*{port}" id="port" placeholder="Port">
+	    <span th:if="${#fields.hasErrors('port')}" th:errors="*{port}"></span>	   
+	     
+	    <label for="Status">Host</label>	     
+	    <input type="text" th:field="*{status}" id="status" placeholder="Status">
+	    <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
+	    
+	    <label for="Info">Host</label>	    
+	    <input type="text" th:field="*{info}" id="info" placeholder="Info">
+	    <span th:if="${#fields.hasErrors('info')}" th:errors="*{info}"></span>	    		  
     </body>
 </html>

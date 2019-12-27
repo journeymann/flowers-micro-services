@@ -29,9 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.order.config.AppConfigProperties;
-import com.flowers.microservice.beans.Address;
 import com.flowers.microservice.beans.billing.CreditCard;
-import com.flowers.microservice.beans.Customer;
+import com.flowers.microservice.beans.contact.Address;
+import com.flowers.microservice.beans.contact.Customer;
 import com.flowers.microservice.beans.Item;
 import com.flowers.microservice.beans.Shipment;
 import com.flowers.microservice.order.exception.InvalidOrderException;
