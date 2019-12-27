@@ -22,6 +22,7 @@
         <java.version>1.8</java.version>
 	    <start-class>com.flowers.microservice.eureka.RegistryApplication</start-class>
 	    <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+	    <spring-cloud.parent.artifact.id>spring-cloud-starter-parent</spring-cloud.parent.artifact.id>
     </properties>
 
     <dependencies>
@@ -57,7 +58,7 @@
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
+                <artifactId>${spring-cloud.parent.artifact.id}</artifactId>
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>

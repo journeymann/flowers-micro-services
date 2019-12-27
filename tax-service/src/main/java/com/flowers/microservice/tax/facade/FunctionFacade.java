@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flowers.microservice.beans.Model;
 import com.flowers.microservice.beans.NullObject;
+import static com.flowers.microservice.constants.GlobalConstants.DATEFORMAT_ISO8601;
 import com.flowers.microservice.constants.TimeZones;
-import com.flowers.microservice.tax.constants.Constants;
 import com.flowers.microservice.tax.exception.Handler;
 import com.google.json.JsonSanitizer;
 
@@ -39,7 +39,7 @@ import com.google.json.JsonSanitizer;
  */
 public class FunctionFacade {
 
-	private static final DateFormat iso8601DateFormatter = new SimpleDateFormat(Constants.DATEFORMAT_ISO8601, Locale.ENGLISH);
+	private static final DateFormat iso8601DateFormatter = new SimpleDateFormat(DATEFORMAT_ISO8601, Locale.ENGLISH);
 	
 	/**
 	 * This method prints a given <code>Map</code> as a string.  

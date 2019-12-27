@@ -7,7 +7,7 @@ spring:
         
   cloud:
     config:
-      uri: ${CONFIG_SERVER_URL:http://localhost:8888/registry}
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888/config}
       fail-fast: true
       password: ${CONFIG_SERVICE_PASSWORD:configpwd$001}
       username: ${CONFIG_SERVICE_USERNAME:config}  

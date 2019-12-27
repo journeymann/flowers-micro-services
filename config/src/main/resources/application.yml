@@ -3,14 +3,14 @@ server:
 
 eureka:         
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value(10)}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}
       
   client:
     enabled: true
     registerWithEureka: false
     fetchRegistry: false  
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
     
 spring:
   cloud:

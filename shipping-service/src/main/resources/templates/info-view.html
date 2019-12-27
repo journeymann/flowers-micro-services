@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Service Information Page</title>
+    </head>
+    <body>
+	    <h3 th:text="Service: ${service-name} &nbsp;"/>
+		<h3 th:text="Host: ${hostname} &nbsp;"/>
+		<h3 th:text="Port: ${port} &nbsp;"/>
+		<h3 th:text="Status: ${status} &nbsp;"/> 
+		<h3 th:text="Description ${info} &nbsp;"/>        
+    </body>
+</html>

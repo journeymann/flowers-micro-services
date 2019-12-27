@@ -8,7 +8,7 @@ spring:
         
   cloud:
     config:
-      uri: ${CONFIG_SERVER_URL:http://localhost:8888}
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888/config}
       fail-fast: true
       password: ${CONFIG_SERVICE_PASSWORD:configpwd$001}
       username: ${CONFIG_SERVICE_USERNAME:config}  
@@ -22,7 +22,7 @@ spring:
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 10  
-    instance-id: ${spring.application.name}:${random.int[10000,20000]}
+    instance-id: ${spring.application.name}:${random.int}
              
 config: 
   oauth2: 
