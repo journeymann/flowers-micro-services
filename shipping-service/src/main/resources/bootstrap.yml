@@ -21,8 +21,8 @@ spring:
           uri: mongodb://shipping:passw0rd001@cluster0-shard-00-00-rvlxk.mongodb.net:27017,cluster0-shard-00-01-rvlxk.mongodb.net:27017,cluster0-shard-00-02-rvlxk.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority
 eureka:
   instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
     lease-renewal-interval-in-seconds: 10  
-    instance-id: ${spring.application.name}:${random.int}
              
 config: 
   oauth2: 

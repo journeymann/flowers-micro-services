@@ -1,7 +1,7 @@
 ---
 server: 
-  context-path: /notifications
-  port: 8000
+  servlet:
+    context-path: /notification
 
 spring:
   profiles: default

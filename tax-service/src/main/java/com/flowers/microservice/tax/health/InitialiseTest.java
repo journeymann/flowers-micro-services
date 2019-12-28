@@ -2,7 +2,7 @@ package com.flowers.microservice.tax.health;
 
 import java.util.stream.Collectors;
 import com.flowers.microservice.beans.TaxRate;
-import com.flowers.microservice.tax.facade.FunctionFacade;
+import com.flowers.microservice.common.FunctionFacade;
 import com.flowers.microservice.tax.repository.FlowersTaxRateMongoRepository;
 import com.flowers.microservice.tax.service.TaxRateService;
 

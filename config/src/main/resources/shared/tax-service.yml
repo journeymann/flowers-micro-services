@@ -1,7 +1,7 @@
 ---
 server:
-  context-path: /tax
-  port: 5003
+  servlet:
+    context-path: /tax
   
 spring:
   profiles: default

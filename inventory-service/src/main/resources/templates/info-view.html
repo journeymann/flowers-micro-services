@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Service Information Page</title>
+    </head>
+    <body>
+    <form>
+    <table>
+	    <tr>
+	    	<td>
+			    <label for="name">Name</label>
+			    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+			    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+		    </td>
+		 </tr>   
+	    <tr>
+	    	<td>		 
+			    <label for="host">Host</label>
+			    <input type="text" th:field="*{hostname}" id="hostname" placeholder="Hostname">
+			    <span th:if="${#fields.hasErrors('hostname')}" th:errors="*{hostname}"></span>
+		    </td>
+		 </tr>   			    
+	    <tr>
+	    	<td>	    
+			    <label for="Port">Port</label>	    
+			    <input type="text" th:field="*{port}" id="port" placeholder="Port">
+			    <span th:if="${#fields.hasErrors('port')}" th:errors="*{port}"></span>	 
+		    </td>
+		</tr>   	      
+	    <tr>
+	    	<td>	     
+			    <label for="Status">Host</label>	     
+			    <input type="text" th:field="*{status}" id="status" placeholder="Status">
+			    <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
+		    </td>
+		 </tr>   	    
+	    <tr>
+	    	<td>	    
+			    <label for="Info">Host</label>	    
+			    <input type="text" th:field="*{info}" id="info" placeholder="Info">
+			    <span th:if="${#fields.hasErrors('info')}" th:errors="*{info}"></span>	
+		    </td>
+		 </tr>   	    
+	</table> 
+	</form>       		  
+    </body>
+</html>

@@ -9,17 +9,24 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.TypeReferences;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,8 +50,26 @@ import com.flowers.microservice.order.resource.PaymentRequest;
 import com.flowers.microservice.order.resource.PaymentResponse;
 import com.flowers.microservice.order.service.OrderService;
 import com.flowers.microservice.order.health.HealthIndicatorService;
+import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.Application;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Contact;
+import io.swagger.annotations.ExternalDocs;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.ResponseHeader;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+import io.swagger.models.Response;
+
 import java.util.concurrent.ExecutionException;
 import java.io.IOException;
 
@@ -55,8 +80,38 @@ import java.io.IOException;
  * @version 1.0
  *
  */
+@SwaggerDefinition(
+        info = @Info(
+                description = "Gets shipping information and calculates tax rates",
+                version = "V12.0.12",
+                title = "The Taxation API",
+                termsOfService = "http://terms.html",
+                contact = @Contact(
+                   name = "Roger Moore", 
+                   email = "roger.mooree@acme.com", 
+                   url = "http://www.acme.com"
+                ),
+                license = @License(
+                   name = "Apache 2.0", 
+                   url = "http://www.apache.org/licenses/LICENSE-2.0"
+                )
+        ),
+        consumes = {"application/json"},
+        produces = {"application/json"},
+        schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS},
+        tags = {
+                @Tag(name = "Private", description = "Tag used to denote operations as private")
+        }, 
+        externalDocs = @ExternalDocs(value = "Web services design best practises", url = "http://somewebsitehere.com/best_practise.html")
+)
 @RestController
+//@EnableFeignClients
 @ConfigurationProperties
+@Api(value="/order",description="Order Calculations",produces ="application/json")
+@Produces({"application/json"})
+@Consumes({"application/json"})
+@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+@RefreshScope
 public class OrderController{
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 	
@@ -77,9 +132,9 @@ public class OrderController{
     
     @Value("${app.info.description}")
     private String serviceInfo;        
-    
+        
     @Autowired
-    private DiscoveryClient discoveryClient;
+    private EurekaClient eurekaClient;
   
 	@RequestMapping(value = "/health",  method = RequestMethod.GET)
 	public InstanceStatus health() {
@@ -92,9 +147,9 @@ public class OrderController{
 	}	
 
     @RequestMapping("/service-instances/{applicationName}")
-    public List<ServiceInstance> serviceInstancesByApplicationName(
+    public List<InstanceInfo> serviceInstancesByApplicationName(
             @PathVariable String applicationName) {
-        return this.discoveryClient.getInstances(applicationName);
+        return this.eurekaClient.getApplication(applicationName).getInstances();
     }    
 
     @Value("${eureka.instance.instance-id}")
@@ -106,6 +161,30 @@ public class OrderController{
         return new StringBuffer("instance id: " + instanceId);
     }  
     
+	@GetMapping(value = "/info")
+	public String information(@ApiParam(value = "Model object", required = true)  Model model) {
+	    Application application = eurekaClient.getApplication("shipping-service");
+	    List<InstanceInfo> instanceInfo = application.getInstances();
+	    String hostname = instanceInfo.get(0).getHostName();
+	    String port = instanceInfo.stream().map(p -> String.valueOf(p.getPort())).collect(Collectors.joining(","));
+	    InstanceStatus status = healthIndicatorService.health();
+	    
+	    model.addAttribute("name", application.getName());
+	    model.addAttribute("hostname", hostname);
+	    model.addAttribute("port", port);
+	    model.addAttribute("status", status);
+	    model.addAttribute("info", serviceInfo);
+
+        return "info-view";
+	}	    
+    
+    @Path("/create")
+    @ApiOperation(value="create order service",response=OrderItem.class)
+    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Order Created Success",response=String.class),
+	    @ApiResponse(code=400,message="Internal Server Error", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = OrderItem.class)),
+	    @ApiResponse(code=500,message="Internal Server Error"),
+	    @ApiResponse(code=404,message="Unable to create Order")})    
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/create}", method = RequestMethod.POST)
 	public OrderItem createOrder(@Valid @RequestBody final NewOrderResource orderitem) {
@@ -183,24 +262,52 @@ public class OrderController{
     			
 	}
 	
+    @Path("/read/{orderid}")
+    @ApiOperation(value="get order information by id",response=OrderItem.class)
+    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Order Details Retrieved",response=String.class),
+	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = OrderItem.class)),
+	    @ApiResponse(code=500,message="Internal Server Error"),
+	    @ApiResponse(code=404,message="Order not found")})
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/read/{orderid}", method = RequestMethod.GET)
 	public OrderItem getOrder(@PathVariable final String orderid) {
 		return orderService.findOrderById(orderid);
 	}
 	
+    @Path("/all")
+    @ApiOperation(value="get all order information",response=Response.class)
+    @ApiResponses(value={
+	    @ApiResponse(code=200,message="All Order Details Retrieved",response=String.class),
+	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = Response.class)),
+	    @ApiResponse(code=500,message="Internal Server Error"),
+	    @ApiResponse(code=404,message="All Order not found")})
     @HystrixCommand(fallbackMethod = "fallbackAllOrders")
 	@RequestMapping(value = "/all}", method = RequestMethod.GET)
 	public List<OrderItem> getAllOrders() {
 		return orderService.findAllOrderList();
 	}
 	
+    @Path("/update/{orderid}")
+    @ApiOperation(value="update order information",response=OrderItem.class)
+    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Update Order Success",response=String.class),
+	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = OrderItem.class)),
+	    @ApiResponse(code=500,message="Internal Server Error"),
+	    @ApiResponse(code=404,message="Order update Failed")})
     @HystrixCommand(fallbackMethod = "fallback")
 	@RequestMapping(value = "/update/{orderid}", method = RequestMethod.POST)
 	public OrderItem updateOrder(@PathVariable final String orderid, @Valid @RequestBody final OrderItem orderItem) {
 		return orderService.updateOrder(orderid, orderItem);
 	}
 	
+    @Path("/delete/{orderid}")
+    @ApiOperation(value="delete order information",response=OrderItem.class)
+    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Delete Order Success",response=String.class),
+	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = OrderItem.class)),
+	    @ApiResponse(code=500,message="Internal Server Error"),
+	    @ApiResponse(code=404,message="Order delete Failed")})
 	@RequestMapping(value = "/delete/{orderid}", method = RequestMethod.PUT)
 	public void deleteOrder(@PathVariable final String orderid) {
 		orderService.deleteOrder(orderid);

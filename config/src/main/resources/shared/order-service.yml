@@ -1,7 +1,7 @@
 ---
 server:
-  context-path: /order
-  port: 5006
+  servlet:
+    context-path: /order
 
 spring:
   profiles: default

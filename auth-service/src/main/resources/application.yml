@@ -1,4 +1,21 @@
+server:
+  port: ${PORT:5000}
 
+info:
+  component: auth.server
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 100
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    
 config:
     oauth2:
         # openssl genrsa -out jwt.pem 2048

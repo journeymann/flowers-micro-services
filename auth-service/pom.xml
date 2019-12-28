@@ -19,17 +19,16 @@
 	</parent>
 
 	<properties>
+        <java.bind.version>2.3.0</java.bind.version>
+        <start-class>com.flowers.microservice.auth.AuthApplication</start-class>	
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <java.bind.version>2.3.0</java.bind.version>
 		<json.sanitizer.version>1.2.0</json.sanitizer.version>
-        <start-class>com.flowers.microservice.auth.AuthApplication</start-class>	
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>	
+		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
     </properties>
 
     <dependencies>
-	
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-config-client</artifactId>
@@ -37,6 +36,20 @@
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey.contribs</groupId>
+                    <artifactId>jersey-apache-client4</artifactId>
+                </exclusion>
+            </exclusions>		    
 		</dependency>
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
@@ -104,43 +117,35 @@
     </dependencyManagement>   
     <build>
         <plugins>
-    		<plugin>
-      			<groupId>org.springframework.boot</groupId>
-      			<artifactId>spring-boot-maven-plugin</artifactId>
-      			<configuration>
-        			<mainClass>${start-class}</mainClass>
-        			<layout>ZIP</layout>
-      			</configuration>
-      			<executions>
-        			<execution>
-          				<goals>
-           					 <goal>repackage</goal>
-          				</goals>
-        			</execution>
-      			</executions>
-    		</plugin>
-        		<plugin>
-    			<groupId>org.apache.tomcat.maven</groupId>
-    			<artifactId>tomcat7-maven-plugin</artifactId>
-    			<version>2.0</version>
-    			<executions>
-        			<execution>
-            			<id>tomcat-run</id>
-            			<goals>
-             			   <goal>deploy</goal>
-            			</goals>
-           			 	<phase>package</phase>
-           			 	<configuration>
-          			    	<path>/tmp/src/</path>
-         			    	<enableNaming>false</enableNaming>
-                			<finalName>serviceapp.jar</finalName>
-                			<charset>utf-8</charset>
-                			<mainClass>${start-class}</mainClass>
-        					<layout>ZIP</layout>	
-            			</configuration>
-        			</execution>
-    			</executions>
-			</plugin>			
-        </plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/${project.artifactId}-${project.version}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/swagger-ui-master/dist
+                                    </directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>index.html</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>        
+        </plugins>            
     </build>
 </project>

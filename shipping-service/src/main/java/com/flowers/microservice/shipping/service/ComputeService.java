@@ -3,6 +3,8 @@
  */
 package com.flowers.microservice.shipping.service;
 
+import java.util.List;
+
 import com.flowers.microservice.beans.ShippingRate;
 import com.flowers.microservice.beans.TaxRate;
 
@@ -17,5 +19,5 @@ public interface ComputeService {
 	
 	ShippingRate findOneShippingRate(String state);
 	TaxRate findOneTaxRate(String state);
-
+	List<ShippingRate> findShippingRates();
 }

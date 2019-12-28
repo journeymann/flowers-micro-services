@@ -1,4 +1,4 @@
-package com.flowers.microservice.shipping.exception;
+package com.flowers.microservice.exception;
 
 /**
  * 

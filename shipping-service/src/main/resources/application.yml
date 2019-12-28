@@ -1,7 +1,5 @@
 server:
   port: ${PORT:5002}
-  servlet:
-    context-path: /shipping
 
 info:
   component: shipping.server
@@ -13,10 +11,8 @@ logging:
 
 eureka:
   instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
     leaseRenewalIntervalInSeconds: 10
     leaseExpirationDurationInSeconds: 100
-    metadataMap:
-      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-      

@@ -1,5 +1,4 @@
 ---
-
 spring:
   profiles: default
   application:
@@ -11,6 +10,17 @@ spring:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
     register-with-eureka: true    
        
+management: 
+  endpoint:
+    health:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        exclude: 
+      base-path: / 
+             
   info:
     git:
       mode: full

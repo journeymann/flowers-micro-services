@@ -1,7 +1,7 @@
 ---
 server:
-  context-path: /inventory
-  port: 5004
+  servlet:
+    context-path: /inventory
 
 spring:
   profiles: default
@@ -24,6 +24,7 @@ management:
         include: health,info
         exclude: 
       base-path: /      
+      
   info:
     git:
       mode: full

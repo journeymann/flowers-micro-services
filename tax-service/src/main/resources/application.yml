@@ -1,0 +1,18 @@
+server:
+  port: ${PORT:5003}
+
+info:
+  component: tax.server
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 100
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+

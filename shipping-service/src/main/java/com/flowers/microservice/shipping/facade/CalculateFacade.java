@@ -4,6 +4,7 @@
 package com.flowers.microservice.shipping.facade;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,6 +52,11 @@ public class CalculateFacade {
 		}).reduce(0.0F, Float::sum);
 		
 		return total;
+	}
+	
+	public static List<ShippingRate> getRates(){
+		
+		return service.findShippingRates();
 	}
 	
 	public static LocalDate calculateOrderDeliveryDate(Order order){

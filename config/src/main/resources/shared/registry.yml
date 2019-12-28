@@ -1,5 +1,9 @@
 ---
-      
+spring:
+  profiles: default
+  application:
+    name: registry
+    
 eureka:
   instance:
     hostname: localhost

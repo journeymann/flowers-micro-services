@@ -6,8 +6,8 @@ spring:
     name: product-service
     
 server:
-  context-path: /products
-  port: 5008
+  servlet:
+    context-path: /product
     
   client:
     enabled: true  

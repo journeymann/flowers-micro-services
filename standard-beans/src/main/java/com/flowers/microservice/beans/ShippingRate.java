@@ -1,13 +1,22 @@
 package com.flowers.microservice.beans;
 
 import java.time.LocalDate;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.flowers.microservice.constants.ShippingMethod;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 /**
  * 
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -15,16 +24,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @version 1.0
  *
  */
+@Entity
+@JsonRootName(value = "shippingrate")
+@ApiModel(description="Shipping Rate Information. ")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "shippingrates")
 public class ShippingRate extends Model{
 	
-    private String srcstate;
-    @NotNull @Length(min = 1, max = 120) private String deststate;
-	@Valid private LocalDate deliveryDate;
-	private LocalDate shippingDate;
-	private String method;
-    private float rate;
+	@ApiModelProperty(notes="Source state in shipping rate calculation", required = false)
+    private String srcstate="none";
+	@ApiModelProperty(notes="Destination state in shipping rate calculation", required = true)
+    @NotNull @Length(min = 1, max = 120) private String deststate="na";
+	@ApiModelProperty(notes="estimated delivery date", required = true)
+	@Valid private LocalDate deliveryDate = LocalDate.now().plusDays(3);
+	@ApiModelProperty(notes="expeted shipping date", required = false)
+	private LocalDate shippingDate = LocalDate.now().plusDays(1);
+	@ApiModelProperty(notes="shipping carrier method", required = false)
+	private String method = ShippingMethod.DEFAULT;
+	@ApiModelProperty(notes="calculated shipping rate", required = false)
+    private float rate = 0F;
 	@Id	@GeneratedValue private String shipmentRateId;
    
     public ShippingRate(String srcstate, String deststate, LocalDate shippingdate, LocalDate deliverydate, String method) {
@@ -47,11 +65,13 @@ public class ShippingRate extends Model{
     }
     
     @Override
+    @JsonIgnore
     public int hashCode() {
         return shipmentRateId.hashCode();
     }
     
     @Override
+    @JsonIgnore
     public String toString() {
         return 	String.format("ShipmentRate{shipmentRateId: %s,srcstate: %s,deststate: %s, shippingdate: %s, deliverydate: %s, method: %s, rate: %s}",shipmentRateId,srcstate,deststate, shippingDate, deliveryDate, method,rate);
     }
@@ -143,6 +163,7 @@ public class ShippingRate extends Model{
 	/**
 	 * @return the shipmentRateId
 	 */
+	@JsonIgnore
 	public String getShipmentRateId() {
 		return shipmentRateId;
 	}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.flowers.microservice.shipping.exception;
+package com.flowers.microservice.exception;
 
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;

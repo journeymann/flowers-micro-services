@@ -3,6 +3,8 @@ package com.flowers.microservice.beans;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import org.hibernate.validator.constraints.Length;
@@ -12,6 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.flowers.microservice.constants.OrderStatus;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.beans.billing.Billing;
 import com.flowers.microservice.beans.contact.Address;
@@ -24,24 +31,38 @@ import com.flowers.microservice.beans.contact.Customer;
  * 
  * order class entity type definition.
  */
-
+@Entity
+@JsonRootName(value = "orders")
+@ApiModel(description="Orders Information. ")
 @Document(collection = "orders")
 @RestResource(exported = false)
 public class Order extends Model implements Comparable<Order>{
 
-	@Id	@GeneratedValue
-	@Valid	@Length(min = 1, max = 120)	private String orderNum;
+	@ApiModelProperty(notes="Order Number", required = false)
+	@Id	@GeneratedValue	@Valid	@Length(min = 1, max = 120)	private String orderNum;
+	@ApiModelProperty(notes="Status", required = false)
 	private String status;	
+	@ApiModelProperty(notes="Order Total", required = false)
 	private Double orderTotal;
+	@ApiModelProperty(notes="Order Tax Amount", required = false)
 	private Double taxAmount;
+	@ApiModelProperty(notes="Order Address", required = false)
 	private Address address;
+	@ApiModelProperty(notes="Order Customer", required = false)
 	private Customer customer;
+	@ApiModelProperty(notes="Order Billing Info", required = false)
 	private Billing billing;
+	@ApiModelProperty(notes="Order Item List", required = false)
 	@DBRef(lazy = true) private List<OrderItem> itemList;
+	@ApiModelProperty(notes="Order Date", required = false)
 	@Valid	private LocalDate orderDate = LocalDate.now();
+	@ApiModelProperty(notes="Order DElivery Date", required = false)
 	@Valid	private LocalDate deliveryDate;
+	@ApiModelProperty(notes="Order Shipping", required = false)
 	@Valid	private LocalDate shippingDate;
+	@ApiModelProperty(notes="Unit Item Price", required = false)
 	private Double unitPrice;
+	@ApiModelProperty(notes="Order Quantity", required = false)
 	private Long quantity;
 
 	public Order(){};

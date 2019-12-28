@@ -1,7 +1,7 @@
 ---
 server: 
-  context-path: /dashboard
-  port: 5007
+  servlet: 
+    context-path: /dashboard
     
 info: 
   component: Hystrix Dashboard

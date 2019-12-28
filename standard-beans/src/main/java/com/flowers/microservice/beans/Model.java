@@ -6,6 +6,8 @@ package com.flowers.microservice.beans;
 import java.time.LocalDateTime;
 import javax.persistence.GeneratedValue;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
  * {@literal @}created  12/18/2017
@@ -29,6 +31,7 @@ public abstract class Model{
 	/**
 	 * @return the entityId
 	 */
+	@JsonIgnore
 	public String getEntityId() {
 		return entityId;
 	}
@@ -43,6 +46,7 @@ public abstract class Model{
 	/**
 	 * @return the createdDate
 	 */
+	@JsonIgnore
 	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
@@ -57,6 +61,7 @@ public abstract class Model{
 	/**
 	 * @return the modifiedDate
 	 */
+	@JsonIgnore
 	public LocalDateTime getModifiedDate() {
 		return modifiedDate;
 	}

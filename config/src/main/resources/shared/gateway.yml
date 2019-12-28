@@ -1,7 +1,7 @@
 ---      
 server:
-  context-path: /gateway
-  port: 4000
+  servlet: 
+    context-path: /gateway
     
 spring:
   profiles: default

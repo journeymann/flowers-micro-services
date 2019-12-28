@@ -10,8 +10,16 @@ import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.flowers.microservice.beans.Model;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -20,23 +28,40 @@ import com.flowers.microservice.beans.Model;
  * 
  * item sku class entity type definition.
  */
+@Entity
+@JsonRootName(value = "items")
+@ApiModel(description="Item detail Information. ")
 @Document(collection = "items")
 @RestResource(exported = false)
 public class Item extends Model implements Comparable<Item>{
-
+	
+	@ApiModelProperty(notes="Item Id", required = false)
 	@Id	@GeneratedValue	private String itemId;
+	@ApiModelProperty(notes="Item Name", required = true)
 	@NotNull @Length(min = 1, max = 120) private String name;
+	@ApiModelProperty(notes="Product Sku", required = false)
 	private String sku;
+	@ApiModelProperty(notes="Item Description", required = true)
 	@NotNull @Length(min = 1, max = 120) private String description;
+	@ApiModelProperty(notes="Price", required = false)
 	private Double price;
+	@ApiModelProperty(notes="Length", required = false)
 	private Integer length;	
+	@ApiModelProperty(notes="Width", required = false)
 	private Integer width;
+	@ApiModelProperty(notes="Height", required = false)
 	private Integer height;
+	@ApiModelProperty(notes="Quantity", required = false)
 	private Long quantity;
+	@ApiModelProperty(notes="Weight", required = false)
 	private Double weight;
+	@ApiModelProperty(notes="Product Id", required = false)
 	private String productid;
+	@ApiModelProperty(notes="Product Available Date", required = false)
 	@Valid private LocalDate availableDate;
+	@ApiModelProperty(notes="Product Start Date", required = false)
 	@Valid private LocalDate startDate = LocalDate.now();
+	@ApiModelProperty(notes="Product End Date", required = false)
 	@Valid private LocalDate endeDate;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
@@ -326,6 +351,7 @@ public class Item extends Model implements Comparable<Item>{
 	/**
 	 * @return the sdf
 	 */
+	@JsonIgnore
 	public SimpleDateFormat getSdf() {
 		return sdf;
 	}

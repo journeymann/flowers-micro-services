@@ -33,13 +33,13 @@
       	<dependency>
       		<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>2.6.1</version>
+			<version>${swagger.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.6.1</version>
+			<version>${swagger.version}</version>
 			<scope>compile</scope>
 		</dependency> 
       	<dependency>
@@ -109,11 +109,6 @@
             <optional>true</optional>
         </dependency>
 		<dependency>
-			<groupId>com.mikesamuel</groupId>
-			<artifactId>json-sanitizer</artifactId>
-			<version>${json.sanitizer.version}</version>
-		</dependency>        
-		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
@@ -151,6 +146,31 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/${project.artifactId}-${project.version}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/swagger-ui-master/dist
+                                    </directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>index.html</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>        
         </plugins>
     </build>
 </project>

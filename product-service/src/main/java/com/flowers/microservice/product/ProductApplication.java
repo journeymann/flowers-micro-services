@@ -8,9 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import com.flowers.microservice.product.health.InitialiseTest;
+
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 
@@ -21,6 +24,8 @@ import com.flowers.microservice.product.health.InitialiseTest;
  */
 @SpringBootApplication
 @EnableEurekaClient
+@EnableSwagger2
+@EnableZuulProxy
 public class ProductApplication {
 
 	public static void main(String[] args) {

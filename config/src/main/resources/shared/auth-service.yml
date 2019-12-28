@@ -1,7 +1,7 @@
 ---
 server: 
-  context-path: /auth
-  port: 5000
+  servlet:
+    context-path: /auth
 
 spring:
   profiles: default

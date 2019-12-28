@@ -3,6 +3,8 @@
  */
 package com.flowers.microservice.shipping.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -42,6 +44,11 @@ public class ComputeServiceImpl implements ComputeService {
 		   Query query = new Query();
 		   query.addCriteria(Criteria.where("state").is(state));
 		   return (TaxRate)mongoTemplate.findOne(query, TaxRate.class);
+	};
+	
+	@Override
+	public List<ShippingRate> findShippingRates(){
+		return mongoTemplate.findAll(ShippingRate.class);
 	};
 }
 	
