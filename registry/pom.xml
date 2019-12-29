@@ -20,12 +20,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-	    <start-class>com.flowers.microservice.eureka.RegistryApplication</start-class>
 	    <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 	    <spring-cloud.parent.artifact.id>spring-cloud-dependencies</spring-cloud.parent.artifact.id>
     </properties>
 
     <dependencies>
+		<dependency> 
+			<groupId> io.micrometer </groupId> 
+			<artifactId> micrometer-registry-influx </artifactId> 
+		</dependency>    
+		<dependency> 
+			<groupId>io.micrometer</groupId> 
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>       
 		<dependency>
     		<groupId>javax.xml.bind</groupId>
     		<artifactId>jaxb-api</artifactId>

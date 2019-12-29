@@ -7,12 +7,18 @@ spring:
   profiles: default
   application:
     name: gateway
-       
+
+eureka:         
   client:
     enabled: true  
     serviceUrl: 
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
     register-with-eureka: true    
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 100
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
             
 hystrix:
   command:

@@ -1,18 +1,24 @@
 ---
-server: 
+server:
   servlet:
     context-path: /notification
-
+  
 spring:
-  profiles: default
+  profiles: native
   application:
-    name: notification-service
-
+    name: notification-service  
+   
+eureka:         
   client:
     enabled: true  
     serviceUrl: 
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
     register-with-eureka: true    
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 100
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}  
     
 management: 
   endpoint:

@@ -2,17 +2,19 @@ server:
   port: ${PORT:5006}
 
 info:
-  component: shipping.server
+  component: order.server
 
 logging:
   level:
     com.netflix.discovery: 'OFF'
     org.springframework.cloud: 'DEBUG'
 
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 100
-    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-
+management: 
+    metrics: 
+      export: 
+        influx: 
+          db: springboot 
+          uri: http://localhost:8086
+    endpoint: 
+      prometheus: 
+        enabled: true    

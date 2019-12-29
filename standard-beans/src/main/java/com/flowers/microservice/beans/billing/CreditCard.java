@@ -1,9 +1,18 @@
 package com.flowers.microservice.beans.billing;
 
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.LuhnCheck;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.flowers.microservice.beans.Model;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -12,15 +21,21 @@ import com.flowers.microservice.beans.Model;
  * 
  * credit card class entity type definition.
  */
-
+@Entity
+@JsonRootName(value = "creditcard")
+@ApiModel(description="Credit Card Information.")
 @Document(collection = "creditcard")
 @RestResource(exported = false)
 public class CreditCard extends Model implements java.io.Serializable {
-
+	
+	@JsonIgnore
 	private static final long serialVersionUID = -850054659252440226L;
-	private String cardExpiryDate;
-	private String cardNumber;
-	private String cardType;
+	@ApiModelProperty(notes="Credit Card Expire Date", required = true)
+	@NotNull private String cardExpiryDate;
+	@ApiModelProperty(notes="Credit Card Number", required = true)
+	@NotNull @LuhnCheck private String cardNumber;
+	@ApiModelProperty(notes="Credit Card Type", required = true)
+	@NotNull private String cardType;
 
 	public CreditCard() {
 	}

@@ -78,7 +78,7 @@ import io.swagger.annotations.*;
 @Api(value="/shipping",description="Shipping Rates",produces ="application/json")
 @Produces({"application/json"})
 @Consumes({"application/json"})
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 @RefreshScope
 public class ShippingController {
    

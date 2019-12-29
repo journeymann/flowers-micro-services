@@ -13,7 +13,12 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,6 +34,9 @@ import java.util.List;
  * @version 1.0
  *
  */
+@Entity
+@JsonRootName(value = "product")
+@ApiModel(description="Product Information. ")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "products")
 public class Product extends Model{
@@ -44,19 +52,25 @@ public class Product extends Model{
 		this.items = items;
 	}
 	
-	@Id
-	@GeneratedValue private String productId;
-	
+	@ApiModelProperty(notes="Product Id", required = false)
+	@Id	@GeneratedValue private String productId;
+	@ApiModelProperty(notes="Product Name", required = true)
 	@Valid @NotNull @Length(min = 1, max = 120) private String name;
+	@ApiModelProperty(notes="Product short description", required = false)
 	private String shortDescription;
+	@ApiModelProperty(notes="Product long description", required = false)
 	private String longDescription;
+	@ApiModelProperty(notes="Product start date", required = false)
 	@Valid	private Date startDate = Calendar.getInstance().getTime();
+	@ApiModelProperty(notes="Product available Date", required = false)
 	@Valid	private Date availableDate = Calendar.getInstance().getTime();
+	@ApiModelProperty(notes="Product end date", required = false)
 	@Valid	private Date endeDate;
+	@ApiModelProperty(notes="Product price", required = false)
 	private Double price;
+	@ApiModelProperty(notes="List Product Items", required = false)
 	@DBRef(lazy = true) @Valid private List<Item> items;
 	
-
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -4,6 +4,8 @@
 package com.flowers.microservice.beans;
 
 import java.time.LocalDate;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -11,7 +13,12 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
+
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.flowers.microservice.constants.State;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -19,18 +26,30 @@ import com.flowers.microservice.constants.State;
  * @version 1.0
  *
  */
+@Entity
+@JsonRootName(value = "taxdata")
+@ApiModel(description="Tax Information. ")
 @Document(collection = "taxdata")
 @RestResource(exported = false)
 public class TaxRate extends Model implements Comparable<TaxRate>{
 
+	@ApiModelProperty(notes="Item Id", required = true)
 	@NotNull @Length(min = 1, max = 120) private String itemId;
+	@ApiModelProperty(notes="State", required = false)
 	private String state = State.DEFAULT_STATE;
+	@ApiModelProperty(notes="Country", required = false)
 	private String county;
+	@ApiModelProperty(notes="Zip Code", required = false)
 	private String zipcode;
+	@ApiModelProperty(notes="Rate", required = false)
 	private Double rate;
+	@ApiModelProperty(notes="Rate Override", required = false)
 	private Boolean override;
+	@ApiModelProperty(notes="Start Date", required = false)
 	@Valid	private LocalDate startDate = LocalDate.now();
+	@ApiModelProperty(notes="End Date", required = false)
 	@Valid	private LocalDate endeDate;
+	@ApiModelProperty(notes="Tax Rate Id", required = false)
 	@Id @GeneratedValue private String taxRateId;
 	
 	public TaxRate(){};

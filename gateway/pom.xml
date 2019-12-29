@@ -27,10 +27,17 @@
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 		<swagger.version>2.9.2</swagger.version>
         <admin.server.version>2.1.6</admin.server.version>   
-		<start-class>com.flowers.microservice.gateway.GatewayApplication</start-class>
     </properties>
 
     <dependencies>
+		<dependency> 
+			<groupId> io.micrometer </groupId> 
+			<artifactId> micrometer-registry-influx </artifactId> 
+		</dependency>    
+		<dependency> 
+			<groupId>io.micrometer</groupId> 
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>       
       	<dependency>
       		<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>

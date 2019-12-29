@@ -42,8 +42,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 //curl http://localhost:8082/orders/search/customerId\?custId\=1
 @Entity
-@JsonRootName(value = "shippingrate")
-@ApiModel(description="Shipping Rate Information. ")
+@JsonRootName(value = "orderitems")
+@ApiModel(description="Order Item Information. ")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "orderitems")
 public class OrderItem extends Model{

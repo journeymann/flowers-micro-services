@@ -3,16 +3,22 @@ package com.flowers.microservice.beans.billing;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.Valid;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.rest.core.annotation.RestResource;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.flowers.microservice.beans.contact.AbstractCustomer;
 import com.flowers.microservice.beans.contact.Address;
-import com.flowers.microservice.beans.contact.Customer;
 import com.flowers.microservice.beans.contact.EmailAddress;
 import com.flowers.microservice.beans.contact.Phone;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -21,17 +27,21 @@ import com.flowers.microservice.beans.contact.Phone;
  * 
  * billing class entity type definition.
  */
+@Entity
+@JsonRootName(value = "billing")
+@ApiModel(description="Billing Information.")
 @Document(collection = "billing")
 @RestResource(exported = false)
-public class Billing extends Customer{
+public class Billing extends AbstractCustomer{
 	
+	@ApiModelProperty(notes="Credit Card", required = false)
 	private CreditCard card;
+	@ApiModelProperty(notes="Billing Id", required = false)
 	@Id @GeneratedValue private String billingId;
+	@ApiModelProperty(notes="Billing Date", required = false)
 	@Valid	private LocalDateTime billingDate;
 
-	public Billing(){
-		
-	}
+	public Billing(){}
 	
 	public Billing(String billingid, String firstname, String lastname, List<Address> address, List<EmailAddress> email, List<Phone> phone, CreditCard card){
 		

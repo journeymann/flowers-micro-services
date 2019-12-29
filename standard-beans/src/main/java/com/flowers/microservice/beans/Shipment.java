@@ -3,6 +3,7 @@ package com.flowers.microservice.beans;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +12,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.flowers.microservice.constants.ShippingMethod;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 /**
  * 
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -19,15 +24,24 @@ import com.flowers.microservice.constants.ShippingMethod;
  * @version 1.0
  *
  */
+@Entity
+@JsonRootName(value = "shipment")
+@ApiModel(description="Product Shipping Information. ")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(collection = "shipments")
 public class Shipment extends Model{
 	
+	@ApiModelProperty(notes="Order Id", required = true)
 	@NotNull @Length(min = 1, max = 120) private String orderId;
+	@ApiModelProperty(notes="Order Name", required = false)
     private String name;
+	@ApiModelProperty(notes="Order delivery date", required = false)
 	private Date deliveryDate;
+	@ApiModelProperty(notes="Order shipping Date", required = false)
 	private Date shippingDate;
+	@ApiModelProperty(notes="Order method", required = false)
 	private ShippingMethod method;
+	@ApiModelProperty(notes="Order shipment id", required = false)
 	@Id @GeneratedValue private String shipmentId;
 
     public Shipment() {}
