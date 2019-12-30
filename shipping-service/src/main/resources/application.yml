@@ -5,6 +5,7 @@ info:
   component: shipping.server
 
 logging:
+  file: /var/log/logs/service-logs1.log
   level:
     com.netflix.discovery: 'OFF'
     org.springframework.cloud: 'DEBUG'
@@ -19,3 +20,6 @@ management:
     endpoint: 
       prometheus: 
         enabled: true    
+        
+        
+        

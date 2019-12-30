@@ -5,18 +5,12 @@ package com.flowers.microservice.tax.controller;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,19 +20,13 @@ import org.springframework.web.client.RestTemplate;
 import com.flowers.microservice.beans.TaxRate;
 import com.flowers.microservice.common.AbstractController;
 import com.flowers.microservice.common.LoggingHelper;
-import com.flowers.microservice.tax.health.HealthIndicatorService;
 import com.flowers.microservice.tax.request.TaxRequest;
 import com.flowers.microservice.tax.service.TaxRateService;
 import com.google.common.base.Optional;
-import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
-import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Contact;
@@ -82,9 +70,7 @@ import io.swagger.annotations.Tag;
 )
 
 @Api(value="/tax",description="Tax Rates",produces ="application/json")
-@Produces({"application/json"})
-@Consumes({"application/json"})
-//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 public class TaxRateController extends AbstractController{
 	private static final Logger logger = LoggingHelper.getLogger(TaxRateController.class);
 
@@ -101,52 +87,12 @@ public class TaxRateController extends AbstractController{
 	@Value("${flowers.tax.service.default.override}")
 	private Boolean defaultTaxOverride;
 	
-    @Autowired
-    private EurekaClient eurekaClient;
-    
 	@Autowired
 	private TaxRateService taxRateService;
 
-	@Autowired
-	private HealthIndicatorService healthIndicatorService;
-
     @Autowired
     RestTemplate restTemplate;	
-	
-    @RequestMapping("/service-instances/{applicationName}")
-    public List<InstanceInfo> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.eurekaClient.getApplication(applicationName).getInstances();
-    }  
-
-    @Value("${eureka.instance.instance-id}")
-    private String instanceId;
-    
-    @Value("${app.info.description}")
-    private String serviceInfo;    
-    
-    @GetMapping("/service-instances/instanceid")
-    public StringBuffer getEurekaStatus() {
-        return new StringBuffer("instance id: " + instanceId);
-    }  
-    
-	@GetMapping(value = "/info")
-	public String information(@ApiParam(value = "Model object", required = true)  Model model) {
-	    Application application = eurekaClient.getApplication("shipping-service");
-	    List<InstanceInfo> instanceInfo = application.getInstances();
-	    String hostname = instanceInfo.get(0).getHostName();
-	    String port = instanceInfo.stream().map(p -> String.valueOf(p.getPort())).collect(Collectors.joining(","));
-	    InstanceStatus status = healthIndicatorService.health();
-	    
-	    model.addAttribute("name", application.getName());
-	    model.addAttribute("hostname", hostname);
-	    model.addAttribute("port", port);
-	    model.addAttribute("status", status);
-	    model.addAttribute("info", serviceInfo);
-
-        return "info-view";
-	}	
-    	
+   	
     @Path("/read")
     @ApiOperation(value="get rate by id",response=TaxRate.class)
     @ApiResponses(value={

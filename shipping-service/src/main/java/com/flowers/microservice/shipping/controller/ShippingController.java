@@ -7,26 +7,22 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.flowers.microservice.beans.Order;
 import com.flowers.microservice.beans.ShippingRate;
 import com.flowers.microservice.shipping.facade.CalculateFacade;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.appinfo.InstanceInfo.InstanceStatus;
-import com.netflix.discovery.shared.Application;
+import com.flowers.microservice.shipping.service.ComputeService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.flowers.microservice.common.AbstractController;
+import com.flowers.microservice.common.LoggingHelper;
 import io.swagger.annotations.*;
 
 /**
@@ -64,29 +60,15 @@ import io.swagger.annotations.*;
 )
 
 @Api(value="/shipping",description="Shipping Rates",produces ="application/json")
-@Produces({"application/json"})
-@Consumes({"application/json"})
-//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 public class ShippingController extends AbstractController{
            
-    @GetMapping(value = "/info")
-	public String information(@ApiParam(value = "Model object", required = true)  Model model) {
-	    Application application = eurekaClient.getApplication(springApplicationName);
-	    List<InstanceInfo> instanceInfo = application.getInstances();
-	    String hostname = instanceInfo.get(0).getHostName();
-	    String port = instanceInfo.stream().map(p -> String.valueOf(p.getPort())).collect(Collectors.joining(","));
-	    InstanceStatus status = healthIndicatorService.health();
-	    
-	    model.addAttribute("name", application.getName());
-	    model.addAttribute("hostname", hostname);
-	    model.addAttribute("port", port);
-	    model.addAttribute("status", status);
-	    model.addAttribute("info", serviceInfo);
+	public static Logger LOGGER = LoggingHelper.getLogger(ShippingController.class); 
+	
+	@Autowired
+	ComputeService service;
 
-        return "info-view";
-	}	
-	    
-    @Path("/shipping")
+    @Path("/cost")
     @ApiOperation(value="get order shipping cost",response=Float.class)
     @ApiResponses(value={
 	    @ApiResponse(code=200,message="Order Rate Details Retrieved",response=Float.class),
@@ -111,6 +93,20 @@ public class ShippingController extends AbstractController{
 	public List<ShippingRate> shippingRates() {
 		return CalculateFacade.getRates();
 	}
+    
+    @Path("/order/rate")
+    @ApiOperation(value="get order shipping rate by id",response=ShippingRate.class)
+    @ApiResponses(value={
+	    @ApiResponse(code=200,message="Order Rate Details Retrieved",response=ShippingRate.class),
+	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = ShippingRate.class)),
+	    @ApiResponse(code=500,message="Internal Server Error"),
+	    @ApiResponse(code=404,message="Order Rate not found")})
+    @HystrixCommand(fallbackMethod = "fallbackall")
+	@RequestMapping(value = "/order/rates", method = RequestMethod.GET)
+	public ShippingRate orderShippingRateById(@RequestParam @ApiParam(value = "Order Id", required = true) final String id) {
+    	
+		return service.findOrderShippingRate(id); 
+	}    
 	
     @Path("/deliverydate")
     @ApiOperation(value="get shipping delivery date",response=LocalDate.class)

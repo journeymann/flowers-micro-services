@@ -9,11 +9,16 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
+
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.beans.billing.CreditCard;
@@ -21,6 +26,7 @@ import com.flowers.microservice.beans.contact.Address;
 import com.flowers.microservice.beans.contact.Customer;
 import com.flowers.microservice.beans.contact.EmailAddress;
 import com.flowers.microservice.beans.contact.Phone;
+import com.flowers.microservice.common.LoggingHelper;
 import com.flowers.microservice.beans.Item;
 import com.flowers.microservice.beans.Product;
 import com.flowers.microservice.beans.Shipment;
@@ -35,7 +41,8 @@ import com.flowers.microservice.beans.Shipment;
 
 @Component
 public class OrderServiceImpl implements OrderService {
-
+	
+	public static Logger LOGGER = LoggingHelper.getLogger(OrderServiceImpl.class); 
     private final MongoTemplate mongoTemplate;
     
     @Autowired
@@ -90,6 +97,23 @@ public class OrderServiceImpl implements OrderService {
         list.forEach(targetCollection.get()::add);
     }
     
+	@Autowired
+	private WebClient.Builder webClientBuilder;
+	
+	
+	public Product findProductById(String id) {
+		
+		 LOGGER.info("findProductById: id={}", id);
+		 
+		 Product product = webClientBuilder
+				 .baseUrl("http://localhost:8080")
+				 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) 
+				 .build()
+				 .get().uri("/product/read/{productid}", id).retrieve().bodyToMono(Product.class)
+				 .block();
+		 		 
+		 return product;
+	}
     
     private void init() {
     	

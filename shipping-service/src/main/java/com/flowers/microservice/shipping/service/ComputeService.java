@@ -20,4 +20,5 @@ public interface ComputeService {
 	ShippingRate findOneShippingRate(String state);
 	TaxRate findOneTaxRate(String state);
 	List<ShippingRate> findShippingRates();
+	ShippingRate findOrderShippingRate(String orderid);
 }

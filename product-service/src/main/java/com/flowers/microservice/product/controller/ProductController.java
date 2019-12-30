@@ -4,12 +4,11 @@
 package com.flowers.microservice.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.flowers.microservice.product.service.ProductService;
 import com.flowers.microservice.beans.Product;
 import com.flowers.microservice.common.AbstractController;
-import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,32 +67,11 @@ import javax.ws.rs.Produces;
 @Api(value="/product",description="Product Information",produces ="application/json")
 @Produces({"application/json"})
 @Consumes({"application/json"})
-//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 public class ProductController extends AbstractController{
 
     @Autowired
 	private ProductService productService;
-    
-    @Value(value = "${app.http.timeout}")
-    private long timeout;
-    
-	@RequestMapping(value = "/health",  method = RequestMethod.GET)
-	public InstanceStatus health() {
-		return healthIndicatorService.health();
-	}
-	
-	@RequestMapping(value = "/info",  method = RequestMethod.GET)
-	public String information() {
-		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
-	}	    
-
-    @Value(value = "${eureka.instance.instance-id}")
-    private String instanceId;
-
-    @GetMapping("/service-instances/instanceid")
-    public StringBuffer getEurekaStatus() {
-        return new StringBuffer("instance id: " + instanceId);
-    }  
     
     @Path("/product/create")
     @ApiOperation(value="create product",response=Product.class)

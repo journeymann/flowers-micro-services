@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:5002}
+  port: ${PORT:5005}
 
 info:
   component: product.server
@@ -13,6 +13,7 @@ management:
     metrics: 
       export: 
         influx: 
+          enabled: false
           db: springboot 
           uri: http://localhost:8086
     endpoint: 
