@@ -23,8 +23,8 @@ eureka:
              
 config: 
   oauth2: 
-    accessTokenUri: http://auth-service:5000
-    userAuthorizationUri: http://auth-service:5000
+    accessTokenUri: http://local-host:5000/auth
+    userAuthorizationUri: http://local-host:5000/auth
     clientID: auth
     clientSecret: p@ssw0rd001  
     

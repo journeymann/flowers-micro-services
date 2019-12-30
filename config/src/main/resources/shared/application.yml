@@ -10,5 +10,21 @@ hystrix:
           thread:
             timeoutInMilliseconds: 10000
 
-
-
+management: 
+    metrics: 
+     export: 
+        influx: 
+          enabled: true
+          db: metrics 
+          uri: http://localhost:8086
+        prometheus: 
+          enabled: true
+         
+    endpoints:             
+      web: 
+        exposure: 
+          include: /*
+                
+    endpoint: 
+      prometheus: 
+        enabled: true  

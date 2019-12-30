@@ -23,13 +23,13 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 10  
     instance-id: ${spring.application.name}:${random.int[10000,20000]}
-             
-config: 
+    
+config:              
   oauth2: 
-    accessTokenUri: http://auth-service:5000
-    userAuthorizationUri: http://auth-service:5000
+    accessTokenUri: http://localhost:5000/auth
+    userAuthorizationUri: http://localhost:5000/auth
     clientID: auth
-    clientSecret: p@ssw0rd001  
+    clientSecret: p@ssw0rd001 
     
 app: 
   host: 

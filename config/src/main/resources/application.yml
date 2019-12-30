@@ -29,4 +29,22 @@ spring:
   profiles:
      active: native, default, cloud
 
-  
+management: 
+    metrics: 
+     export: 
+        influx: 
+          auto-create-db: true
+          enabled: true
+          db: metrics 
+          uri: http://localhost:8086
+        prometheus: 
+          enabled: true
+         
+    endpoints:             
+      web: 
+        exposure: 
+          include: /*
+                
+    endpoint: 
+      prometheus: 
+        enabled: true           

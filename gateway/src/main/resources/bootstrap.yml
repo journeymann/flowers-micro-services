@@ -16,6 +16,13 @@ spring:
         max-interval: 2000
         max-attempts: 100 
         
+config: 
+  oauth2: 
+    accessTokenUri: http://local-host:5000/auth
+    userAuthorizationUri: http://local-host:5000/auth
+    clientID: auth
+    clientSecret: p@ssw0rd001  
+            
 eureka:
   instance: 
     lease-renewal-interval-in-seconds: 10  

@@ -5,21 +5,10 @@ info:
   component: shipping.server
 
 logging:
-  file: /var/log/logs/service-logs1.log
   level:
     com.netflix.discovery: 'OFF'
     org.springframework.cloud: 'DEBUG'
 
-management: 
-    metrics: 
-      export: 
-        influx: 
-          enabled: false 
-          db: springboot 
-          uri: http://192.168.1.102:8086
-    endpoint: 
-      prometheus: 
-        enabled: true    
-        
-        
-        
+   
+
+      

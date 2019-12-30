@@ -59,7 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/tax/**").permitAll()
                 .antMatchers("/order/**").permitAll()
                 .antMatchers("/product/**").permitAll()
+                .antMatchers("/inventory/**").permitAll()
+                .antMatchers("/config/**").permitAll()
                 .antMatchers("/shipping/**").permitAll()
+                .antMatchers("/notification/**").permitAll()
                 .antMatchers("/dashboard/**").permitAll()
                 .anyRequest().fullyAuthenticated();
         http.httpBasic().disable();

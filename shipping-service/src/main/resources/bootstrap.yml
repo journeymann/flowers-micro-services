@@ -20,7 +20,7 @@ spring:
   data: 
     mongodb:
           uri: mongodb://shipping:passw0rd001@cluster0-shard-00-00-rvlxk.mongodb.net:27017,cluster0-shard-00-01-rvlxk.mongodb.net:27017,cluster0-shard-00-02-rvlxk.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority
-    
+   
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
@@ -28,10 +28,10 @@ eureka:
              
 config: 
   oauth2: 
-    accessTokenUri: http://auth-service:5000
-    userAuthorizationUri: http://auth-service:5000
+    accessTokenUri: http://localhost:5000/auth
+    userAuthorizationUri: http://localhost:5000/auth
     clientID: auth
-    clientSecret: p@ssw0rd001  
+    clientSecret: p@ssw0rd001 
     
 app: 
   host: 

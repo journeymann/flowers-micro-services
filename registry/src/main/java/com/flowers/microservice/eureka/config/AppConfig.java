@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.MyDataCenterInstanceConfig;
+import com.flowers.microservice.common.AbstractAppConfig;
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -22,7 +22,7 @@ import com.netflix.appinfo.MyDataCenterInstanceConfig;
 @Configuration
 @Component
 @EnableAutoConfiguration
-public class AppConfig {
+public class AppConfig extends AbstractAppConfig{
 
 	private String EUREKA_TEST_NAMESPACE="eureka";
 	private ApplicationInfoManager applicationManager;
@@ -45,5 +45,4 @@ public class AppConfig {
 		  }
 		  return applicationManager;
 		}
-  
 }
