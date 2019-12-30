@@ -33,6 +33,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/standard-beans"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/shared-classes"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
