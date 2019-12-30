@@ -14,10 +14,6 @@ import javax.ws.rs.Produces;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.flowers.microservice.beans.TaxRate;
+import com.flowers.microservice.common.AbstractController;
 import com.flowers.microservice.common.LoggingHelper;
 import com.flowers.microservice.tax.health.HealthIndicatorService;
 import com.flowers.microservice.tax.request.TaxRequest;
@@ -84,15 +80,12 @@ import io.swagger.annotations.Tag;
         }, 
         externalDocs = @ExternalDocs(value = "Web services design best practises", url = "http://somewebsitehere.com/best_practise.html")
 )
-@RestController
-//@EnableFeignClients
-@ConfigurationProperties
+
 @Api(value="/tax",description="Tax Rates",produces ="application/json")
 @Produces({"application/json"})
 @Consumes({"application/json"})
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
-@RefreshScope
-public class TaxRateController {
+//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+public class TaxRateController extends AbstractController{
 	private static final Logger logger = LoggingHelper.getLogger(TaxRateController.class);
 
 	@Value("${flowers.tax.service.default.rate}")

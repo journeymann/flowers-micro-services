@@ -12,7 +12,8 @@ logging:
 management: 
     metrics: 
       export: 
-        influx: 
+        influx:
+          enabled: false 
           db: springboot 
           uri: http://localhost:8086
     endpoint: 

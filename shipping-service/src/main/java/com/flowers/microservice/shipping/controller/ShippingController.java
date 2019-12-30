@@ -8,35 +8,25 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import com.flowers.microservice.beans.Order;
 import com.flowers.microservice.beans.ShippingRate;
 import com.flowers.microservice.shipping.facade.CalculateFacade;
-import com.flowers.microservice.shipping.health.HealthIndicatorService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
-import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
+import com.flowers.microservice.common.AbstractController;
 import io.swagger.annotations.*;
 
 /**
@@ -72,45 +62,16 @@ import io.swagger.annotations.*;
         }, 
         externalDocs = @ExternalDocs(value = "Web services design best practises", url = "http://somewebsitehere.com/best_practise.html")
 )
-@RestController
-//@EnableFeignClients
-@ConfigurationProperties
+
 @Api(value="/shipping",description="Shipping Rates",produces ="application/json")
 @Produces({"application/json"})
 @Consumes({"application/json"})
 //@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
-@RefreshScope
-public class ShippingController {
-   
-    @Autowired
-    private EurekaClient eurekaClient;
-
-	@Autowired
-	private HealthIndicatorService healthIndicatorService;
-   
-    @RequestMapping("/service-instances/{applicationName}")
-    public List<InstanceInfo> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.eurekaClient.getApplication(applicationName).getInstances();
-    }    
-
-    @Value("${eureka.instance.instance-id}")
-    private String instanceId;
-    
-    @Value("${app.info.description}")
-    private String serviceInfo;    
-    
-    @Value("${spring.application.name}")
-    private String springApplicationName;   
-
-    @GetMapping("/service-instances/instanceid")
-    public StringBuffer getEurekaStatus() {
-        return new StringBuffer("instance id: " + instanceId);
-    }  
-        
+public class ShippingController extends AbstractController{
+           
     @GetMapping(value = "/info")
 	public String information(@ApiParam(value = "Model object", required = true)  Model model) {
-	    Application application = eurekaClient.getApplication("shipping-service");
+	    Application application = eurekaClient.getApplication(springApplicationName);
 	    List<InstanceInfo> instanceInfo = application.getInstances();
 	    String hostname = instanceInfo.get(0).getHostName();
 	    String port = instanceInfo.stream().map(p -> String.valueOf(p.getPort())).collect(Collectors.joining(","));

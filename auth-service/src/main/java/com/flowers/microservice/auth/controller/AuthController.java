@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.flowers.microservice.monitoring.controller;
+package com.flowers.microservice.auth.controller;
 
 import com.flowers.microservice.common.AbstractController;
 
@@ -13,7 +13,6 @@ import com.flowers.microservice.common.AbstractController;
  *
  */
 
-public class GenericController extends AbstractController{
+public class AuthController extends AbstractController{
 	    
-
 }

@@ -1,4 +1,4 @@
-package com.flowers.microservice.shipping.health;
+package com.flowers.microservice.shipping.init;
 
 import java.time.LocalDate;
 import java.util.stream.Collectors;

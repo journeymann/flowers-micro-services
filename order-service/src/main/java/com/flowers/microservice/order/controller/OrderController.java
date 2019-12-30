@@ -9,30 +9,20 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.TypeReferences;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.flowers.microservice.beans.OrderItem;
 import com.flowers.microservice.order.config.AppConfigProperties;
@@ -49,16 +39,10 @@ import com.flowers.microservice.order.resource.NewOrderResource;
 import com.flowers.microservice.order.resource.PaymentRequest;
 import com.flowers.microservice.order.resource.PaymentResponse;
 import com.flowers.microservice.order.service.OrderService;
-import com.flowers.microservice.order.health.HealthIndicatorService;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.appinfo.InstanceInfo.InstanceStatus;
-import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Contact;
@@ -104,14 +88,9 @@ import java.io.IOException;
         }, 
         externalDocs = @ExternalDocs(value = "Web services design best practises", url = "http://somewebsitehere.com/best_practise.html")
 )
-@RestController
-//@EnableFeignClients
-@ConfigurationProperties
+
 @Api(value="/order",description="Order Calculations",produces ="application/json")
-@Produces({"application/json"})
-@Consumes({"application/json"})
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
-@RefreshScope
+//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
 public class OrderController{
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 	
@@ -123,60 +102,9 @@ public class OrderController{
     
     @Autowired
     private AsyncGetService asyncGetService;
-    
-	@Autowired
-	private HealthIndicatorService healthIndicatorService;   
-    
+  
     @Value(value = "${app.http.timeout}")
     private long timeout;
-    
-    @Value("${app.info.description}")
-    private String serviceInfo;        
-        
-    @Autowired
-    private EurekaClient eurekaClient;
-  
-	@RequestMapping(value = "/health",  method = RequestMethod.GET)
-	public InstanceStatus health() {
-		return healthIndicatorService.health();
-	}
-	
-	@RequestMapping(value = "/info",  method = RequestMethod.GET)
-	public String information() {
-		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
-	}	
-
-    @RequestMapping("/service-instances/{applicationName}")
-    public List<InstanceInfo> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.eurekaClient.getApplication(applicationName).getInstances();
-    }    
-
-    @Value("${eureka.instance.instance-id}")
-    private String instanceId;
-
-    @GetMapping("/service-instances/instanceid")
-    public StringBuffer getEurekaStatus() {
-        
-        return new StringBuffer("instance id: " + instanceId);
-    }  
-    
-	@GetMapping(value = "/info")
-	public String information(@ApiParam(value = "Model object", required = true)  Model model) {
-	    Application application = eurekaClient.getApplication("shipping-service");
-	    List<InstanceInfo> instanceInfo = application.getInstances();
-	    String hostname = instanceInfo.get(0).getHostName();
-	    String port = instanceInfo.stream().map(p -> String.valueOf(p.getPort())).collect(Collectors.joining(","));
-	    InstanceStatus status = healthIndicatorService.health();
-	    
-	    model.addAttribute("name", application.getName());
-	    model.addAttribute("hostname", hostname);
-	    model.addAttribute("port", port);
-	    model.addAttribute("status", status);
-	    model.addAttribute("info", serviceInfo);
-
-        return "info-view";
-	}	    
     
     @Path("/create")
     @ApiOperation(value="create order service",response=OrderItem.class)

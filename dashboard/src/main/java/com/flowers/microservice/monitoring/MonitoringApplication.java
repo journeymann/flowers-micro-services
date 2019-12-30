@@ -18,6 +18,5 @@ public class MonitoringApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder(MonitoringApplication.class).run(args);
     }
-
 }
 

@@ -94,7 +94,7 @@ public class ProductControllerTest {
 		item1.setHeight(2);
 		item1.setLength(3);
 		item1.setWidth(5);
-		item1.setWeight(12);
+		item1.setWeight(12.0);
 
 		item2.setSku("1001-P-GFDT1325");
 		item2.setDescription("My Funny Valentines");
@@ -104,7 +104,7 @@ public class ProductControllerTest {
 		item2.setHeight(2);
 		item2.setLength(3);
 		item2.setWidth(5);
-		item2.setWeight(12);
+		item2.setWeight(12.0);
 		
 		
 		Product create = new Product();

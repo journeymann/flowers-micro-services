@@ -117,10 +117,6 @@ public class Item extends Model implements Comparable<Item>{
 		this.weight=weight;
 	}
 	
-	// TODO remove adapter code here added for existing functionality 
-	public void setWeight(Integer weight) {
-		this.weight = Double.valueOf(weight);
-	}
 	public void setAvailableDate(String date) {
 		this.availableDate = parseDate(date);
 	}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.flowers.microservice.shipping.health;
+package com.flowers.microservice.health;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.HealthAggregator;

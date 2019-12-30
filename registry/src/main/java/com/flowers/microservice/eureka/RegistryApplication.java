@@ -5,8 +5,8 @@ package com.flowers.microservice.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
-
 
 /**
  * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
@@ -15,9 +15,10 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  *
  */
 
-@SpringBootApplication
 @EnableEurekaServer
-public class RegistryApplication {
+@SpringBootApplication
+@EnableCircuitBreaker
+public class RegistryApplication{
 
     public static void main(String... args) {
         SpringApplication.run(RegistryApplication.class, args);

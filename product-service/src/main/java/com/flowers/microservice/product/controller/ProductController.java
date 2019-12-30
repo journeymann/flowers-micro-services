@@ -5,15 +5,10 @@ package com.flowers.microservice.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.flowers.microservice.product.service.ProductService;
 import com.flowers.microservice.beans.Product;
-import com.flowers.microservice.product.health.HealthIndicatorService;
+import com.flowers.microservice.common.AbstractController;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.swagger.annotations.Api;
@@ -69,31 +64,19 @@ import javax.ws.rs.Produces;
         }, 
         externalDocs = @ExternalDocs(value = "Web services design best practises", url = "http://somewebsitehere.com/best_practise.html")
 )
-@RestController
-//@EnableFeignClients
-@ConfigurationProperties
+
 @Api(value="/product",description="Product Information",produces ="application/json")
 @Produces({"application/json"})
 @Consumes({"application/json"})
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
-@RefreshScope
-public class ProductController {
+//@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
+public class ProductController extends AbstractController{
 
     @Autowired
 	private ProductService productService;
     
-	@Autowired
-	private HealthIndicatorService healthIndicatorService;    
-        
     @Value(value = "${app.http.timeout}")
     private long timeout;
     
-    @Value("${app.info.description}")
-    private String serviceInfo;    
-    
-    @Autowired
-    private DiscoveryClient discoveryClient;
-   
 	@RequestMapping(value = "/health",  method = RequestMethod.GET)
 	public InstanceStatus health() {
 		return healthIndicatorService.health();
@@ -104,18 +87,11 @@ public class ProductController {
 		return String.format("Service description: %s. Health status %s", serviceInfo,  healthIndicatorService.health());
 	}	    
 
-    @RequestMapping("/service-instances/{applicationName}")
-    public List<ServiceInstance> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.discoveryClient.getInstances(applicationName);
-    }    
-
     @Value(value = "${eureka.instance.instance-id}")
     private String instanceId;
 
     @GetMapping("/service-instances/instanceid")
     public StringBuffer getEurekaStatus() {
-        
         return new StringBuffer("instance id: " + instanceId);
     }  
     

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import com.flowers.microservice.tax.health.InitialiseTest;
 import com.flowers.microservice.tax.repository.FlowersTaxRateMongoRepository;
 import com.flowers.microservice.tax.service.TaxRateService;
-
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -28,7 +28,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 @EnableSwagger2
 @EnableZuulProxy
-public class TaxRateApplication extends org.springframework.boot.web.servlet.support.SpringBootServletInitializer {
+public class TaxRateApplication extends SpringBootServletInitializer {
 
 	@Autowired
 	TaxRateService service;		

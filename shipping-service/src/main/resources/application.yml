@@ -13,8 +13,9 @@ management:
     metrics: 
       export: 
         influx: 
+          enabled: false 
           db: springboot 
-          uri: http://localhost:8086
+          uri: http://192.168.1.102:8086
     endpoint: 
       prometheus: 
         enabled: true    

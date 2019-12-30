@@ -23,7 +23,7 @@ public class GatewayApplication {
 	public static void main(String... args) {
 		
 		try{
-		SpringApplication.run(GatewayApplication.class, args);
+			SpringApplication.run(GatewayApplication.class, args);
 		}catch(Exception e){
 			System.out.printf("ZUUL: %s",e);
 		}
