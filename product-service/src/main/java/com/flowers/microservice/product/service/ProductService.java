@@ -5,33 +5,26 @@ package com.flowers.microservice.product.service;
 
 import java.util.List;
 
-import com.flowers.microservice.beans.Product;
+import com.flowers.microservice.product.domain.Product;
 
 /**
- * 
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- * {@literal @}created  02/11/2019
+ * @author cgordon
+ * @created 12/11/2017
  * @version 1.0
  *
  */
 
 public interface ProductService {
 
-	Product createProduct(Product product);
+	public Product findProductByName(String name);
+
+	public Product findProductById(String id);
 	
-	Product findProductById(String productid);
-
-	List<Product> findAllProductList();
+	public List<Product> findAllProducts();	
 	
-	Product updateProduct(String productid, Product product);
+	public Product create(Product Product);
+
+	public Product update(String id, Product Product);
 	
-	void deleteProduct(String productid);
-
-	List<Product> findAllProductListPaginated(int pageNumber, int pageSize);
-
-	Product findOneById(String id);
-
-	List<Product> findById(String id);
-
-	Product updateOne(Product product);
+	public void delete(String id);	
 }

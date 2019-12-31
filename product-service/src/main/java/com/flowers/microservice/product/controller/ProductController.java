@@ -4,143 +4,78 @@
 package com.flowers.microservice.product.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.flowers.microservice.product.domain.Product;
 import com.flowers.microservice.product.service.ProductService;
-import com.flowers.microservice.beans.Product;
-import com.flowers.microservice.common.AbstractController;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Contact;
-import io.swagger.annotations.ExternalDocs;
-import io.swagger.annotations.Info;
-import io.swagger.annotations.License;
-import io.swagger.annotations.ResponseHeader;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 
 /**
- * 
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- * {@literal @}created  02/11/2019
+ * @author cgordon
+ * @created 12/11/2017
  * @version 1.0
  *
  */
 
-@SwaggerDefinition(
-        info = @Info(
-                description = "Gets product information and calculations",
-                version = "V12.0.12",
-                title = "The Product Service API",
-                termsOfService = "http://terms.html",
-                contact = @Contact(
-                   name = "Roger Moore", 
-                   email = "roger.mooree@acme.com", 
-                   url = "http://www.acme.com"
-                ),
-                license = @License(
-                   name = "Apache 2.0", 
-                   url = "http://www.apache.org/licenses/LICENSE-2.0"
-                )
-        ),
-        consumes = {"application/json"},
-        produces = {"application/json"},
-        schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS},
-        tags = {
-                @Tag(name = "Private", description = "Tag used to denote operations as private")
-        }, 
-        externalDocs = @ExternalDocs(value = "Web services design best practises", url = "http://somewebsitehere.com/best_practise.html")
-)
+@RestController
+@RequestMapping(path = "/product")
+public class ProductController {
 
-@Api(value="/product",description="Product Information",produces ="application/json")
-@Produces({"application/json"})
-@Consumes({"application/json"})
-@PreAuthorize("hasAuthority('ROLE_TRUSTED_CLIENT')")
-public class ProductController extends AbstractController{
-
-    @Autowired
+	@Autowired
 	private ProductService productService;
+	
+    @HystrixCommand(fallbackMethod = "fallbackProdById")
+	@RequestMapping(path = "/find", method = RequestMethod.GET)
+	public Product getProductById(@RequestParam(value = "id", required = false) String id,
+			@RequestParam(value = "name", required = false) String name) {
+		return name!=null? productService.findProductById(name) : productService.findProductById(id);
+	}
+
+    @HystrixCommand(fallbackMethod = "fallbackProdByName")
+	@RequestMapping(path = "/find", method = RequestMethod.GET)
+	public Product getProductByName(@RequestParam(value = "id", required = false) String id,
+			@RequestParam(value = "name", required = false) String name) {
+		return name!=null? productService.findProductById(id) : productService.findProductByName(name);
+	}
     
-    @Path("/product/create")
-    @ApiOperation(value="create product",response=Product.class)
-    @ApiResponses(value={
-	    @ApiResponse(code=200,message="Product Created Success",response=Product.class),
-	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = Product.class)),
-	    @ApiResponse(code=500,message="Internal Server Error"),
-	    @ApiResponse(code=404,message="Product Create Failed")})
-    @HystrixCommand(fallbackMethod = "fallback")
-	@RequestMapping(value = "/product/create", method = RequestMethod.POST)
-	public Product createProduct(@PathVariable final String productid, @Valid @RequestBody final Product product) {
-		return productService.updateProduct(productid, product);
+	@RequestMapping(path = "/delete/{id}", method = RequestMethod.PUT)
+	public void deleteProduct(@PathVariable String id) {
+		productService.delete(id);
 	}
-	
-    @Path("/product/read/{productid}")
-    @ApiOperation(value="read product details",response=Product.class)
-    @ApiResponses(value={
-	    @ApiResponse(code=200,message="Get Product Details",response=Product.class),
-	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = Product.class)),
-	    @ApiResponse(code=500,message="Internal Server Error"),
-	    @ApiResponse(code=404,message="Product Not Found")})
-    @HystrixCommand(fallbackMethod = "fallback")
-	@RequestMapping(value = "/product/read/{productid}", method = RequestMethod.GET)
-	public Product getProduct(@PathVariable final String productid) {
-		return productService.findProductById(productid);
+
+	@RequestMapping(path = "/create", method = RequestMethod.POST)
+	public Product createProduct(@Valid @RequestBody Product product) {
+		return productService.create(product);
 	}
-	
-    @Path("/product/all")
-    @ApiOperation(value="read all product details",response=List.class)
-    @ApiResponses(value={
-	    @ApiResponse(code=200,message="Get All Product Details",response=List.class),
-	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = List.class)),
-	    @ApiResponse(code=500,message="Internal Server Error"),
-	    @ApiResponse(code=404,message="No Products Found")})
-    @HystrixCommand(fallbackMethod = "fallbackAllProducts")
-	@RequestMapping(value = "/product/all", method = RequestMethod.GET)
-	public List<Product> getAllProducts() {
-		return productService.findAllProductList();
+
+	@RequestMapping(path = "/update/{id}", method = RequestMethod.POST)
+	public Product updateProduct(@Valid @PathVariable String id, @Valid @RequestBody Product product) {
+		return productService.update(id, product);
 	}
-	
-    @Path("/product/update/{productid}")
-    @ApiOperation(value="update product details",response=Product.class)
-    @ApiResponses(value={
-	    @ApiResponse(code=200,message="Update Product Details",response=Product.class),
-	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used", response = Product.class)),
-	    @ApiResponse(code=500,message="Internal Server Error"),
-	    @ApiResponse(code=404,message="Product Not Found")})
-    @HystrixCommand(fallbackMethod = "fallback")
-	@RequestMapping(value = "/product/update/{productid}", method = RequestMethod.POST)
-	public Product updateProduct(@PathVariable final String productid, @Valid @RequestBody final Product product) {
-		return productService.updateProduct(productid, product);
-	}
-	
-    @Path("/product/delete/{productid}")
-    @ApiOperation(value="delete product")
-    @ApiResponses(value={
-	    @ApiResponse(code=200,message="Delete Product"),
-	    @ApiResponse(code=400,message="Resource Not Found", responseHeaders = @ResponseHeader(name = "X-Rack-Cache", description = "Explains whether or not a cache was used")),
-	    @ApiResponse(code=500,message="Internal Server Error"),
-	    @ApiResponse(code=404,message="Product Not Found")})
-	@RequestMapping(value = "/product/delete/{productid}", method = RequestMethod.GET)
-	public void deleteProduct(@PathVariable final String productid) {
-		productService.deleteProduct(productid);
-	}
-	
-    public Product fallback() {
+
+    public Product fallbackProdById() {
+        return new Product();
+    }
+
+    public Product fallbackProdByName() {
         return new Product();
     }
     
+    @GetMapping("/all-products")
+    @HystrixCommand(fallbackMethod = "fallbackAllProducts")
+    @CrossOrigin(origins = "*")    
+    public Collection<Product> getProducts() {
+        return productService.findAllProducts()
+                .stream()
+                .filter(p -> p.isActive())
+                .collect(Collectors.toList());
+    }    
+
     public Collection<Product> fallbackAllProducts() {
         return new ArrayList<Product>();
     }

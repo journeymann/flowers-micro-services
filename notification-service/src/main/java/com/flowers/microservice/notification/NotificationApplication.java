@@ -4,19 +4,25 @@
 package com.flowers.microservice.notification;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import com.flowers.microservice.common.AbstractApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 /**
- * 
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- * {@literal @}created  02/11/2019
+ * @author cgordon
+ * @created 12/11/2017
  * @version 1.0
  *
  */
 
-@EnableEurekaClient
-public class NotificationApplication extends AbstractApplication {
+@EnableFeignClients
+@EnableCircuitBreaker
+@EnableDiscoveryClient
+@EnableZuulProxy
+@SpringBootApplication
+public class NotificationApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NotificationApplication.class, args);

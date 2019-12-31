@@ -9,22 +9,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.flowers.microservice.beans.User;
+import com.flowers.microservice.order.model.User;
+import com.flowers.microservice.order.controller.AbstractClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
- * 
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- * {@literal @}created  02/11/2019
+ * @author cgordon
+ * @created 12/11/2017
  * @version 1.0
  *
  */
-@RestController
-public class AuthClientController  {
+public class AuthClientController extends AbstractClient {
 	
-    @Value("${service.authSearch.serviceId:100000}")
+    @Value("${service.authSearch.serviceId}")
     private String searchServiceId;
     
     private final String TYPE_KEY = "auth";
@@ -33,14 +31,14 @@ public class AuthClientController  {
 	@RequestMapping(path = "/order/auth/{Id}", method = RequestMethod.GET)
     public User find(@PathVariable Long Id) {
 
-        return null;
+        return (User)super.find(Id);
     }
         
     @HystrixCommand(fallbackMethod = "fallbackAll")
 	@RequestMapping(path = "/order/auth/all", method = RequestMethod.GET)
     public Collection <User> findUsers() {
 
-		return null;
+		return convertModelList(super.findAll(), User.class);
     }
     
     public final User fallbackById() {
@@ -60,5 +58,3 @@ public class AuthClientController  {
     };
     
 }
-
-

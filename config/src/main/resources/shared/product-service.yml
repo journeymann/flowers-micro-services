@@ -1,47 +1,21 @@
----
-server:
-  servlet:
-    context-path: /product
-  
-spring:
-  profiles: native
-  application:
-    name: product-service  
-   
-eureka:         
-  client:
-    enabled: true  
-    serviceUrl: 
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-    register-with-eureka: true    
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 100
-    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-        
-management: 
-  endpoint:
-    health:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-        exclude: 
-      base-path: /      
-      
-  info:
-    git:
-      mode: full
-  cloudfoundry:
-    enabled: true
-    skip-ssl-validation: true   
-        
-logging:
-    level:
-      ROOT: INFO
-      org.springframework.web: DEBUG 
-      com.flowers.microservice.product.service: DEBUG      
+security:
+  oauth2:
+    client:
+      clientId: product-service
+      clientSecret: ${PRODUCT_SERVICE_PASSWORD}
+      accessTokenUri: http://auth-service:5000/auth/oauth/token
+      grant-type: client_credentials
+      scope: server
 
-      
+spring:
+  data:
+    mongodb:
+      host: product-mongodb
+      username: user
+      password: ${MONGODB_PASSWORD}
+      database: flowersdb
+      port: 27017
+
+server:
+  context-path: /products
+  port: 5007

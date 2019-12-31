@@ -2,10 +2,8 @@ package com.flowers.microservice.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import com.flowers.microservice.beans.Product;
-import com.flowers.microservice.beans.Item;
-import com.flowers.microservice.beans.User;
 import com.flowers.microservice.product.ProductApplication;
+import com.flowers.microservice.product.domain.*;
 import com.flowers.microservice.product.service.ProductService;
 import com.sun.security.auth.UserPrincipal;
 import org.junit.Before;
@@ -26,13 +24,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-/**
- * 
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- * {@literal @}created  02/11/2019
- * @version 1.0
- *
- */
+
+@SuppressWarnings("restriction")
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ProductApplication.class)
 @WebAppConfiguration
@@ -60,7 +53,7 @@ public class ProductControllerTest {
 		final Product product = new Product();
 		product.setName("test");
 
-		when(productService.findProductById(product.getProductId())).thenReturn(product);
+		when(productService.findProductByName(product.getName())).thenReturn(product);
 
 		mockMvc.perform(get("/" + product.getName()))
 				.andExpect(jsonPath("$.name").value(product.getName()))
@@ -73,7 +66,7 @@ public class ProductControllerTest {
 		final Product product = new Product();
 		product.setName("test");
 
-		when(productService.findProductById(product.getProductId())).thenReturn(product);
+		when(productService.findProductByName(product.getName())).thenReturn(product);
 
 		mockMvc.perform(get("/current").principal(new UserPrincipal(product.getName())))
 				.andExpect(jsonPath("$.name").value(product.getName()))
@@ -94,7 +87,7 @@ public class ProductControllerTest {
 		item1.setHeight(2);
 		item1.setLength(3);
 		item1.setWidth(5);
-		item1.setWeight(12.0);
+		item1.setWeight(12);
 
 		item2.setSku("1001-P-GFDT1325");
 		item2.setDescription("My Funny Valentines");
@@ -104,7 +97,7 @@ public class ProductControllerTest {
 		item2.setHeight(2);
 		item2.setLength(3);
 		item2.setWidth(5);
-		item2.setWeight(12.0);
+		item2.setWeight(12);
 		
 		
 		Product create = new Product();
@@ -112,7 +105,7 @@ public class ProductControllerTest {
 		create.setName("Funny Valentine Roses, its so cute <3");
 		create.setItems(Arrays.asList(item1, item2));
 		
-		update = productService.createProduct(create);
+		update = productService.create(create);
 		update.setName("test");
 		update.setItems(ImmutableList.of(item1, item2));
 

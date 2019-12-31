@@ -3,30 +3,28 @@
  */
 package com.flowers.microservice.product;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.Bean;
-import com.flowers.microservice.common.AbstractApplication;
-import com.flowers.microservice.product.health.InitialiseTest;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 /**
- * 
- * @author <a href="mailto:casmong@gmail.com">cgordon</a><br>
- * {@literal @}created  02/11/2019
+ * @author cgordon
+ * @created 12/11/2017
  * @version 1.0
  *
  */
-@EnableEurekaClient
-public class ProductApplication extends AbstractApplication{
 
-    @Bean
-    CommandLineRunner init() {
+@EnableFeignClients
+@EnableCircuitBreaker
+@EnableDiscoveryClient
+@EnableZuulProxy
+@SpringBootApplication
+public class ProductApplication {
 
-        return args -> {
-       	    
-        	InitialiseTest.init(mongoTemplate);
-        };
-
-    }
-	
+	public static void main(String[] args) {
+		SpringApplication.run(ProductApplication.class, args);
+	}
 }

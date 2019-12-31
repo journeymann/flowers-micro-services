@@ -9,13 +9,13 @@
 	<packaging>jar</packaging>
 
 	<name>order-service</name>
-	<description>Spring Boot Order Service</description>
+	<description>Spring Boot Order Service Thymeleaf Implementation</description>
 	<url>http://maven.apache.org</url>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.4.RELEASE</version>
+		<version>1.5.8.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -23,102 +23,47 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-		<json.sanitizer.version>1.2.0</json.sanitizer.version>
-		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-		<swagger.version>2.9.2</swagger.version>
-        <admin.server.version>2.1.6</admin.server.version> 
+        <spring-cloud.version>Dalston.RELEASE</spring-cloud.version>
     </properties>
 	
     <dependencies>
- 		<dependency> 
-			<groupId> io.micrometer </groupId> 
-			<artifactId> micrometer-registry-influx </artifactId> 
-		</dependency>    
-		<dependency> 
-			<groupId>io.micrometer</groupId> 
-			<artifactId>micrometer-registry-prometheus</artifactId>
-		</dependency>      
-      	<dependency>
-      		<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${swagger.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${swagger.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>   		
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>  		 
-      	<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>	   
-		<dependency> 
-			<groupId>de.codecentric</groupId> 
-			<artifactId>spring-boot-admin-starter-server</artifactId> 
-			<version>${admin.server.version}</version> 
-		</dependency>            
-    	<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-thymeleaf</artifactId> 
-        </dependency>    
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.jersey</groupId>
-                    <artifactId>jersey-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jersey</groupId>
-                    <artifactId>jersey-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.jersey.contribs</groupId>
-                    <artifactId>jersey-apache-client4</artifactId>
-                </exclusion>
-            </exclusions>		    
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-config-client</artifactId>
-		</dependency>		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
-			<version>2.3.5.RELEASE</version>
-		</dependency>
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-security</artifactId>
-		</dependency>     
+		    <artifactId>spring-boot-starter</artifactId>
+		    <exclusions>
+		        <!-- 
+		        <exclusion>
+		            <artifactId>logback-classic</artifactId>
+		            <groupId>ch.qos.logback</groupId>
+		        </exclusion>
+		         -->
+		        <exclusion>
+		            <artifactId>log4j-over-slf4j</artifactId>
+		            <groupId>org.slf4j</groupId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>	
+	    
+        <dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>   
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
@@ -126,6 +71,7 @@
 		<dependency>
 		    <groupId>javax.persistence</groupId>
 		    <artifactId>javax.persistence-api</artifactId>
+		    <version>2.2</version>
 		</dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -137,15 +83,19 @@
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
 		</dependency>
-         <dependency>
- 			<groupId>org.springframework.boot</groupId>
- 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
- 		</dependency>
-         <dependency>
-         	<groupId>org.springframework.boot</groupId>
-         	<artifactId>spring-boot-configuration-processor</artifactId>
-         	<optional>true</optional>
-         </dependency>
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -166,32 +116,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>target/${project.artifactId}-${project.version}</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/swagger-ui-master/dist
-                                    </directory>
-                                    <filtering>true</filtering>
-                                    <excludes>
-                                        <exclude>index.html</exclude>
-                                    </excludes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>        
-            
         </plugins>
     </build>
 </project>

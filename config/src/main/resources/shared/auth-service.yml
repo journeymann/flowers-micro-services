@@ -1,46 +1,12 @@
----
-server:
-  servlet:
-    context-path: /auth
-  
 spring:
-  profiles: native
-  application:
-    name: auth-service  
-   
-eureka:         
-  client:
-    enabled: true  
-    serviceUrl: 
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-    register-with-eureka: true    
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 100
-    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}  
-    
-management: 
-  endpoint:
-    health:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-        exclude: 
-      base-path: /      
-  info:
-    git:
-      mode: full
-  cloudfoundry:
-    enabled: true
-    skip-ssl-validation: true   
-       
-logging:
-    level:
-      ROOT: INFO
-      org.springframework.web: DEBUG 
-      com.flowers.microservice.auth.service: DEBUG      
+  data:
+    mongodb:
+      host: auth-mongodb
+      username: user
+      password: ${MONGODB_PASSWORD}
+      database: flowersdb
+      port: 27017
 
-        
+server:
+  context-path: /auth
+  port: 5000

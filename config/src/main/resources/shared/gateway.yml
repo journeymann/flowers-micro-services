@@ -1,25 +1,3 @@
----      
-server:
-  servlet: 
-    context-path: /gateway
-    
-spring:
-  profiles: default
-  application:
-    name: gateway
-
-eureka:         
-  client:
-    enabled: true  
-    serviceUrl: 
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-    register-with-eureka: true    
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.int}}      
-    leaseRenewalIntervalInSeconds: 10
-    leaseExpirationDurationInSeconds: 100
-    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-            
 hystrix:
   command:
     default:
@@ -39,20 +17,13 @@ zuul:
     socket-timeout-millis: 20000
 
   routes:
-  
-    dashboard:
-        path: /dashboard/**
-        url: dashboard
-        stripPrefix: false
-        sensitiveHeaders:
-          
     auth-service:
         path: /auth/**
         url: http://auth-service:5000
         stripPrefix: false
         sensitiveHeaders:
         
-    registry:
+    eureka-service:
         path: /registry/**
         serviceId: registry
         stripPrefix: false
@@ -63,16 +34,16 @@ zuul:
         serviceId: product-service
         stripPrefix: false
         sensitiveHeaders:
-        
-    inventory-service:
-        path: /inventory/**
-        serviceId: inventory-service
+
+    account-service:
+        path: /accounts/**
+        serviceId: account-service
         stripPrefix: false
         sensitiveHeaders:
-        
-    account-service:
-        path: /shipping/**
-        serviceId: shipping-service
+
+    logging-service:
+        path: /logging/**
+        serviceId: logging-service
         stripPrefix: false
         sensitiveHeaders:
 
@@ -81,40 +52,24 @@ zuul:
         serviceId: order-service
         stripPrefix: false
         sensitiveHeaders:
-        
-    tax-service:
-        path: /tax/**
-        serviceId: tax-service
+
+    database-service:
+        path: /database/**
+        serviceId: database-service
         stripPrefix: false
-        sensitiveHeaders:        
+        sensitiveHeaders:
+
+    statistics-service:
+        path: /statistics/**
+        serviceId: statistics-service
+        stripPrefix: false
+        sensitiveHeaders:
 
     notification-service:
         path: /notifications/**
         serviceId: notification-service
         stripPrefix: false
         sensitiveHeaders:
-    
-management: 
-  endpoint:
-    health:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-        exclude: 
-      base-path: /      
-  info:
-    git:
-      mode: full
-  cloudfoundry:
-    enabled: true
-    skip-ssl-validation: true   
-        
-logging:
-    level:
-      ROOT: INFO
-      org.springframework.web: DEBUG 
-      com.flowers.microservice.gateway.controller: DEBUG     
-        
 
+server:
+  port: 4000
